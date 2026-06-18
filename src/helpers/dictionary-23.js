@@ -49,6 +49,7 @@ export const labels = {
             'Sum of spendings on accounts of all political parties.',
         ],
         totalSpending: ['Celkové výdavky strán', 'Total parties spending'],
+        totalIncomes: ['Celkové príjmy kandidátov', 'Total candidate incomes'],
     },
     ads: {
         amount: {

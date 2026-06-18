@@ -8,6 +8,7 @@ import { segments } from '../../helpers/routes';
 
 import { newsCategories } from './News';
 import Top10Spending from '../../components/accounts/Top10Spending';
+import TotalIncomes from '../../components/accounts/TotalIncomes';
 import TotalSpending from '../../components/accounts/TotalSpending';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
 import Map from '../../components/map/Map';
@@ -28,12 +29,18 @@ function Home() {
                 <SiteNavigator site={elections.s26} />
             </div>
 
-            <Row className="gy-3 gy-lg-0 text-center mb-4">
-                <Col lg={6}>
+            <Row className="mb-4 text-center">
+                <Col>
                     <ElectionsCountdown
                         start={dates.electionsStart}
                         end={dates.electionsEnd}
                     />
+                </Col>
+            </Row>
+
+            <Row className="gy-3 gy-lg-0 text-center mb-4">
+                <Col lg={6}>
+                    <TotalIncomes />
                 </Col>
                 <Col lg={6}>
                     <TotalSpending />

@@ -148,6 +148,10 @@ const subsiteOverrides = {
                 'Celkové výdavky kandidátov',
                 'Total candidates spending',
             ],
+            totalIncomes: [
+                'Celkové príjmy kandidátov',
+                'Total candidate incomes',
+            ],
             totalDisclaimer: ['', ''],
         },
     },
