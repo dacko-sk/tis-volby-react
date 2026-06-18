@@ -41,6 +41,10 @@ import S26Municipality from './pages/samosprava2026/Municipality';
 import S26Region from './pages/samosprava2026/Region';
 import S26News from './pages/samosprava2026/News';
 import S26Search from './pages/samosprava2026/Search';
+import S26Candidates from './pages/samosprava2026/Candidates';
+import S26Parties from './pages/samosprava2026/Parties';
+import S26Party from './pages/samosprava2026/Party';
+import S26Campaigns from './pages/samosprava2026/Campaigns';
 
 // Euro 2024 Pages
 import Euro24Home from './pages/euro2024/Home';
@@ -241,14 +245,15 @@ function App() {
                             setSubsiteOverride('samosprava2026');
                             const s26Routes = [
                                 [routes.home(lang), S26Home],
-                                [routes.charts(lang), SamospravaCharts],
-                                [
-                                    routes.campaigns(lang),
-                                    SamospravaAllCampaigns,
-                                ],
-                                [routes.donors(lang), SamospravaAllDonors],
+                                [routes.candidates('', lang), S26Candidates],
+                                [routes.parties('', lang), S26Parties],
+                                [routes.party(true, '', lang), S26Party],
                                 [routes.article(true, lang), SamospravaArticle],
                                 [routes.news(lang), S26News],
+                                [
+                                    routes.campaigns(lang),
+                                    S26Campaigns,
+                                ],
                                 [
                                     routes.candidateMunicipal(true, '', lang),
                                     SamospravaCandidate,

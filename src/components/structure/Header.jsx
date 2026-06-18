@@ -42,8 +42,11 @@ function Header() {
             return (
                 <>
                     <SiteSelector site={elections.s26} />
-                    <Nav.Link as={NavLink} to={routes.charts()}>
-                        {t(labels.charts.navTitle)}
+                    <Nav.Link as={NavLink} to={routes.candidates()}>
+                        {t(labels.candidates.navTitle)}
+                    </Nav.Link>
+                    <Nav.Link as={NavLink} to={routes.parties()}>
+                        {t(labels.parties.navTitle)}
                     </Nav.Link>
                     <Nav.Link as={NavLink} to={routes.news()}>
                         {t(labels.news.navTitle)}

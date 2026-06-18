@@ -101,7 +101,7 @@ function Regions() {
                             to={routes.region(region)}
                             variant="secondary"
                         >
-                            Zobraziť ďalších kandidátov v kraji
+                            {t(labels.charts.showMoreCandidatesRegion)}
                         </Button>
                     </div>
                 </div>

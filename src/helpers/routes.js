@@ -320,7 +320,7 @@ export const routes = {
         if (subsite === 'samosprava2026') {
             return (
                 languageRoot(lang) +
-                urlSegment(segments.CHARTS, lang) +
+                urlSegment(segments.CANDIDATES, lang) +
                 separators.url +
                 urlSegment(segments.CAMPAIGNS, lang)
             );
@@ -332,7 +332,7 @@ export const routes = {
         if (subsite === 'samosprava2026') {
             return (
                 languageRoot(lang) +
-                urlSegment(segments.CHARTS, lang) +
+                urlSegment(segments.CANDIDATES, lang) +
                 separators.url +
                 urlSegment(segments.DONATIONS, lang)
             );

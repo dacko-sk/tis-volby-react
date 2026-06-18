@@ -4,6 +4,7 @@ import { usePapaParse } from 'react-papaparse';
 
 import { labels, t } from '../../helpers/dictionary';
 import { compareStr, contains, swapName } from '../../helpers/helpers';
+import { getActiveSubsite } from '../../helpers/languages';
 
 import finalReportsCsv from '../../../public/samosprava2022/csv/final_reports.csv';
 
@@ -15,6 +16,10 @@ import {
 function FinalReport({ candidate, tableRow = false }) {
     const [reports, setReports] = useState(null);
     const { readRemoteFile } = usePapaParse();
+
+    if (getActiveSubsite() === 'samosprava2026') {
+        return null;
+    }
 
     // load data on first load
     useEffect(() => {

@@ -555,7 +555,7 @@ export const labels = {
         account: ['Transparentný účet', 'Transparent account'],
         date: ['Dátum konania volieb', 'Elections date'],
         over: ['Voľby sa skončili', 'Elections ended'],
-        timeTillstart: ['Zostávajúci čas do volieb', 'Time to elections start'],
+        timeTillstart: ['Zostávajúci čas do volieb', 'Countdown to elections start'],
         timeTillend: [
             'Zostávajúci čas do konca volieb',
             'Time to elections end',

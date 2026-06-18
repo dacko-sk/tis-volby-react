@@ -154,6 +154,24 @@ const subsiteOverrides = {
             ],
             totalDisclaimer: ['', ''],
         },
+        charts: {
+            regionsTitle: [
+                'Výdavky a príjmy podľa krajov',
+                'Income and spending by region',
+            ],
+            allCampaignsTitle: [
+                'Výdavky a príjmy všetkých kandidátov',
+                'Income and spending of all candidates',
+            ],
+            allDonorsTitle: [
+                'Počet unikátnych darcov na kandidáta',
+                'Number of unique donors per candidate',
+            ],
+        },
+        news: {
+            latest: ['Najnovšie aktuality', 'Latest News (Slovak only)'],
+            title: ['Aktuality', 'News\n(Slovak only)'],
+        },
     },
 };
 

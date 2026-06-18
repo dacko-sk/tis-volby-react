@@ -127,6 +127,26 @@ export const labels = {
             'Top 10 kampaní kandidátov na primátorov a županov podľa výdavkov a príjmov',
             'Top 10 campaigns of mayoral and regional candidates by spending and income',
         ],
+        allCampaignsTitle: [
+            'Výdavky a príjmy všetkých kandidátov',
+            'Income and spending of all candidates',
+        ],
+        allDonorsTitle: [
+            'Počet unikátnych darcov na kandidáta',
+            'Number of unique donors per candidate',
+        ],
+        campaignsPageTitle: [
+            'Zoznam všetkých kandidátov',
+            'List of all candidates',
+        ],
+        showAllCandidates: [
+            'Zobraziť všetkých kandidátov',
+            'Show all candidates',
+        ],
+        showMoreCandidatesRegion: [
+            'Zobraziť ďalších kandidátov v kraji',
+            'Show more candidates in the region',
+        ],
     },
     municipality: ['Samospráva', 'Municipality'],
     news: {

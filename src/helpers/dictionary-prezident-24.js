@@ -551,7 +551,7 @@ export const labels = {
         over: ['Voľby sa skončili', 'Elections ended'],
         timeTillstart: [
             'Zostávajúci čas do 2. kola volieb',
-            'Time to elections 2nd round start',
+            'Countdown to elections 2nd round start',
         ],
         timeTillend: [
             'Zostávajúci čas do konca volieb',
