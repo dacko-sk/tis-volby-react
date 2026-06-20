@@ -13,7 +13,7 @@ import { routes, separators } from '../../helpers/routes';
 
 import useData, {
     municipalTypes,
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
@@ -51,11 +51,11 @@ function Municipality() {
     if (town && csvData?.data) {
         csvData.data.forEach((row) => {
             if (
-                (row[tempExtraAccountKeys.municipality] === town ||
+                (row[s22AggregatedKeys.municipality] === town ||
                     row.municipalityShortName === town) &&
-                (!region || region === row[tempExtraAccountKeys.region])
+                (!region || region === row[s22AggregatedKeys.region])
             ) {
-                town = row[tempExtraAccountKeys.municipality];
+                town = row[s22AggregatedKeys.municipality];
                 type = row.isRegional
                     ? municipalTypes.regional
                     : municipalTypes.local;

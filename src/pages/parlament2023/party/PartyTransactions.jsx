@@ -5,7 +5,7 @@ import { setTitle } from '../../../helpers/browser';
 import { labels, t } from '../../../helpers/dictionary';
 import { currencyFormat, shortenUrl } from '../../../helpers/helpers';
 
-import { csvAggregatedKeys } from '../../../hooks/AccountsData';
+import { legacyAggregatedKeys } from '../../../hooks/AccountsData';
 
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
 
@@ -26,18 +26,18 @@ function PartyTransactions() {
                         <td>{t(labels.elections.account)}</td>
                         <td>
                             <a
-                                href={party[csvAggregatedKeys.account]}
+                                href={party[legacyAggregatedKeys.account]}
                                 target="_blank"
                                 rel="noreferrer"
                             >
                                 <span className="me-2">
                                     <span className="d-md-none">
                                         {shortenUrl(
-                                            party[csvAggregatedKeys.account]
+                                            party[legacyAggregatedKeys.account]
                                         )}
                                     </span>
                                     <span className="d-none d-md-inline">
-                                        {party[csvAggregatedKeys.account]}
+                                        {party[legacyAggregatedKeys.account]}
                                     </span>
                                 </span>
                                 <img className="inline-icon" src={linkIcon} />
@@ -47,13 +47,17 @@ function PartyTransactions() {
                     <tr>
                         <td>{t(labels.charts.incoming)}</td>
                         <td>
-                            {currencyFormat(party[csvAggregatedKeys.incoming])}
+                            {currencyFormat(
+                                party[legacyAggregatedKeys.incoming]
+                            )}
                         </td>
                     </tr>
                     <tr>
                         <td>{t(labels.charts.outgoing)}</td>
                         <td>
-                            {currencyFormat(party[csvAggregatedKeys.outgoing])}
+                            {currencyFormat(
+                                party[legacyAggregatedKeys.outgoing]
+                            )}
                         </td>
                     </tr>
                     <tr>

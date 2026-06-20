@@ -10,7 +10,7 @@ import { routes, segments } from '../../helpers/routes';
 import { wpCat } from '../../helpers/wp';
 
 import useAdsData, { csvConfig, csvFiles } from '../../hooks/AdsData';
-import useData, { csvAggregatedKeys } from '../../hooks/AccountsData';
+import useData, { legacyAggregatedKeys } from '../../hooks/AccountsData';
 
 import AlertWithIcon from '../../components/general/AlertWithIcon';
 import Title from '../../components/structure/Title';
@@ -42,15 +42,15 @@ function Search({ googleColumns = csvConfig[csvFiles.GOOGLE].columns }) {
         csvData.data.forEach((row) => {
             // party name matches - list party
             if (
-                contains(row[csvAggregatedKeys.name], query) ||
+                contains(row[legacyAggregatedKeys.name], query) ||
                 contains(row.fbName, query) ||
                 contains(row.fullName, query) ||
                 contains(row.slug, query)
             ) {
-                const link = routes.party(row[csvAggregatedKeys.name]);
+                const link = routes.party(row[legacyAggregatedKeys.name]);
                 parties.push(
                     <Col
-                        key={row[csvAggregatedKeys.name]}
+                        key={row[legacyAggregatedKeys.name]}
                         className="d-flex"
                         sm
                     >
@@ -58,7 +58,7 @@ function Search({ googleColumns = csvConfig[csvFiles.GOOGLE].columns }) {
                             to={link}
                             className="d-flex flex-column justify-content-between w-100 cat-local"
                         >
-                            <h3>{row[csvAggregatedKeys.name]}</h3>
+                            <h3>{row[legacyAggregatedKeys.name]}</h3>
                             <div className="town mt-3">{row.fullName}</div>
                         </Link>
                     </Col>
@@ -136,7 +136,7 @@ function Search({ googleColumns = csvConfig[csvFiles.GOOGLE].columns }) {
                     <Col key={row.fbName} className="d-flex" sm>
                         <a
                             className="d-flex flex-column justify-content-between w-100 cat-local"
-                            href={row[csvAggregatedKeys.account]}
+                            href={row[legacyAggregatedKeys.account]}
                             target="_blank"
                             rel="noreferrer"
                             aria-label="download"
@@ -163,7 +163,7 @@ function Search({ googleColumns = csvConfig[csvFiles.GOOGLE].columns }) {
                     const party = findPartyByFbName(accountParty);
                     if (party) {
                         const link = routes.party(
-                            party[csvAggregatedKeys.name],
+                            party[legacyAggregatedKeys.name],
                             segments.ONLINE
                         );
                         online.push(
@@ -199,7 +199,7 @@ function Search({ googleColumns = csvConfig[csvFiles.GOOGLE].columns }) {
                     const party = findPartyByFbName(accountParty);
                     if (party) {
                         const link = routes.party(
-                            party[csvAggregatedKeys.name],
+                            party[legacyAggregatedKeys.name],
                             segments.ONLINE
                         );
                         online.push(

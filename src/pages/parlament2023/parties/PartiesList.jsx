@@ -5,7 +5,7 @@ import { labels, t } from '../../../helpers/dictionary';
 import { sortByTextProp } from '../../../helpers/helpers';
 import { routes } from '../../../helpers/routes';
 
-import useData, { csvAggregatedKeys } from '../../../hooks/AccountsData';
+import useData, { legacyAggregatedKeys } from '../../../hooks/AccountsData';
 import { csvConfig } from '../../../hooks/AdsData';
 import { partyData } from '../../../helpers/parties';
 
@@ -18,18 +18,20 @@ function PartiesList() {
 
     if (csvData.data ?? false) {
         csvData.data.sort(sortByTextProp('fullName')).forEach((row) => {
-            const pData = partyData(row[csvAggregatedKeys.name]);
+            const pData = partyData(row[legacyAggregatedKeys.name]);
             links.push(
-                <div key={row[csvAggregatedKeys.name]}>
+                <div key={row[legacyAggregatedKeys.name]}>
                     <Link
                         className="party-logo-link hover-bg d-flex align-items-center"
-                        to={routes.party(row[csvAggregatedKeys.name])}
+                        to={routes.party(row[legacyAggregatedKeys.name])}
                     >
                         <figure className="party-logo-inline">
                             {pData.image}
                         </figure>
 
-                        <h3 className="my-2">{pData.fullName ?? row.fullName}</h3>
+                        <h3 className="my-2">
+                            {pData.fullName ?? row.fullName}
+                        </h3>
                     </Link>
                 </div>
             );

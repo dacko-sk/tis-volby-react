@@ -15,7 +15,7 @@ import { routes, segments } from '../../helpers/routes';
 
 import useData, {
     municipalTypes,
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
 
 import { newsCategories } from './News';
@@ -36,7 +36,7 @@ function Search() {
     if (csvData?.data) {
         csvData.data.sort(sortByNumericProp('sum_outgoing')).forEach((row) => {
             if (!row.isParty) {
-                const city = row[tempExtraAccountKeys.municipality] ?? '';
+                const city = row[s22AggregatedKeys.municipality] ?? '';
                 // if candidate's municipality name or regional city name matches search query
                 const munMatch =
                     city &&
@@ -45,12 +45,12 @@ function Search() {
 
                 // municipality matches - list municipality
                 if (munMatch) {
-                    const key = `${row[tempExtraAccountKeys.region] ?? '_'}-${
+                    const key = `${row[s22AggregatedKeys.region] ?? '_'}-${
                         row.municipalityShortName
                     }`;
                     const link = routes.municipality(
                         row.municipalityShortName,
-                        row[tempExtraAccountKeys.region] ?? null
+                        row[s22AggregatedKeys.region] ?? null
                     );
                     mun[key] = (
                         <Col key={key} className="d-flex" sm>
@@ -60,9 +60,7 @@ function Search() {
                                     row.isRegional ? 'regional' : 'local'
                                 }`}
                             >
-                                <h3>
-                                    {row[tempExtraAccountKeys.municipality]}
-                                </h3>
+                                <h3>{row[s22AggregatedKeys.municipality]}</h3>
                                 <div className="type">
                                     {t(
                                         labels.elections.municipalTypes[
@@ -78,19 +76,16 @@ function Search() {
                 }
 
                 // candidate name or municipalities matches - list candidate
-                if (
-                    contains(row[tempExtraAccountKeys.name], query) ||
-                    munMatch
-                ) {
+                if (contains(row[s22AggregatedKeys.name], query) || munMatch) {
                     const link = routes.candidateMunicipal(
-                        row[tempExtraAccountKeys.name],
+                        row[s22AggregatedKeys.name],
                         row.municipalityShortName
                     );
                     candidates.push(
                         <Col
                             key={
-                                row[tempExtraAccountKeys.name] +
-                                row[tempExtraAccountKeys.municipality]
+                                row[s22AggregatedKeys.name] +
+                                row[s22AggregatedKeys.municipality]
                             }
                             className="d-flex"
                             sm
@@ -101,8 +96,8 @@ function Search() {
                                     row.isRegional ? 'regional' : 'local'
                                 }`}
                             >
-                                <h3>{row[tempExtraAccountKeys.name]}</h3>
-                                {row[tempExtraAccountKeys.municipality] && (
+                                <h3>{row[s22AggregatedKeys.name]}</h3>
+                                {row[s22AggregatedKeys.municipality] && (
                                     <div className="town my-3">
                                         {row.municipalityShortName}
                                     </div>

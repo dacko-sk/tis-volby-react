@@ -7,7 +7,8 @@ import { colors } from './constants';
 import { isNumeric, shortenValue } from './helpers';
 import { routes, separators } from './routes';
 
-import { municipalTypes, tempExtraAccountKeys } from '../hooks/AccountsData';
+import { municipalTypes, s22AggregatedKeys } from '../hooks/AccountsData';
+import { isRegionalFunction } from './cms';
 
 const tooltipSeparator = ' : ';
 
@@ -398,9 +399,9 @@ export function PieLegendContent(props) {
     return <DefaultLegendContent {...props} payload={newPayload} />;
 }
 
-export const getMunicipalityTickText = (row, showType) => {
+export const getMunicipalityTickText = (row, showType = false) => {
     const n =
-        row[tempExtraAccountKeys.name] +
+        row[s22AggregatedKeys.name] +
         (row.isElected ? `${separators.parts}*` : '');
     const type =
         showType === true
@@ -416,9 +417,32 @@ export const getMunicipalityTickText = (row, showType) => {
     return (
         n +
         separators.newline +
-        row[tempExtraAccountKeys.region] +
+        row[s22AggregatedKeys.region] +
         separators.parts +
         row.municipalityShortName +
+        type
+    );
+};
+
+export const getMunicipalityCmsTickText = (candidate, showType = false) => {
+    const n = candidate?.person?.name;
+    const type =
+        showType === true
+            ? separators.newline +
+              t(
+                  labels.elections.municipalTypes[
+                      isRegionalFunction(candidate?.functionType)
+                          ? municipalTypes.regional
+                          : municipalTypes.local
+                  ]
+              )
+            : '';
+    return (
+        n +
+        separators.newline +
+        candidate?.region +
+        separators.parts +
+        candidate?.municipality +
         type
     );
 };

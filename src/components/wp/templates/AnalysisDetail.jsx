@@ -17,7 +17,7 @@ import {
 import { getActiveSubsite } from '../../../helpers/languages';
 import { routes } from '../../../helpers/routes';
 import {
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
     useAccountsData,
 } from '../../../hooks/AccountsData';
 
@@ -185,7 +185,7 @@ function AnalysisDetail({ article }) {
         if (csvRow) {
             municipalityPage = routes.municipality(
                 csvRow.municipalityShortName,
-                csvRow[tempExtraAccountKeys.region] ?? null
+                csvRow[s22AggregatedKeys.region] ?? null
             );
         }
     }

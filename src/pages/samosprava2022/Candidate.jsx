@@ -13,7 +13,7 @@ import { routes } from '../../helpers/routes';
 
 import useData, {
     municipalTypes,
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
 
 import AccountTransactions from '../../components/accounts/AccountTransactions';
@@ -32,7 +32,7 @@ function Candidate() {
     if (csvData?.data) {
         csvData.data.some((row) => {
             const key = routes.candidateMunicipal(
-                row[tempExtraAccountKeys.name],
+                row[s22AggregatedKeys.name],
                 row.municipalityShortName
             );
             if (pathname === key) {
@@ -55,8 +55,8 @@ function Candidate() {
     }
 
     const partyAccounts = [];
-    if (candidate[tempExtraAccountKeys.partyAccount] ?? false) {
-        candidate[tempExtraAccountKeys.partyAccount]
+    if (candidate[s22AggregatedKeys.partyAccount] ?? false) {
+        candidate[s22AggregatedKeys.partyAccount]
             .split(';')
             .forEach((account) => {
                 partyAccounts.push(
@@ -73,14 +73,14 @@ function Candidate() {
             });
     }
 
-    setTitle(candidate[tempExtraAccountKeys.name]);
+    setTitle(candidate[s22AggregatedKeys.name]);
 
     return (
         <section className="candidate-page">
             <Title
-                secondary={candidate[tempExtraAccountKeys.municipality] || null}
+                secondary={candidate[s22AggregatedKeys.municipality] || null}
             >
-                {candidate[tempExtraAccountKeys.name]}
+                {candidate[s22AggregatedKeys.name]}
                 <br />
             </Title>
             <Table striped bordered responsive hover>
@@ -97,39 +97,34 @@ function Candidate() {
                             )}
                         </td>
                     </tr>
-                    {candidate[tempExtraAccountKeys.region] && (
+                    {candidate[s22AggregatedKeys.region] && (
                         <tr>
                             <td>{t(labels.candidate.region)}</td>
                             <td>
                                 <Link
                                     to={routes.region(
-                                        candidate[tempExtraAccountKeys.region]
+                                        candidate[s22AggregatedKeys.region]
                                     )}
                                 >
                                     {substitute(
-                                        candidate[tempExtraAccountKeys.region]
+                                        candidate[s22AggregatedKeys.region]
                                     )}
                                 </Link>
                             </td>
                         </tr>
                     )}
-                    {candidate[tempExtraAccountKeys.municipality] && (
+                    {candidate[s22AggregatedKeys.municipality] && (
                         <tr>
                             <td>{t(labels.municipality)}</td>
                             <td>
                                 <Link
                                     to={routes.municipality(
                                         candidate.municipalityShortName,
-                                        candidate[
-                                            tempExtraAccountKeys.region
-                                        ] ?? null
+                                        candidate[s22AggregatedKeys.region] ??
+                                            null
                                     )}
                                 >
-                                    {
-                                        candidate[
-                                            tempExtraAccountKeys.municipality
-                                        ]
-                                    }
+                                    {candidate[s22AggregatedKeys.municipality]}
                                 </Link>
                             </td>
                         </tr>
@@ -176,12 +171,10 @@ function Candidate() {
                             <td>{partyAccounts}</td>
                         </tr>
                     )}
-                    {candidate[tempExtraAccountKeys.partySupport] && (
+                    {candidate[s22AggregatedKeys.partySupport] && (
                         <tr>
                             <td>{t(labels.party.title)}</td>
-                            <td>
-                                {candidate[tempExtraAccountKeys.partySupport]}
-                            </td>
+                            <td>{candidate[s22AggregatedKeys.partySupport]}</td>
                         </tr>
                     )}
                     <FinalReport candidate={candidate} tableRow />

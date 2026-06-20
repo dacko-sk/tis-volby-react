@@ -8,10 +8,7 @@ import { getActiveSubsite } from '../../helpers/languages';
 
 import finalReportsCsv from '../../../public/samosprava2022/csv/final_reports.csv';
 
-import {
-    finalReportsKeys,
-    tempExtraAccountKeys,
-} from '../../hooks/AccountsData';
+import { finalReportsKeys, s22AggregatedKeys } from '../../hooks/AccountsData';
 
 function FinalReport({ candidate, tableRow = false }) {
     const [reports, setReports] = useState(null);
@@ -43,20 +40,20 @@ function FinalReport({ candidate, tableRow = false }) {
     reports.data.some((row) => {
         if (
             compareStr(
-                candidate[tempExtraAccountKeys.region],
+                candidate[s22AggregatedKeys.region],
                 row[finalReportsKeys.region]
             ) &&
             (contains(
                 row[finalReportsKeys.title],
-                candidate[tempExtraAccountKeys.name]
+                candidate[s22AggregatedKeys.name]
             ) ||
                 compareStr(
                     row[finalReportsKeys.name],
-                    candidate[tempExtraAccountKeys.name]
+                    candidate[s22AggregatedKeys.name]
                 ) ||
                 compareStr(
                     swapName(row[finalReportsKeys.name]),
-                    candidate[tempExtraAccountKeys.name]
+                    candidate[s22AggregatedKeys.name]
                 ))
         ) {
             report = row;

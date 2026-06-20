@@ -5,7 +5,7 @@ import { setTitle } from '../../../helpers/browser';
 import { labels, t } from '../../../helpers/dictionary';
 import { wpCat } from '../../../helpers/wp';
 
-import { csvAggregatedKeys } from '../../../hooks/AccountsData';
+import { legacyAggregatedKeys } from '../../../hooks/AccountsData';
 
 import AlertWithIcon from '../../../components/general/AlertWithIcon';
 import Loading from '../../../components/general/Loading';
@@ -19,7 +19,7 @@ function PartyAssets() {
     // load article data from API (if needed)
     // isLoading flag will be true if query is enabled and there is no data yet
     const { isLoading, error, data } = useQuery({
-        queryKey: [`party_asets_${party[csvAggregatedKeys.name]}`],
+        queryKey: [`party_asets_${party[legacyAggregatedKeys.name]}`],
         queryFn: () =>
             fetch(
                 `https://cms.transparency.sk/wp-json/wp/v2/posts?categories=${wpCat.assets}&tags=${party.tag}&tax_relation=AND`

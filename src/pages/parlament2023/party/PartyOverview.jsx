@@ -10,7 +10,7 @@ import { routes, segments } from '../../../helpers/routes';
 import { wpCat } from '../../../helpers/wp';
 
 import useAdsData, { csvConfig, csvFiles } from '../../../hooks/AdsData';
-import { csvAggregatedKeys } from '../../../hooks/AccountsData';
+import { legacyAggregatedKeys } from '../../../hooks/AccountsData';
 
 import DownloadLink from '../../../components/general/DownloadLink';
 import LastUpdateTag from '../../../components/general/LastUpdateTag';
@@ -88,7 +88,9 @@ function PartyTransactions({
                     <div className="total-spending">
                         <h2>{t(labels.account.partySpending)}</h2>
                         <p className="hero-number">
-                            {currencyFormat(party[csvAggregatedKeys.outgoing])}
+                            {currencyFormat(
+                                party[legacyAggregatedKeys.outgoing]
+                            )}
                             <LastUpdateTag timestamp={party.timestamp} />
                         </p>
                     </div>

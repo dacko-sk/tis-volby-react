@@ -12,14 +12,26 @@ import HeroNumber from '../general/HeroNumber';
 
 function TotalSpending() {
     const subsite = getActiveSubsite();
-    const finalReports = subsite === 'euro2024' || subsite === 'prezident2024' || subsite === 'parlament2023';
+    const finalReports =
+        subsite === 'euro2024' ||
+        subsite === 'prezident2024' ||
+        subsite === 'parlament2023';
 
     if (finalReports) {
-        const { sheetsData, getAllPartiesNames, getPartyAdsData, allCandidatesNames, candidateAdsData } =
-            useAdsData();
+        const {
+            sheetsData,
+            getAllPartiesNames,
+            getPartyAdsData,
+            allCandidatesNames,
+            candidateAdsData,
+        } = useAdsData();
 
-        const getNames = subsite === 'prezident2024' ? allCandidatesNames : getAllPartiesNames;
-        const getAdsData = subsite === 'prezident2024' ? candidateAdsData : getPartyAdsData;
+        const getNames =
+            subsite === 'prezident2024'
+                ? allCandidatesNames
+                : getAllPartiesNames;
+        const getAdsData =
+            subsite === 'prezident2024' ? candidateAdsData : getPartyAdsData;
 
         const total = (getNames() ?? [])
             .map((name) => getAdsData(name))

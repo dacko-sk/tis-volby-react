@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
-import { tempExtraAccountKeys } from '../../hooks/AccountsData';
+import { s22AggregatedKeys } from '../../hooks/AccountsData';
 
 import './PartyCandidatesTable.scss';
 
@@ -18,8 +18,8 @@ function PartyCandidatesTable({ candidates }) {
         rows.push(
             <tr
                 key={
-                    candidate[tempExtraAccountKeys.name] +
-                    candidate[tempExtraAccountKeys.municipality]
+                    candidate[s22AggregatedKeys.name] +
+                    candidate[s22AggregatedKeys.municipality]
                 }
                 className={candidate.isElected ? 'row-elected' : ''}
             >
@@ -27,27 +27,27 @@ function PartyCandidatesTable({ candidates }) {
                     <Link
                         className="fw-bold"
                         to={routes.candidateMunicipal(
-                            candidate[tempExtraAccountKeys.name],
+                            candidate[s22AggregatedKeys.name],
                             candidate.municipalityShortName
                         )}
                     >
-                        {candidate[tempExtraAccountKeys.name]}
+                        {candidate[s22AggregatedKeys.name]}
                     </Link>
                 </td>
                 <td>
-                    {candidate[tempExtraAccountKeys.municipality] && (
+                    {candidate[s22AggregatedKeys.municipality] && (
                         <Link
                             to={routes.municipality(
                                 candidate.municipalityShortName,
-                                candidate[tempExtraAccountKeys.region] ?? null
+                                candidate[s22AggregatedKeys.region] ?? null
                             )}
                         >
-                            {candidate[tempExtraAccountKeys.municipality]}
+                            {candidate[s22AggregatedKeys.municipality]}
                         </Link>
                     )}
                 </td>
-                {candidate[tempExtraAccountKeys.partySupport] && (
-                    <td>{candidate[tempExtraAccountKeys.partySupport]}</td>
+                {candidate[s22AggregatedKeys.partySupport] && (
+                    <td>{candidate[s22AggregatedKeys.partySupport]}</td>
                 )}
             </tr>
         );

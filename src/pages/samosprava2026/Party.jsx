@@ -3,14 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../helpers/dictionary';
-import {
-    currencyFormat,
-    setTitle,
-    shortenUrl,
-} from '../../helpers/helpers';
+import { currencyFormat, setTitle, shortenUrl } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
-import useData, { tempExtraAccountKeys } from '../../hooks/AccountsData';
+import useData, { s22AggregatedKeys } from '../../hooks/AccountsData';
 
 import AccountTransactions from '../../components/accounts/AccountTransactions';
 import Loading from '../../components/general/Loading';
@@ -26,7 +22,7 @@ function Party() {
     let candidate = null;
     if (csvData?.data) {
         csvData.data.some((row) => {
-            const key = routes.party(row[tempExtraAccountKeys.name]);
+            const key = routes.party(row[s22AggregatedKeys.name]);
             if (pathname === key) {
                 candidate = row;
                 return true;
@@ -46,8 +42,8 @@ function Party() {
     }
 
     const partyAccounts = [];
-    if (candidate[tempExtraAccountKeys.partyAccount] ?? false) {
-        candidate[tempExtraAccountKeys.partyAccount]
+    if (candidate[s22AggregatedKeys.partyAccount] ?? false) {
+        candidate[s22AggregatedKeys.partyAccount]
             .split(';')
             .forEach((account) => {
                 partyAccounts.push(
@@ -64,13 +60,11 @@ function Party() {
             });
     }
 
-    setTitle(candidate[tempExtraAccountKeys.name]);
+    setTitle(candidate[s22AggregatedKeys.name]);
 
     return (
         <section className="candidate-page">
-            <Title>
-                {candidate[tempExtraAccountKeys.name]}
-            </Title>
+            <Title>{candidate[s22AggregatedKeys.name]}</Title>
             <Table striped bordered responsive hover>
                 <tbody>
                     {candidate.isTransparent && (

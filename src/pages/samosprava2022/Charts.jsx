@@ -2,7 +2,7 @@ import { getMunicipalityTickText } from '../../helpers/charts';
 import { setTitle, sortByDonors, sortBySpending } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
-import useData, { tempExtraAccountKeys } from '../../hooks/AccountsData';
+import useData, { s22AggregatedKeys } from '../../hooks/AccountsData';
 
 import Regions from '../../components/charts/Regions';
 import TisBarChart from '../../components/charts/TisBarChart';
@@ -22,14 +22,13 @@ function Charts() {
     if (csvData?.data) {
         csvData.data.forEach((row) => {
             if (
-                row?.[tempExtraAccountKeys.region] !== undefined &&
+                row?.[s22AggregatedKeys.region] !== undefined &&
                 row.isTransparent
             ) {
-                const region =
-                    row[tempExtraAccountKeys.region] || unknownRegion;
+                const region = row[s22AggregatedKeys.region] || unknownRegion;
                 if (row.isParty) {
                     parties.push({
-                        name: row[tempExtraAccountKeys.name],
+                        name: row[s22AggregatedKeys.name],
                         [chartKeys.INCOMING]: row.sum_incoming,
                         [chartKeys.OUTGOING]: row.sum_outgoing,
                     });
@@ -41,7 +40,7 @@ function Charts() {
                         [chartKeys.UNIQUE]: row.num_unique_donors,
                     });
 
-                    if (row[tempExtraAccountKeys.region]) {
+                    if (row[s22AggregatedKeys.region]) {
                         if (regions[region] !== undefined) {
                             regions[region][chartKeys.INCOMING] +=
                                 row.sum_incoming;

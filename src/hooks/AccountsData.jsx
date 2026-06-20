@@ -63,7 +63,19 @@ export const aggregatedKeys = {
     timestamp: 'timestamp',
 };
 
-export const csvAggregatedKeys = {
+export const s22AggregatedKeys = {
+    account: 'url',
+    name: 'name',
+    municipality: 'samosprava',
+    party: 'PS',
+    partyAccount: 'stranicky_ucet',
+    partySupport: 'strana',
+    region: 'label',
+    result: 'vysledok',
+    type: 'typ_volieb',
+};
+
+export const legacyAggregatedKeys = {
     account: 'url',
     balance: 'balance',
     incoming: 'incoming',
@@ -83,18 +95,6 @@ export const accountKeys = {
     tx_type: 'tx_type',
     vs: 'vs',
     ss: 'ss',
-};
-
-export const tempExtraAccountKeys = {
-    account: 'url',
-    name: 'name',
-    municipality: 'samosprava',
-    party: 'PS',
-    partyAccount: 'stranicky_ucet',
-    partySupport: 'strana',
-    region: 'label',
-    result: 'vysledok',
-    type: 'typ_volieb',
 };
 
 export const electedStatusKeys = {
@@ -186,241 +186,29 @@ export const processAccountsData = (data, subsite) => {
             lastUpdate = Math.max(lastUpdate, row.timestamp ?? 0);
 
             // trim certain columns
-            [tempExtraAccountKeys.account, tempExtraAccountKeys.name].forEach(
-                (column) => {
-                    pd.data[index][column] = (row[column] ?? '').trim();
-                }
-            );
+            [aggregatedKeys.account, aggregatedKeys.name].forEach((column) => {
+                pd.data[index][column] = (row[column] ?? '').trim();
+            });
 
             // fix errors in account numbers
             if (
                 contains(
-                    pd.data[index][tempExtraAccountKeys.account],
+                    pd.data[index][aggregatedKeys.account],
                     'transparentneucty.sk/?1/#/'
                 )
             ) {
-                pd.data[index][tempExtraAccountKeys.account] = pd.data[index][
-                    tempExtraAccountKeys.account
+                pd.data[index][aggregatedKeys.account] = pd.data[index][
+                    aggregatedKeys.account
                 ].replace('/?1/#/', '/#/');
             }
 
             // parse numbers
             pd.data[index].sum_incoming = row.sum_incoming ?? 0;
             pd.data[index].sum_outgoing = Math.abs(row.sum_outgoing ?? 0);
-            pd.data[index].incoming = row.sum_incoming ?? 0;
-            pd.data[index].outgoing = Math.abs(row.sum_outgoing ?? 0);
             pd.data[index].balance = row.balance ?? 0;
             pd.data[index].num_incoming = row.num_incoming ?? 0;
             pd.data[index].num_outgoing = row.num_outgoing ?? 0;
             pd.data[index].num_unique_donors = row.num_unique_donors ?? 0;
-
-            // properties expected by 2022/2026 components
-            const parties2026 = [
-                'Hlas - sociálna demokracia',
-                'Kresťanskodemokratické hnutie',
-                'Hnutie Slovensko',
-                'Progresívne Slovensko',
-                'Republika',
-                'Sloboda a Solidarita',
-                'Smer - SD',
-                'Demokrati',
-                'Maďarská aliancia',
-                'Team Bratislava',
-                'Tím Kraj Nitra',
-                'Pirátska strana Slovensko',
-                'Dunaj',
-            ];
-            pd.data[index].isParty = parties2026.includes(
-                pd.data[index][tempExtraAccountKeys.name]
-            );
-            const metadata2026 = {
-                'Dana Čahojová': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava',
-                },
-                'Matúš Vallo': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava',
-                },
-                'Martin Winkler': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava',
-                },
-                'Zuzana Šubová': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava',
-                },
-                'Juraj Droba': {
-                    label: 'BA',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Bratislavský kraj',
-                },
-                'Jaroslav Polaček': {
-                    label: 'KE',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Košice',
-                },
-                'Ladislav Lörinc': {
-                    label: 'KE',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Košice',
-                },
-                'Martin Mudrák': {
-                    label: 'KE',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Košice',
-                },
-                'Marián Porvažník': {
-                    label: 'KE',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Košický kraj',
-                },
-                'Igor Šimko': {
-                    label: 'KE',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Košický kraj',
-                },
-                'Lucia Gurbáľová': {
-                    label: 'KE',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Košický kraj',
-                },
-                'Peter Cibulka': {
-                    label: 'ZA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Žilina',
-                },
-                'Peter Fiabáne': {
-                    label: 'ZA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Žilina',
-                },
-                'Diana Javorčíková': {
-                    label: 'BB',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Banská Bystrica',
-                },
-                'Matúš Molitoris': {
-                    label: 'BB',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Banská Bystrica',
-                },
-                'Ondrej Lunter': {
-                    label: 'BB',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Banskobystrický kraj',
-                },
-                'Roman Malatinec': {
-                    label: 'BB',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Banskobystrický kraj',
-                },
-                'Rastislav Mochacký': {
-                    label: 'PO',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Prešov',
-                },
-                'František Oľha': {
-                    label: 'PO',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Prešov',
-                },
-                'Milan Majerský': {
-                    label: 'PO',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Prešovský kraj',
-                },
-                'Samuel Migaľ': {
-                    label: 'PO',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Prešovský kraj',
-                },
-                'Branislav Baroš': {
-                    label: 'TT',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Trnava',
-                },
-                'Eva Nemčovská': {
-                    label: 'TT',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Trnava',
-                },
-                'Marek Hattas': {
-                    label: 'NR',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Nitra',
-                },
-                'Igor Kršiak': {
-                    label: 'NR',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Nitra',
-                },
-                'Henrich Varga': {
-                    label: 'NR',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Nitriansky kraj',
-                },
-                'Ján Forgáč': {
-                    label: 'TN',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Trenčín',
-                },
-                'Natália Svítková': {
-                    label: 'TN',
-                    typ_volieb: 'krajské',
-                    samosprava: 'Trenčiansky kraj',
-                },
-                'Igor Petrovčík': {
-                    label: 'KE',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Košice - Staré Mesto',
-                },
-                'Igor Holéczy': {
-                    label: 'KE',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Košice - Staré Mesto',
-                },
-                'Rudolf Kusý': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava - Nové Mesto',
-                },
-                'Martin Chren': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava - Ružinov',
-                },
-                'Zuzana Aufrichtová': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava - Staré Mesto',
-                },
-                'Ľuboš Krajčír': {
-                    label: 'BA',
-                    typ_volieb: 'miestne',
-                    samosprava: 'Bratislava - Devínka Nová Ves',
-                },
-            };
-
-            const meta =
-                metadata2026[pd.data[index][tempExtraAccountKeys.name]] || {};
-
-            pd.data[index].isTransparent = !!row[tempExtraAccountKeys.account];
-            pd.data[index].isRegional = (meta.typ_volieb ?? '').includes(
-                finalReportsTypes[municipalTypes.regional]
-            );
-            pd.data[index].isElected =
-                !pd.data[index].isParty &&
-                row[tempExtraAccountKeys.result] === electedStatusKeys.success;
-            pd.data[index].samosprava = meta.samosprava ?? '';
-            pd.data[index].municipalityShortName = substitute22(
-                pd.data[index].samosprava
-            );
-            pd.data[index].label = meta.label || '';
         });
         return { ...pd, lastUpdate, loaded: true };
     }
@@ -432,10 +220,10 @@ export const processAccountsData = (data, subsite) => {
 
             // trim certain columns
             [
-                tempExtraAccountKeys.account,
-                tempExtraAccountKeys.name,
-                tempExtraAccountKeys.municipality,
-                tempExtraAccountKeys.type,
+                s22AggregatedKeys.account,
+                s22AggregatedKeys.name,
+                s22AggregatedKeys.municipality,
+                s22AggregatedKeys.type,
             ].forEach((column) => {
                 pd.data[index][column] = (row[column] ?? '').trim();
             });
@@ -443,31 +231,30 @@ export const processAccountsData = (data, subsite) => {
             // fix errors in account numbers
             if (
                 contains(
-                    pd.data[index][tempExtraAccountKeys.account],
+                    pd.data[index][s22AggregatedKeys.account],
                     'transparentneucty.sk/?1/#/'
                 )
             ) {
-                pd.data[index][tempExtraAccountKeys.account] = pd.data[index][
-                    tempExtraAccountKeys.account
+                pd.data[index][s22AggregatedKeys.account] = pd.data[index][
+                    s22AggregatedKeys.account
                 ].replace('/?1/#/', '/#/');
             }
 
             // helper properties
             pd.data[index].isParty =
-                row[tempExtraAccountKeys.region] === tempExtraAccountKeys.party;
-            pd.data[index].isTransparent = !!row[tempExtraAccountKeys.account];
+                row[s22AggregatedKeys.region] === s22AggregatedKeys.party;
+            pd.data[index].isTransparent = !!row[s22AggregatedKeys.account];
             pd.data[index].isRegional = (
-                row[tempExtraAccountKeys.type] ?? ''
+                row[s22AggregatedKeys.type] ?? ''
             ).includes(finalReportsTypes[municipalTypes.regional]);
             pd.data[index].isElected =
                 !pd.data[index].isParty &&
-                row[tempExtraAccountKeys.result] === electedStatusKeys.success;
+                row[s22AggregatedKeys.result] === electedStatusKeys.success;
 
             // additional names
             pd.data[index].municipalityShortName =
-                substitute22(
-                    pd.data[index][tempExtraAccountKeys.municipality]
-                ) || '…';
+                substitute22(pd.data[index][s22AggregatedKeys.municipality]) ||
+                '…';
 
             // parse numbers
             pd.data[index].sum_incoming = row.sum_incoming ?? 0;
@@ -478,7 +265,7 @@ export const processAccountsData = (data, subsite) => {
             pd.data[index].num_unique_donors = row.num_unique_donors ?? 0;
 
             // special exceptions for certain candidates
-            if (pd.data[index][tempExtraAccountKeys.name] === 'Rudolf Kusý') {
+            if (pd.data[index][s22AggregatedKeys.name] === 'Rudolf Kusý') {
                 const extra =
                     99731.89 -
                     17672.69 +
@@ -505,7 +292,7 @@ export const processAccountsData = (data, subsite) => {
             lastUpdate = Math.max(lastUpdate, row.timestamp ?? 0);
 
             // trim columns
-            [tempExtraAccountKeys.account, tempExtraAccountKeys.name].forEach(
+            [s22AggregatedKeys.account, s22AggregatedKeys.name].forEach(
                 (column) => {
                     pd.data[index][column] = (row[column] ?? '').trim();
                 }
@@ -514,12 +301,12 @@ export const processAccountsData = (data, subsite) => {
             // fix errors in account numbers
             if (
                 contains(
-                    pd.data[index][tempExtraAccountKeys.account],
+                    pd.data[index][s22AggregatedKeys.account],
                     'transparentneucty.sk/?1/#/'
                 )
             ) {
-                pd.data[index][tempExtraAccountKeys.account] = pd.data[index][
-                    tempExtraAccountKeys.account
+                pd.data[index][s22AggregatedKeys.account] = pd.data[index][
+                    s22AggregatedKeys.account
                 ].replace('/?1/#/', '/#/');
             }
 
@@ -536,14 +323,14 @@ export const processAccountsData = (data, subsite) => {
             // copy full name & slug from account key as default
             pd.data[index] = {
                 ...pd.data[index],
-                fbName: pd.data[index][tempExtraAccountKeys.name],
-                fullName: pd.data[index][tempExtraAccountKeys.name],
-                slug: pd.data[index][tempExtraAccountKeys.name],
+                fbName: pd.data[index][s22AggregatedKeys.name],
+                fullName: pd.data[index][s22AggregatedKeys.name],
+                slug: pd.data[index][s22AggregatedKeys.name],
                 share: 0,
             };
 
             // merge data with party config
-            const alias = partyAlias(pd.data[index][tempExtraAccountKeys.name]);
+            const alias = partyAlias(pd.data[index][s22AggregatedKeys.name]);
             if (alias && parties[alias]) {
                 pd.data[index] = {
                     ...pd.data[index],
@@ -560,7 +347,7 @@ export const processAccountsData = (data, subsite) => {
         lastUpdate = Math.max(lastUpdate, row.timestamp ?? 0);
 
         // trim certain columns
-        [tempExtraAccountKeys.account, tempExtraAccountKeys.name].forEach(
+        [s22AggregatedKeys.account, s22AggregatedKeys.name].forEach(
             (column) => {
                 pd.data[index][column] = (row[column] ?? '').trim();
             }
@@ -569,12 +356,12 @@ export const processAccountsData = (data, subsite) => {
         // fix errors in account numbers
         if (
             contains(
-                pd.data[index][tempExtraAccountKeys.account],
+                pd.data[index][s22AggregatedKeys.account],
                 'transparentneucty.sk/?1/#/'
             )
         ) {
-            pd.data[index][tempExtraAccountKeys.account] = pd.data[index][
-                tempExtraAccountKeys.account
+            pd.data[index][s22AggregatedKeys.account] = pd.data[index][
+                s22AggregatedKeys.account
             ].replace('/?1/#/', '/#/');
         }
 
@@ -610,9 +397,9 @@ export const findRow = (csvData, name, mun) => {
     if (csvData?.data) {
         csvData.data.some((row) => {
             if (
-                (compareStr(mun, row[tempExtraAccountKeys.municipality]) ||
+                (compareStr(mun, row[s22AggregatedKeys.municipality]) ||
                     compareStr(mun, row.municipalityShortName)) &&
-                compareStr(name, row[tempExtraAccountKeys.name])
+                compareStr(name, row[s22AggregatedKeys.name])
             ) {
                 matchedRow = row;
                 return true;

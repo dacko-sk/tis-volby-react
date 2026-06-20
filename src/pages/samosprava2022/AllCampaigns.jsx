@@ -8,7 +8,7 @@ import { setTitle, sortBySpending } from '../../helpers/helpers';
 
 import useData, {
     municipalTypes,
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
 
 import TisBarChart from '../../components/charts/TisBarChart';
@@ -31,10 +31,7 @@ function AllCampaigns() {
     };
     if (csvData?.data) {
         csvData.data.forEach((row) => {
-            if (
-                row?.[tempExtraAccountKeys.region] !== undefined &&
-                !row.isParty
-            ) {
+            if (row?.[s22AggregatedKeys.region] !== undefined && !row.isParty) {
                 if (row.isTransparent) {
                     const person = {
                         name: getMunicipalityTickText(row),

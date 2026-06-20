@@ -6,7 +6,7 @@ import { labels, t } from '../../../helpers/dictionary';
 import { sortByTextProp } from '../../../helpers/helpers';
 
 import useAdsData, { csvConfig } from '../../../hooks/AdsData';
-import useData, { csvAggregatedKeys } from '../../../hooks/AccountsData';
+import useData, { legacyAggregatedKeys } from '../../../hooks/AccountsData';
 import { partyData } from '../../../helpers/parties';
 
 import DownloadLink from '../../../components/general/DownloadLink';
@@ -27,13 +27,13 @@ function PartiesAssets() {
             <h2 className="mb-4">{t(labels.party.extendedAssets)}</h2>
             <Row>
                 {csvData.data
-                    .sort(sortByTextProp(csvAggregatedKeys.name))
+                    .sort(sortByTextProp(legacyAggregatedKeys.name))
                     .flatMap((row) => {
-                        const pData = partyData(row[csvAggregatedKeys.name]);
-                        return sheetsData.assets[row.fbName] ?? false
+                        const pData = partyData(row[legacyAggregatedKeys.name]);
+                        return (sheetsData.assets[row.fbName] ?? false)
                             ? [
                                   <Col
-                                      key={row[csvAggregatedKeys.name]}
+                                      key={row[legacyAggregatedKeys.name]}
                                       sm={6}
                                       lg={4}
                                   >

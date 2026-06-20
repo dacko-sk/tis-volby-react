@@ -2,11 +2,16 @@ import { useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 
-import { parties, partyAlias, partyImage, partySvg } from '../../helpers/parties';
+import {
+    parties,
+    partyAlias,
+    partyImage,
+    partySvg,
+} from '../../helpers/parties';
 import { labels, t } from '../../helpers/dictionary';
 import { decodeSlug, routes, segments } from '../../helpers/routes';
 
-import useData, { csvAggregatedKeys } from '../../hooks/AccountsData';
+import useData, { legacyAggregatedKeys } from '../../hooks/AccountsData';
 
 import Loading from '../../components/general/Loading';
 import Title from '../../components/structure/Title';
@@ -37,10 +42,12 @@ function Party() {
         // find aggregated data for the account
         csvData.data.some((row) => {
             if (
-                accountKey === row[csvAggregatedKeys.name] ||
-                accountKey === partyAlias(row[csvAggregatedKeys.name]) ||
-                (row.slug && accountKey.toLowerCase() === row.slug.toLowerCase()) ||
-                accountKey.toLowerCase() === row[csvAggregatedKeys.name].toLowerCase()
+                accountKey === row[legacyAggregatedKeys.name] ||
+                accountKey === partyAlias(row[legacyAggregatedKeys.name]) ||
+                (row.slug &&
+                    accountKey.toLowerCase() === row.slug.toLowerCase()) ||
+                accountKey.toLowerCase() ===
+                    row[legacyAggregatedKeys.name].toLowerCase()
             ) {
                 party = row;
                 return true;
@@ -68,9 +75,7 @@ function Party() {
                 {logoComponent && (
                     <div className="logo mb-2 mx-auto">
                         <div className="img-aspect">
-                            <figure>
-                                {logoComponent}
-                            </figure>
+                            <figure>{logoComponent}</figure>
                         </div>
                     </div>
                 )}
