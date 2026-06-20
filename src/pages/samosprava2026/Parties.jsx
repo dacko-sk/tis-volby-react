@@ -1,27 +1,36 @@
-import { getPartyChartLabel } from '../../helpers/charts';
-import { setTitle, sortBySpending } from '../../helpers/helpers';
-import useData, { tempExtraAccountKeys } from '../../hooks/AccountsData';
 import TisBarChart from '../../components/charts/TisBarChart';
-import { chartKeys, columnVariants } from '../../helpers/charts';
 import Title from '../../components/structure/Title';
+
+import {
+    chartKeys,
+    columnVariants,
+    getPartyChartLabel,
+} from '../../helpers/charts';
 import { labels, t } from '../../helpers/dictionary';
+import { setTitle, sortBySpending } from '../../helpers/helpers';
+
+import useData, { aggregatedKeys } from '../../hooks/AccountsData';
+import { findSubject, useElectionData } from '../../hooks/CmsQueries';
 
 function Parties() {
     const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
     const parties = [];
     if (csvData?.data) {
         csvData.data.forEach((row) => {
             if (
-                row?.[tempExtraAccountKeys.region] !== undefined &&
-                row.isTransparent &&
-                row.isParty
+                findSubject(
+                    cmsData,
+                    row[aggregatedKeys.name],
+                    row[aggregatedKeys.account]
+                )
             ) {
                 parties.push({
-                    name: getPartyChartLabel(row[tempExtraAccountKeys.name]),
-                    [chartKeys.INCOMING]: row.sum_incoming,
-                    [chartKeys.OUTGOING]: row.sum_outgoing,
+                    name: getPartyChartLabel(row[aggregatedKeys.name]),
+                    [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                    [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
                 });
             }
         });

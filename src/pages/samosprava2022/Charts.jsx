@@ -4,7 +4,7 @@ import { routes } from '../../helpers/routes';
 
 import useData, { s22AggregatedKeys } from '../../hooks/AccountsData';
 
-import Regions from '../../components/charts/Regions';
+import Regions from '../../components/municipal/RegionsLegacy';
 import TisBarChart from '../../components/charts/TisBarChart';
 import { chartKeys, columnVariants } from '../../helpers/charts';
 import Title from '../../components/structure/Title';

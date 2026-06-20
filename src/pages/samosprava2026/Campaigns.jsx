@@ -1,23 +1,28 @@
 import Accordion from 'react-bootstrap/Accordion';
-import { chartKeys, columnVariants, getMunicipalityTickText } from '../../helpers/charts';
+import {
+    chartKeys,
+    columnVariants,
+    getMunicipalityCmsTickText,
+} from '../../helpers/charts';
+import { isRegionalFunction } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle, sortByDonors, sortBySpending } from '../../helpers/helpers';
-import useData, { municipalTypes, tempExtraAccountKeys } from '../../hooks/AccountsData';
+import useData, {
+    municipalTypes,
+    aggregatedKeys,
+} from '../../hooks/AccountsData';
+import { findCandidate, useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../../components/charts/TisBarChart';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
 import Title from '../../components/structure/Title';
 
 function Campaigns() {
     const title = t(labels.charts.campaignsPageTitle);
     const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
     const candidates = {
-        [municipalTypes.regional]: [],
-        [municipalTypes.local]: [],
-    };
-    const partyCandidates = {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
@@ -25,42 +30,37 @@ function Campaigns() {
 
     if (csvData?.data) {
         csvData.data.forEach((row) => {
-            if (
-                row?.[tempExtraAccountKeys.region] !== undefined &&
-                !row.isParty
-            ) {
-                if (row.isTransparent) {
-                    const person = {
-                        name: getMunicipalityTickText(row, true),
-                        [chartKeys.INCOMING]: row.sum_incoming,
-                        [chartKeys.OUTGOING]: row.sum_outgoing,
-                        [chartKeys.UNIQUE]: row.num_unique_donors,
-                    };
-                    candidates[
-                        row.isRegional
-                            ? municipalTypes.regional
-                            : municipalTypes.local
-                    ].push(person);
+            const cmsCandidate = findCandidate(
+                cmsData,
+                row[aggregatedKeys.name],
+                row[aggregatedKeys.account]
+            );
+            if (cmsCandidate?.region) {
+                const person = {
+                    name: getMunicipalityCmsTickText(cmsCandidate),
+                    [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                    [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                    [chartKeys.UNIQUE]: row[aggregatedKeys.num_unique_donors],
+                };
+                candidates[
+                    isRegionalFunction(cmsCandidate?.functionType)
+                        ? municipalTypes.regional
+                        : municipalTypes.local
+                ].push(person);
 
-                    const regionName = row[tempExtraAccountKeys.region] || t(labels.charts.unknownRegion);
-                    if (row[tempExtraAccountKeys.region]) {
-                        if (regions[regionName] !== undefined) {
-                            regions[regionName][chartKeys.INCOMING] += row.sum_incoming;
-                            regions[regionName][chartKeys.OUTGOING] += row.sum_outgoing;
-                        } else {
-                            regions[regionName] = {
-                                name: regionName,
-                                [chartKeys.INCOMING]: row.sum_incoming,
-                                [chartKeys.OUTGOING]: row.sum_outgoing,
-                            };
-                        }
+                const regionName = cmsCandidate?.region;
+                if (regionName) {
+                    if (!(regions[regionName] ?? false)) {
+                        regions[regionName] = {
+                            name: regionName,
+                            [chartKeys.INCOMING]: 0,
+                            [chartKeys.OUTGOING]: 0,
+                        };
                     }
-                } else {
-                    partyCandidates[
-                        row.isRegional
-                            ? municipalTypes.regional
-                            : municipalTypes.local
-                    ].push(row);
+                    regions[regionName][chartKeys.INCOMING] +=
+                        row[aggregatedKeys.incoming];
+                    regions[regionName][chartKeys.OUTGOING] +=
+                        row[aggregatedKeys.outgoing];
                 }
             }
         });
@@ -71,10 +71,12 @@ function Campaigns() {
     return (
         <section>
             <Title>{title}</Title>
-            
+
             <Accordion defaultActiveKey="0" className="mb-4">
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>{t(labels.charts.regionsTitle)}</Accordion.Header>
+                    <Accordion.Header>
+                        {t(labels.charts.regionsTitle)}
+                    </Accordion.Header>
                     <Accordion.Body>
                         <TisBarChart
                             bars={columnVariants.inOut}
@@ -85,51 +87,51 @@ function Campaigns() {
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>{t(labels.charts.allCampaignsTitle)}</Accordion.Header>
+                    <Accordion.Header>
+                        {t(labels.charts.allCampaignsTitle)}
+                    </Accordion.Header>
                     <Accordion.Body>
                         <TisBarChart
                             bars={columnVariants.inOut}
                             currency
-                            data={candidates[municipalTypes.regional].sort(sortBySpending)}
+                            data={candidates[municipalTypes.regional].sort(
+                                sortBySpending
+                            )}
                             title={t(labels.elections.municipalTypes.regional)}
                             vertical
-                        />
-                        <PartyCandidatesTable
-                            candidates={partyCandidates[municipalTypes.regional]}
                         />
                         <TisBarChart
                             bars={columnVariants.inOut}
                             currency
-                            data={candidates[municipalTypes.local].sort(sortBySpending)}
+                            data={candidates[municipalTypes.local].sort(
+                                sortBySpending
+                            )}
                             title={t(labels.elections.municipalTypes.local)}
                             vertical
-                        />
-                        <PartyCandidatesTable
-                            candidates={partyCandidates[municipalTypes.local]}
                         />
                     </Accordion.Body>
                 </Accordion.Item>
 
                 <Accordion.Item eventKey="2">
-                    <Accordion.Header>{t(labels.charts.allDonorsTitle)}</Accordion.Header>
+                    <Accordion.Header>
+                        {t(labels.charts.allDonorsTitle)}
+                    </Accordion.Header>
                     <Accordion.Body>
                         <TisBarChart
                             bars={columnVariants.donors}
-                            data={candidates[municipalTypes.regional].sort(sortByDonors)}
+                            data={candidates[municipalTypes.regional].sort(
+                                sortByDonors
+                            )}
                             title={t(labels.elections.municipalTypes.regional)}
                             vertical
                         />
-                        <PartyCandidatesTable
-                            candidates={partyCandidates[municipalTypes.regional]}
-                        />
                         <TisBarChart
                             bars={columnVariants.donors}
-                            data={candidates[municipalTypes.local].sort(sortByDonors)}
+                            data={candidates[municipalTypes.local].sort(
+                                sortByDonors
+                            )}
                             title={t(labels.elections.municipalTypes.local)}
                             vertical
-                        />
-                        <PartyCandidatesTable
-                            candidates={partyCandidates[municipalTypes.local]}
                         />
                     </Accordion.Body>
                 </Accordion.Item>

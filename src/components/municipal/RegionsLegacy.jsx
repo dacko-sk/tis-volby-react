@@ -14,10 +14,10 @@ import { routes } from '../../helpers/routes';
 
 import useData, {
     municipalTypes,
-    tempExtraAccountKeys,
+    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
 
-import TisBarChart from './TisBarChart';
+import TisBarChart from '../charts/TisBarChart';
 import Loading from '../general/Loading';
 
 function Regions() {
@@ -31,12 +31,12 @@ function Regions() {
     if (csvData?.data) {
         csvData.data.forEach((row) => {
             if (
-                (row?.[tempExtraAccountKeys.region] ?? false) &&
-                row[tempExtraAccountKeys.region] &&
+                (row?.[s22AggregatedKeys.region] ?? false) &&
+                row[s22AggregatedKeys.region] &&
                 row.isTransparent &&
                 !row.isParty
             ) {
-                const region = row[tempExtraAccountKeys.region];
+                const region = row[s22AggregatedKeys.region];
                 if (charts[region] === undefined) {
                     candidates[region] = {
                         [municipalTypes.regional]: [],

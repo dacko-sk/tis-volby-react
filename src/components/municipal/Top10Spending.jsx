@@ -1,32 +1,44 @@
 import {
     chartKeys,
     columnVariants,
-    getMunicipalityTickText,
+    getMunicipalityCmsTickText,
 } from '../../helpers/charts';
+import { isRegionalFunction } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { sortBySpending } from '../../helpers/helpers';
 import { getActiveSubsite } from '../../helpers/languages';
 import { routes } from '../../helpers/routes';
 
-import useData from '../../hooks/AccountsData';
+import useData, { aggregatedKeys } from '../../hooks/AccountsData';
+import { findCandidate, useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../charts/TisBarChart';
 
 function Top10Spending() {
     const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
     const people = {};
     if (csvData?.data) {
         csvData.data.forEach((row) => {
-            if (row.url && !row.isParty) {
-                const unqKey = row.url || row.name;
+            const cmsCandidate = findCandidate(
+                cmsData,
+                row[aggregatedKeys.name],
+                row[aggregatedKeys.account]
+            );
+            if (cmsCandidate && row[aggregatedKeys.account]) {
+                const unqKey =
+                    row[aggregatedKeys.account] || row[aggregatedKeys.name];
                 // add each candidate only once and prioritize regional campaign over local
-                if (people[unqKey] === undefined || row.isRegional) {
+                const isRegional = isRegionalFunction(
+                    cmsCandidate?.functionType
+                );
+                if (people[unqKey] === undefined || isRegional) {
                     people[unqKey] = {
-                        name: getMunicipalityTickText(row, true) || row.name,
-                        [chartKeys.INCOMING]: row.sum_incoming,
-                        [chartKeys.OUTGOING]: row.sum_outgoing,
+                        name: getMunicipalityCmsTickText(cmsCandidate, true),
+                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
                     };
                 }
             }

@@ -7,7 +7,7 @@ import { nl2r, setTitle } from '../../helpers/helpers';
 import { segments } from '../../helpers/routes';
 
 import { newsCategories } from './News';
-import Top10Spending from '../../components/accounts/Top10Spending';
+import Top10Spending from '../../components/municipal/Top10Spending';
 import TotalIncomes from '../../components/accounts/TotalIncomes';
 import TotalSpending from '../../components/accounts/TotalSpending';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
