@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../helpers/dictionary';
-import { currencyFormat, setTitle, shortenUrl } from '../../helpers/helpers';
+import { currencyFormat, setTitle } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
-import useData, { s22AggregatedKeys } from '../../hooks/AccountsData';
+import useData, { aggregatedKeys } from '../../hooks/AccountsData';
+import {
+    findSubjectByPathname,
+    findSubjectSupportedCandidates,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import AccountTransactions from '../../components/accounts/AccountTransactions';
 import Loading from '../../components/general/Loading';
@@ -17,108 +22,99 @@ function Party() {
     const navigate = useNavigate();
 
     const { csvData } = useData();
+    const { data: cmsData, isLoading } = useElectionData();
 
+    const cmsSubject = findSubjectByPathname(cmsData, pathname);
     // parse aggregated data
-    let candidate = null;
-    if (csvData?.data) {
-        csvData.data.some((row) => {
-            const key = routes.party(row[s22AggregatedKeys.name]);
-            if (pathname === key) {
-                candidate = row;
-                return true;
-            }
-            return false;
-        });
-    }
+    const accountData = cmsSubject
+        ? csvData?.data?.find((row) => {
+              return (
+                  row[aggregatedKeys.name] === cmsSubject.name &&
+                  row[aggregatedKeys.account] === cmsSubject.account
+              );
+          })
+        : null;
 
     useEffect(() => {
-        if (!candidate && csvData?.data) {
+        if (!isLoading && !cmsSubject) {
             navigate(routes.home());
         }
-    }, [candidate, csvData, navigate]);
+    }, [cmsSubject, isLoading, navigate]);
 
-    if (!candidate || !csvData?.data) {
+    if (isLoading) {
         return <Loading />;
     }
 
-    const partyAccounts = [];
-    if (candidate[s22AggregatedKeys.partyAccount] ?? false) {
-        candidate[s22AggregatedKeys.partyAccount]
-            .split(';')
-            .forEach((account) => {
-                partyAccounts.push(
-                    <a
-                        key={account}
-                        className="d-block"
-                        href={account}
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        {shortenUrl(account)}
-                    </a>
-                );
-            });
-    }
+    const supportedCandidates = findSubjectSupportedCandidates(
+        cmsData,
+        cmsSubject?.primaryParty?.uid
+    ).map((candidate) => (
+        <Link
+            key={candidate.uid}
+            className="d-block"
+            to={routes.candidateMunicipal(
+                candidate.person?.name,
+                candidate.municipality
+            )}
+        >
+            {candidate.person?.name}
+        </Link>
+    ));
 
-    setTitle(candidate[s22AggregatedKeys.name]);
+    setTitle(cmsSubject.name);
 
     return (
         <section className="candidate-page">
-            <Title>{candidate[s22AggregatedKeys.name]}</Title>
+            <Title>{cmsSubject.name}</Title>
             <Table striped bordered responsive hover>
                 <tbody>
-                    {candidate.isTransparent && (
-                        <>
-                            <tr>
-                                <td>{t(labels.charts.incoming)}</td>
-                                <td>
-                                    {currencyFormat(candidate.sum_incoming)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>{t(labels.charts.outgoing)}</td>
-                                <td>
-                                    {currencyFormat(candidate.sum_outgoing)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>{t(labels.candidate.balance)}</td>
-                                <td>{currencyFormat(candidate.balance)}</td>
-                            </tr>
-                            <tr>
-                                <td>{t(labels.candidate.numIncoming)}</td>
-                                <td>{candidate.num_incoming}</td>
-                            </tr>
-                            <tr>
-                                <td>{t(labels.candidate.numOutgoing)}</td>
-                                <td>{candidate.num_outgoing}</td>
-                            </tr>
-                            <tr>
-                                <td>{t(labels.charts.uniqueDonors)}</td>
-                                <td>{candidate.num_unique_donors}</td>
-                            </tr>
-                        </>
-                    )}
-                    {partyAccounts.length > 0 && (
+                    <tr>
+                        <td>{t(labels.charts.incoming)}</td>
+                        <td>
+                            {currencyFormat(
+                                accountData[aggregatedKeys.incoming]
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{t(labels.charts.outgoing)}</td>
+                        <td>
+                            {currencyFormat(
+                                accountData[aggregatedKeys.outgoing]
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{t(labels.candidate.balance)}</td>
+                        <td>
+                            {currencyFormat(
+                                accountData[aggregatedKeys.balance]
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{t(labels.candidate.numIncoming)}</td>
+                        <td>{accountData[aggregatedKeys.num_incoming]}</td>
+                    </tr>
+                    <tr>
+                        <td>{t(labels.candidate.numOutgoing)}</td>
+                        <td>{accountData[[aggregatedKeys.num_outgoing]]}</td>
+                    </tr>
+                    <tr>
+                        <td>{t(labels.charts.uniqueDonors)}</td>
+                        <td>{accountData[aggregatedKeys.num_unique_donors]}</td>
+                    </tr>
+
+                    {supportedCandidates.length > 0 && (
                         <tr>
-                            <td>
-                                {partyAccounts.length > 1
-                                    ? t(labels.candidate.partyAccounts)
-                                    : t(labels.candidate.partyAccount)}
-                            </td>
-                            <td>{partyAccounts}</td>
+                            <td>{t(labels.party.supportedCandidates)}</td>
+                            <td>{supportedCandidates}</td>
                         </tr>
                     )}
                 </tbody>
             </Table>
 
-            <em className="disclaimer">
-                {candidate.isTransparent
-                    ? t(labels.candidate.disclaimerAccount)
-                    : t(labels.candidate.disclaimerCandidate)}
-            </em>
-
-            <AccountTransactions candidate={candidate} />
+            <AccountTransactions candidate={accountData} />
         </section>
     );
 }

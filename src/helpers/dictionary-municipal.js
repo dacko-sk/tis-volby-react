@@ -153,6 +153,9 @@ export const labels = {
         latest: ['Najnovšie aktuality', 'Latest news'],
         title: ['Aktuality', 'News'],
     },
+    party: {
+        supportedCandidates: ['Podporení kandidáti', 'Supported Candidates'],
+    },
     search: {
         results: ['Výsledky vyhľadávania výrazu', 'Search results for'],
         municipalities: ['Samosprávy', 'Municipalities'],

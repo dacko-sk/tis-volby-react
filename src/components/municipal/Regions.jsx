@@ -8,7 +8,6 @@ import {
     columnVariants,
     getMunicipalityCmsTickText,
 } from '../../helpers/charts';
-import { isRegionalFunction } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { sortBySpending, substitute } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
@@ -17,7 +16,11 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import { findCandidate, useElectionData } from '../../hooks/CmsQueries';
+import {
+    findCandidate,
+    isRegionalFunction,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import TisBarChart from '../charts/TisBarChart';
 import Loading from '../general/Loading';

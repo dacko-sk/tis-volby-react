@@ -3,14 +3,17 @@ import {
     columnVariants,
     getMunicipalityCmsTickText,
 } from '../../helpers/charts';
-import { isRegionalFunction } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { sortBySpending } from '../../helpers/helpers';
 import { getActiveSubsite } from '../../helpers/languages';
 import { routes } from '../../helpers/routes';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import { findCandidate, useElectionData } from '../../hooks/CmsQueries';
+import {
+    findCandidate,
+    isRegionalFunction,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import TisBarChart from '../charts/TisBarChart';
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
-    getMunicipalityTickText,
+    getMunicipalityCmsTickText,
     chartKeys,
     columnVariants,
 } from '../../helpers/charts';
@@ -12,9 +12,14 @@ import { setTitle, sortByDonors, sortBySpending } from '../../helpers/helpers';
 import { routes, separators } from '../../helpers/routes';
 
 import useData, {
+    aggregatedKeys,
     municipalTypes,
-    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
+import {
+    findCandidate,
+    isRegionalFunction,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
@@ -27,7 +32,7 @@ function Municipality() {
     const params = useParams();
     let town = null;
     let region = null;
-    let type = municipalTypes.local;
+    let regType = municipalTypes.local;
     if (params?.municipality !== undefined) {
         const municipality = params.municipality.split(separators.value);
         town = municipality[municipality.length > 1 ? 1 : 0].replaceAll(
@@ -43,6 +48,7 @@ function Municipality() {
     const navigate = useNavigate();
 
     const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
     const candidates = [];
@@ -50,21 +56,28 @@ function Municipality() {
     const partyCandidates = [];
     if (town && csvData?.data) {
         csvData.data.forEach((row) => {
+            const cmsCandidate = findCandidate(
+                cmsData,
+                row[aggregatedKeys.name],
+                row[aggregatedKeys.account]
+            );
+            // TODO: municipality short name support
             if (
-                (row[s22AggregatedKeys.municipality] === town ||
-                    row.municipalityShortName === town) &&
-                (!region || region === row[s22AggregatedKeys.region])
+                cmsCandidate?.municipality === town &&
+                (!region || region === cmsCandidate?.region)
             ) {
-                town = row[s22AggregatedKeys.municipality];
-                type = row.isRegional
+                regType = isRegionalFunction(cmsCandidate?.functionType)
                     ? municipalTypes.regional
                     : municipalTypes.local;
-                if (row.isTransparent) {
+                town = cmsCandidate?.municipality;
+                // has own account => is transparent
+                if (cmsCandidate?.account) {
                     const person = {
-                        name: getMunicipalityTickText(row),
-                        [chartKeys.INCOMING]: row.sum_incoming,
-                        [chartKeys.OUTGOING]: row.sum_outgoing,
-                        [chartKeys.UNIQUE]: row.num_unique_donors,
+                        name: getMunicipalityCmsTickText(cmsCandidate),
+                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                        [chartKeys.UNIQUE]:
+                            row[aggregatedKeys.num_unique_donors],
                     };
                     candidates.push(person);
                 } else {
@@ -108,7 +121,7 @@ function Municipality() {
 
     return (
         <section className="municipality-page">
-            <Title secondary={t(labels.elections.municipalTypes[type])}>
+            <Title secondary={t(labels.elections.municipalTypes[regType])}>
                 {town}
                 <br />
             </Title>

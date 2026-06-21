@@ -8,7 +8,7 @@ import { isNumeric, shortenValue } from './helpers';
 import { routes, separators } from './routes';
 
 import { municipalTypes, s22AggregatedKeys } from '../hooks/AccountsData';
-import { isRegionalFunction } from './cms';
+import { isRegionalFunction } from '../hooks/CmsQueries';
 
 const tooltipSeparator = ' : ';
 

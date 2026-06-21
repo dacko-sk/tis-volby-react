@@ -5,7 +5,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import {
     chartKeys,
     columnVariants,
-    getMunicipalityTickText,
+    getMunicipalityCmsTickText,
 } from '../../helpers/charts';
 import { labels, t } from '../../helpers/dictionary';
 import {
@@ -17,9 +17,14 @@ import {
 import { routes } from '../../helpers/routes';
 
 import useData, {
+    aggregatedKeys,
     municipalTypes,
-    s22AggregatedKeys,
 } from '../../hooks/AccountsData';
+import {
+    findCandidate,
+    isRegionalFunction,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
@@ -34,6 +39,7 @@ function Region() {
     const navigate = useNavigate();
 
     const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
     const candidates = {
@@ -47,28 +53,27 @@ function Region() {
     };
     if (csvData?.data) {
         csvData.data.forEach((row) => {
-            if (
-                row?.[s22AggregatedKeys.region] !== undefined &&
-                row[s22AggregatedKeys.region] === region
-            ) {
-                if (row.isTransparent) {
+            const cmsCandidate = findCandidate(
+                cmsData,
+                row[aggregatedKeys.name],
+                row[aggregatedKeys.account]
+            );
+            if (region === cmsCandidate?.region) {
+                const regType = isRegionalFunction(cmsCandidate?.functionType)
+                    ? municipalTypes.regional
+                    : municipalTypes.local;
+                // has own account => is transparent
+                if (cmsCandidate?.account) {
                     const person = {
-                        name: getMunicipalityTickText(row),
-                        [chartKeys.INCOMING]: row.sum_incoming,
-                        [chartKeys.OUTGOING]: row.sum_outgoing,
-                        [chartKeys.UNIQUE]: row.num_unique_donors,
+                        name: getMunicipalityCmsTickText(cmsCandidate),
+                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                        [chartKeys.UNIQUE]:
+                            row[aggregatedKeys.num_unique_donors],
                     };
-                    candidates[
-                        row.isRegional
-                            ? municipalTypes.regional
-                            : municipalTypes.local
-                    ].push(person);
+                    candidates[regType].push(person);
                 } else {
-                    partyCandidates[
-                        row.isRegional
-                            ? municipalTypes.regional
-                            : municipalTypes.local
-                    ].push(row);
+                    partyCandidates[regType].push(row);
                 }
             }
         });

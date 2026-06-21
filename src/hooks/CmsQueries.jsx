@@ -1,11 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { getActiveSubsite } from '../helpers/languages';
+import { routes } from '../helpers/routes';
 
 export const CMS_BASE_URL = 'https://tiacms.transparency.sk';
+export const F_STAROSTA = 1;
+export const F_PRIMATOR = 2;
+export const F_ZUPAN = 3;
+export const F_PREZIDENT = 4;
 
 export const cmsSubsitesMap = {
     samosprava2026: 's-26',
 };
+
+export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
 
 export const getCmsSubsite = () => {
     const activeSubsite = getActiveSubsite();
@@ -39,9 +46,37 @@ export const findCandidate = (data, name, account) => {
     );
 };
 
+export const findCandidateByPathname = (data, pathname) => {
+    if (!data?.candidates || !Array.isArray(data.candidates)) return null;
+    return data.candidates.find((candidate) => {
+        const key = routes.candidateMunicipal(
+            candidate.person?.name ?? '',
+            candidate.municipality
+        );
+        return pathname === key;
+    });
+};
+
 export const findSubject = (data, name, account) => {
     if (!data?.subjects || !Array.isArray(data.subjects)) return null;
     return data.subjects.find(
         (subject) => subject.account === account && subject.name === name
+    );
+};
+
+export const findSubjectByPathname = (data, pathname) => {
+    if (!data?.subjects || !Array.isArray(data.subjects)) return null;
+    return data.subjects.find((subject) => {
+        const key = routes.party(subject.name);
+        return pathname === key;
+    });
+};
+
+export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
+    if (!data?.candidates || !Array.isArray(data.candidates)) return [];
+    return data.candidates.filter((candidate) =>
+        (candidate.supportingParties ?? []).some(
+            (party) => party.uid === primaryPartyUid
+        )
     );
 };
