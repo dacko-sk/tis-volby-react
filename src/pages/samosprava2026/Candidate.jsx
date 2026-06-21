@@ -185,9 +185,9 @@ function Candidate() {
                             <td>{partyAccounts}</td>
                         </tr>
                     )}
-                    {supportingParties.length && (
+                    {supportingParties.length > 0 && (
                         <tr>
-                            <td>{t(labels.party.title)}</td>
+                            <td>{t(labels.candidate.supportingParties)}</td>
                             <td>{supportingParties}</td>
                         </tr>
                     )}

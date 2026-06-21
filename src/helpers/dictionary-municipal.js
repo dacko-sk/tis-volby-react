@@ -101,6 +101,7 @@ export const labels = {
         numOutgoing: ['Počet výdavkov', 'Number of expenses'],
         partyAccount: ['Stranícky účet', 'Party account'],
         partyAccounts: ['Stranícke účty', 'Party accounts'],
+        supportingParties: ['Podpora strán', 'Party support'],
     },
     charts: {
         title: ['Grafy', 'Charts'],
