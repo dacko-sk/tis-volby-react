@@ -12,6 +12,17 @@ export const cmsSubsitesMap = {
     samosprava2026: 's-26',
 };
 
+export const regionDefs = {
+    BA: { name: 'Bratislavský samosprávny kraj', shortcut: 'BSK' },
+    BB: { name: 'Banskobystrický samosprávny kraj', shortcut: 'BBSK' },
+    KE: { name: 'Košický samosprávny kraj', shortcut: 'KSK' },
+    NR: { name: 'Nitriansky samosprávny kraj', shortcut: 'NSK' },
+    PO: { name: 'Prešovský samosprávny kraj', shortcut: 'PSK' },
+    TN: { name: 'Trenčiansky samosprávny kraj', shortcut: 'TSK' },
+    TT: { name: 'Trnavský samosprávny kraj', shortcut: 'TTSK' },
+    ZA: { name: 'Žilinský samosprávny kraj', shortcut: 'ŽSK' },
+};
+
 export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
 
 export const getCmsSubsite = () => {

@@ -18,6 +18,7 @@ import useData, {
 import {
     findCandidate,
     isRegionalFunction,
+    regionDefs,
     useElectionData,
 } from '../../hooks/CmsQueries';
 
@@ -43,6 +44,10 @@ function Municipality() {
             municipality.length > 1
                 ? municipality[0].replaceAll(separators.space, ' ')
                 : null;
+        if (Object.values(regionDefs).some((r) => r.shortcut === town)) {
+            regType = municipalTypes.regional;
+            town = (regionDefs[region]?.name ?? town) || town;
+        }
     }
 
     const navigate = useNavigate();
@@ -63,13 +68,11 @@ function Municipality() {
             );
             // TODO: municipality short name support
             if (
-                cmsCandidate?.municipality === town &&
-                (!region || region === cmsCandidate?.region)
+                (!region || region === cmsCandidate?.region) &&
+                (cmsCandidate?.municipality === town ||
+                    (regType === municipalTypes.regional &&
+                        isRegionalFunction(cmsCandidate?.functionType)))
             ) {
-                regType = isRegionalFunction(cmsCandidate?.functionType)
-                    ? municipalTypes.regional
-                    : municipalTypes.local;
-                town = cmsCandidate?.municipality;
                 // has own account => is transparent
                 if (cmsCandidate?.account) {
                     const person = {
