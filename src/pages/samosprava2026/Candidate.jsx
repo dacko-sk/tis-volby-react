@@ -17,6 +17,7 @@ import useData, {
 } from '../../hooks/AccountsData';
 import {
     findCandidateByPathname,
+    getCandidateMunicipalityShortname,
     isRegionalFunction,
     useElectionData,
 } from '../../hooks/CmsQueries';
@@ -116,7 +117,9 @@ function Candidate() {
                             <td>
                                 <Link
                                     to={routes.municipality(
-                                        cmsCandidate?.municipality, // todo: municipality short name support
+                                        getCandidateMunicipalityShortname(
+                                            cmsCandidate
+                                        ),
                                         cmsCandidate?.region ?? null
                                     )}
                                 >

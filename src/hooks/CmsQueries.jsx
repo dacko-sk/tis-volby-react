@@ -49,6 +49,7 @@ export const useElectionData = () => {
     });
 };
 
+// selectors
 export const findCandidate = (data, name, account) => {
     if (!data?.candidates || !Array.isArray(data.candidates)) return null;
     return data.candidates.find(
@@ -91,3 +92,8 @@ export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
         )
     );
 };
+
+export const getCandidateMunicipalityShortname = (candidate) =>
+    isRegionalFunction(candidate?.functionType)
+        ? (regionDefs[candidate?.region]?.shortcut ?? candidate?.municipality)
+        : candidate?.municipality;

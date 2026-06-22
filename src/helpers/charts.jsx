@@ -8,7 +8,10 @@ import { isNumeric, shortenValue } from './helpers';
 import { routes, separators } from './routes';
 
 import { municipalTypes, s22AggregatedKeys } from '../hooks/AccountsData';
-import { isRegionalFunction, regionDefs } from '../hooks/CmsQueries';
+import {
+    getCandidateMunicipalityShortname,
+    isRegionalFunction,
+} from '../hooks/CmsQueries';
 
 const tooltipSeparator = ' : ';
 
@@ -425,16 +428,12 @@ export const getMunicipalityTickText = (row, showType = false) => {
 };
 
 export const getMunicipalityCmsTickText = (candidate, showType = false) => {
-    const isRegional = isRegionalFunction(candidate?.functionType);
-    const m = isRegional
-        ? (regionDefs[candidate?.region]?.shortcut ?? candidate?.municipality)
-        : candidate?.municipality;
     const type =
         showType === true
             ? separators.newline +
               t(
                   labels.elections.municipalTypes[
-                      isRegional
+                      isRegionalFunction(candidate?.functionType)
                           ? municipalTypes.regional
                           : municipalTypes.local
                   ]
@@ -445,7 +444,7 @@ export const getMunicipalityCmsTickText = (candidate, showType = false) => {
         separators.newline +
         candidate?.region +
         separators.parts +
-        m +
+        getCandidateMunicipalityShortname(candidate) +
         type
     );
 };
