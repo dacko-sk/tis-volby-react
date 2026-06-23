@@ -8,11 +8,11 @@ import {
     languages,
 } from './languages';
 
+import { getMunicipalityShortname } from '../hooks/CmsQueries';
+
 export { getCurrentLanguage, languages };
 
-import siteConfig from '../../package.json';
-
-export const homepage = siteConfig.homepage ?? '/';
+export const homepage = '/';
 
 export const separators = {
     array: ';',
@@ -349,7 +349,7 @@ export const routes = {
                 : encodeURIComponent(
                       name.replaceAll(' ', '.') +
                           separators.value +
-                          town.replaceAll(' ', '.')
+                          getMunicipalityShortname(town).replaceAll(' ', '.')
                   ))
         );
     }),

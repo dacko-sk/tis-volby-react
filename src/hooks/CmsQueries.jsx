@@ -55,6 +55,9 @@ export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
 export const isMunicipalityRegional = (town) =>
     Object.values(regionDefs).some((r) => r.shortname === town);
 
+export const getMunicipalityShortname = (town) =>
+    Object.values(regionDefs).find((r) => r.name === town)?.shortname ?? town;
+
 // selectors
 export const getCandidateMunicipalityShortname = (candidate) =>
     isRegionalFunction(candidate?.functionType)
@@ -74,7 +77,7 @@ export const findCandidateByPathname = (data, pathname) => {
     return data.candidates.find((candidate) => {
         const key = routes.candidateMunicipal(
             candidate.person?.name ?? '',
-            getCandidateMunicipalityShortname(candidate)
+            candidate.municipality
         );
         return pathname === key;
     });
@@ -92,6 +95,13 @@ export const findSubjectByPathname = (data, pathname) => {
     return data.subjects.find((subject) => {
         const key = routes.party(subject.name);
         return pathname === key;
+    });
+};
+
+export const findSubjectByAccount = (data, account) => {
+    if (!data?.subjects || !Array.isArray(data.subjects)) return null;
+    return data.subjects.find((subject) => {
+        return subject.account === account;
     });
 };
 

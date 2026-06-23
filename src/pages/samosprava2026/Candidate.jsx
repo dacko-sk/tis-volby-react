@@ -17,6 +17,7 @@ import useData, {
 } from '../../hooks/AccountsData';
 import {
     findCandidateByPathname,
+    findSubjectByAccount,
     getCandidateMunicipalityShortname,
     isRegionalFunction,
     useElectionData,
@@ -56,17 +57,24 @@ function Candidate() {
         return <Loading />;
     }
 
-    const partyAccounts = (cmsCandidate?.partyAccounts ?? []).map((account) => (
-        <a
-            key={account}
-            className="d-block"
-            href={account}
-            rel="noreferrer"
-            target="_blank"
-        >
-            {shortenUrl(account)}
-        </a>
-    ));
+    const partyAccounts = (cmsCandidate?.partyAccounts ?? []).map((account) => {
+        const s = findSubjectByAccount(cmsData, account.trim());
+        return s ? (
+            <Link key={s.name} className="d-block" to={routes.party(s.name)}>
+                {s.name}
+            </Link>
+        ) : (
+            <a
+                key={account}
+                className="d-block"
+                href={account}
+                rel="noreferrer"
+                target="_blank"
+            >
+                {shortenUrl(account)}
+            </a>
+        );
+    });
     const supportingParties = (cmsCandidate?.supportingParties ?? []).map(
         (party) => (
             <Link
