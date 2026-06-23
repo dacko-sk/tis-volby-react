@@ -13,18 +13,17 @@ export const cmsSubsitesMap = {
 };
 
 export const regionDefs = {
-    BA: { name: 'Bratislavský samosprávny kraj', shortcut: 'BSK' },
-    BB: { name: 'Banskobystrický samosprávny kraj', shortcut: 'BBSK' },
-    KE: { name: 'Košický samosprávny kraj', shortcut: 'KSK' },
-    NR: { name: 'Nitriansky samosprávny kraj', shortcut: 'NSK' },
-    PO: { name: 'Prešovský samosprávny kraj', shortcut: 'PSK' },
-    TN: { name: 'Trenčiansky samosprávny kraj', shortcut: 'TSK' },
-    TT: { name: 'Trnavský samosprávny kraj', shortcut: 'TTSK' },
-    ZA: { name: 'Žilinský samosprávny kraj', shortcut: 'ŽSK' },
+    BA: { name: 'Bratislavský samosprávny kraj', shortname: 'BSK' },
+    BB: { name: 'Banskobystrický samosprávny kraj', shortname: 'BBSK' },
+    KE: { name: 'Košický samosprávny kraj', shortname: 'KSK' },
+    NR: { name: 'Nitriansky samosprávny kraj', shortname: 'NSK' },
+    PO: { name: 'Prešovský samosprávny kraj', shortname: 'PSK' },
+    TN: { name: 'Trenčiansky samosprávny kraj', shortname: 'TSK' },
+    TT: { name: 'Trnavský samosprávny kraj', shortname: 'TTSK' },
+    ZA: { name: 'Žilinský samosprávny kraj', shortname: 'ŽSK' },
 };
 
-export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
-
+// queries
 export const getCmsSubsite = () => {
     const activeSubsite = getActiveSubsite();
     return cmsSubsitesMap[activeSubsite] || activeSubsite;
@@ -49,7 +48,19 @@ export const useElectionData = () => {
     });
 };
 
+// helpers
+
+export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
+
+export const isMunicipalityRegional = (town) =>
+    Object.values(regionDefs).some((r) => r.shortname === town);
+
 // selectors
+export const getCandidateMunicipalityShortname = (candidate) =>
+    isRegionalFunction(candidate?.functionType)
+        ? (regionDefs[candidate?.region]?.shortname ?? candidate?.municipality)
+        : candidate?.municipality;
+
 export const findCandidate = (data, name, account) => {
     if (!data?.candidates || !Array.isArray(data.candidates)) return null;
     return data.candidates.find(
@@ -63,7 +74,7 @@ export const findCandidateByPathname = (data, pathname) => {
     return data.candidates.find((candidate) => {
         const key = routes.candidateMunicipal(
             candidate.person?.name ?? '',
-            candidate.municipality
+            getCandidateMunicipalityShortname(candidate)
         );
         return pathname === key;
     });
@@ -92,8 +103,3 @@ export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
         )
     );
 };
-
-export const getCandidateMunicipalityShortname = (candidate) =>
-    isRegionalFunction(candidate?.functionType)
-        ? (regionDefs[candidate?.region]?.shortcut ?? candidate?.municipality)
-        : candidate?.municipality;

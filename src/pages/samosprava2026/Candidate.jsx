@@ -48,7 +48,7 @@ function Candidate() {
     useEffect(() => {
         if (!isLoading && !cmsCandidate) {
             // redirect to home page in case candidate does not exist
-            navigate(routes.home);
+            navigate(routes.home());
         }
     }, [cmsCandidate, isLoading, navigate]);
 
@@ -56,7 +56,7 @@ function Candidate() {
         return <Loading />;
     }
 
-    const partyAccounts = cmsCandidate?.partyAccounts.map((account) => (
+    const partyAccounts = (cmsCandidate?.partyAccounts ?? []).map((account) => (
         <a
             key={account}
             className="d-block"
@@ -67,15 +67,17 @@ function Candidate() {
             {shortenUrl(account)}
         </a>
     ));
-    const supportingParties = cmsCandidate?.supportingParties.map((party) => (
-        <Link
-            key={party.name}
-            className="d-block"
-            to={routes.party(party.name)}
-        >
-            {party.name}
-        </Link>
-    ));
+    const supportingParties = (cmsCandidate?.supportingParties ?? []).map(
+        (party) => (
+            <Link
+                key={party.name}
+                className="d-block"
+                to={routes.party(party.name)}
+            >
+                {party.name}
+            </Link>
+        )
+    );
 
     setTitle(cmsCandidate?.person?.name);
 

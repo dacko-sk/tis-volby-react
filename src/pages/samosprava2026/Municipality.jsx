@@ -17,6 +17,7 @@ import useData, {
 } from '../../hooks/AccountsData';
 import {
     findCandidate,
+    isMunicipalityRegional,
     isRegionalFunction,
     regionDefs,
     useElectionData,
@@ -44,7 +45,7 @@ function Municipality() {
             municipality.length > 1
                 ? municipality[0].replaceAll(separators.space, ' ')
                 : null;
-        if (Object.values(regionDefs).some((r) => r.shortcut === town)) {
+        if (isMunicipalityRegional(town)) {
             regType = municipalTypes.regional;
             town = (regionDefs[region]?.name ?? town) || town;
         }
