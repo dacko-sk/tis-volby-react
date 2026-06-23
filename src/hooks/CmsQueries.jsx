@@ -83,6 +83,11 @@ export const findCandidateByPathname = (data, pathname) => {
     });
 };
 
+export const findCandidateByTag = (data, tag) => {
+    if (!data?.candidates || !Array.isArray(data.candidates)) return null;
+    return data.candidates.find((candidate) => candidate.person?.wpTag === tag);
+};
+
 export const findSubject = (data, name, account) => {
     if (!data?.subjects || !Array.isArray(data.subjects)) return null;
     return data.subjects.find(

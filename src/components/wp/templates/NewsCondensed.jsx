@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import { dateTimeFormat } from '../../../helpers/helpers';
-import { getActiveSubsite } from '../../../helpers/languages';
 import { routes } from '../../../helpers/routes';
 import { parseWpHtml } from '../../../helpers/wp';
 
@@ -11,7 +10,6 @@ import Media from '../Media';
 import PartyTags from '../PartyTags';
 
 function NewsCondensed({ article }) {
-    const subsite = getActiveSubsite();
     return (
         <Col className="d-flex" md={6}>
             <Link
@@ -40,12 +38,10 @@ function NewsCondensed({ article }) {
                         <div className="article-date my-2">
                             {dateTimeFormat(article.date)}
                         </div>
-                        {subsite !== 'samosprava2022' && subsite !== 'samosprava2026' && (
-                            <PartyTags
-                                className="article-tags my-2"
-                                tags={article.tags}
-                            />
-                        )}
+                        <PartyTags
+                            className="article-tags my-2"
+                            tags={article.tags}
+                        />
                         <div className="article-excerpt">
                             {parseWpHtml(article.excerpt.rendered)}
                         </div>
