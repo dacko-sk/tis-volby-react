@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
+import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat, numFormat } from '../../helpers/helpers';
 
 import LastUpdateTag from './LastUpdateTag';
@@ -8,6 +9,7 @@ import LastUpdateTag from './LastUpdateTag';
 function HeroNumber({
     className,
     button,
+    count,
     currency = true,
     disclaimer,
     lastUpdate,
@@ -15,17 +17,32 @@ function HeroNumber({
     number,
     title,
 }) {
+    const content = (
+        <>
+            {disclaimer}
+            {count ? (
+                <>
+                    <br />
+                    {t(labels.accounts.count, [count])}
+                </>
+            ) : null}
+        </>
+    );
     return (
         <div className={`${className} text-center`}>
             {title && <h2>{title}</h2>}
             <div className="hero-number">
-                {Number.isNaN(Number(number)) ? number : (currency ? currencyFormat(number) : numFormat(number))}
+                {Number.isNaN(Number(number))
+                    ? number
+                    : currency
+                      ? currencyFormat(number)
+                      : numFormat(number)}
                 {lastUpdate ? (
                     <LastUpdateTag timestamp={lastUpdate}>
-                        {disclaimer}
+                        {content}
                     </LastUpdateTag>
                 ) : (
-                    <em className="disclaimer">{disclaimer}</em>
+                    <em className="disclaimer">{content}</em>
                 )}
             </div>
             {button && link && (

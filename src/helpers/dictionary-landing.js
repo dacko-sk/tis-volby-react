@@ -26,6 +26,10 @@ export const labels = {
             [tc.ss]: ['ŠS', 'SS'],
             [tc.note]: ['Poznámka', 'Note'],
         },
+        count: [
+            'Kumulatívny súčet pohybov na %i transparentných účtoch.',
+            'Sum of transactions on %i transparent accounts.',
+        ],
         info: ['Detail účtu', 'Account details'],
         navTitle: ['Transparentné účty', 'Transparent accounts'],
         navTitleShort: ['Účty', 'Accounts'],
@@ -449,7 +453,10 @@ export const labels = {
             [mt.local]: ['Miestne voľby', 'Local elections'],
         },
         over: ['Voľby sa skončili', 'Elections ended'],
-        timeTillstart: ['Zostávajúci čas do volieb', 'Countdown to elections start'],
+        timeTillstart: [
+            'Zostávajúci čas do volieb',
+            'Countdown to elections start',
+        ],
         timeTillend: [
             'Zostávajúci čas do konca volieb',
             'Time to elections end',

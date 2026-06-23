@@ -60,14 +60,12 @@ function TotalSpending() {
     if (accountsData.data) {
         accountsData.data.forEach((row) => {
             // sum of outgoing amounts from all transparent accounts
-            if (row[agk.outgoing] > 0) {
+            if (row[agk.outgoing] >= 0) {
                 // add each account number only once
                 const accountKey = row[agk.account];
                 // For valid urls, group them. For invalid/empty urls, treat them independently
                 if (accountKey && accountKey !== '') {
-                    if (uniqueAccounts[accountKey] !== undefined) {
-                        uniqueAccounts[accountKey] += 1;
-                    } else {
+                    if (!(uniqueAccounts[accountKey] ?? false)) {
                         uniqueAccounts[accountKey] = 1;
                         total += row[agk.outgoing];
                     }
@@ -84,6 +82,7 @@ function TotalSpending() {
 
     return (
         <HeroNumber
+            count={Object.keys(uniqueAccounts).length}
             disclaimer={t(labels.account.totalDisclaimer)}
             lastUpdate={accountsData.lastUpdate ?? null}
             loading={!(accountsData.data ?? false)}
