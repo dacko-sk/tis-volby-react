@@ -20,17 +20,13 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import {
-    findCandidate,
-    isRegionalFunction,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { isRegionalFunction, useElectionData } from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
 import TisBarChart from '../../components/charts/TisBarChart';
 import Loading from '../../components/general/Loading';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTable from '../../components/municipal/PartyCandidatesTable';
 import Title from '../../components/structure/Title';
 
 function Region() {
@@ -51,29 +47,32 @@ function Region() {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
-    if (csvData?.data) {
-        csvData.data.forEach((row) => {
-            const cmsCandidate = findCandidate(
-                cmsData,
-                row[aggregatedKeys.name],
-                row[aggregatedKeys.account]
-            );
-            if (region === cmsCandidate?.region) {
-                const regType = isRegionalFunction(cmsCandidate?.functionType)
+    if (cmsData?.candidates) {
+        cmsData.candidates.forEach((cmsCandidate) => {
+            if (region === cmsCandidate.region) {
+                const regType = isRegionalFunction(cmsCandidate.functionType)
                     ? municipalTypes.regional
                     : municipalTypes.local;
                 // has own account => is transparent
-                if (cmsCandidate?.account) {
-                    const person = {
-                        name: getMunicipalityCmsTickText(cmsCandidate),
-                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                        [chartKeys.UNIQUE]:
-                            row[aggregatedKeys.num_unique_donors],
-                    };
-                    candidates[regType].push(person);
+                if (cmsCandidate.account) {
+                    const row = csvData?.data?.find(
+                        (r) =>
+                            r[aggregatedKeys.account] ===
+                                cmsCandidate.account &&
+                            r[aggregatedKeys.name] === cmsCandidate.person?.name
+                    );
+                    if (row) {
+                        const person = {
+                            name: getMunicipalityCmsTickText(cmsCandidate),
+                            [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                            [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                            [chartKeys.UNIQUE]:
+                                row[aggregatedKeys.num_unique_donors],
+                        };
+                        candidates[regType].push(person);
+                    }
                 } else {
-                    partyCandidates[regType].push(row);
+                    partyCandidates[regType].push(cmsCandidate);
                 }
             }
         });
@@ -100,49 +99,65 @@ function Region() {
                 <div key={type}>
                     <h2>{t(labels.elections.municipalTypes[type])}</h2>
 
-                    {csvData?.data ? (
+                    {cmsData?.candidates ? (
                         <Accordion
                             className="my-3"
                             alwaysOpen
                             defaultActiveKey={[`${type}_s`]}
                         >
-                            <Accordion.Item
-                                key={`${type}_s`}
-                                eventKey={`${type}_s`}
-                            >
-                                <Accordion.Header>
-                                    {spendingTitle}
-                                </Accordion.Header>
-                                <Accordion.Body>
-                                    <TisBarChart
-                                        bars={columnVariants.inOut}
-                                        currency
-                                        data={candidates[type].sort(
-                                            sortBySpending
-                                        )}
-                                        vertical
-                                    />
-                                    <PartyCandidatesTable
-                                        candidates={partyCandidates[type]}
-                                    />
-                                </Accordion.Body>
-                            </Accordion.Item>
+                            {candidates[type].length > 0 && (
+                                <>
+                                    <Accordion.Item
+                                        key={`${type}_s`}
+                                        eventKey={`${type}_s`}
+                                    >
+                                        <Accordion.Header>
+                                            {spendingTitle}
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <TisBarChart
+                                                bars={columnVariants.inOut}
+                                                currency
+                                                data={candidates[type].sort(
+                                                    sortBySpending
+                                                )}
+                                                vertical
+                                            />
+                                        </Accordion.Body>
+                                    </Accordion.Item>
 
-                            <Accordion.Item
-                                key={`${type}_d`}
-                                eventKey={`${type}_d`}
-                            >
-                                <Accordion.Header>
-                                    {donorsTitle}
-                                </Accordion.Header>
-                                <Accordion.Body>
-                                    <TisBarChart
-                                        bars={columnVariants.donors}
-                                        data={donors[type]}
-                                        vertical
-                                    />
-                                </Accordion.Body>
-                            </Accordion.Item>
+                                    <Accordion.Item
+                                        key={`${type}_d`}
+                                        eventKey={`${type}_d`}
+                                    >
+                                        <Accordion.Header>
+                                            {donorsTitle}
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <TisBarChart
+                                                bars={columnVariants.donors}
+                                                data={donors[type]}
+                                                vertical
+                                            />
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                </>
+                            )}
+                            {partyCandidates[type].length > 0 && (
+                                <Accordion.Item
+                                    key={`${type}_p`}
+                                    eventKey={`${type}_p`}
+                                >
+                                    <Accordion.Header>
+                                        {t(labels.charts.partyCandidatesTitle)}
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <PartyCandidatesTable
+                                            candidates={partyCandidates[type]}
+                                        />
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            )}
                         </Accordion>
                     ) : (
                         <Loading />

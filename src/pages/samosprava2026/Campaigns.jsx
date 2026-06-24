@@ -10,14 +10,10 @@ import useData, {
     municipalTypes,
     aggregatedKeys,
 } from '../../hooks/AccountsData';
-import {
-    findCandidate,
-    isRegionalFunction,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { isRegionalFunction, useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../../components/charts/TisBarChart';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTable from '../../components/municipal/PartyCandidatesTable';
 import Title from '../../components/structure/Title';
 
 function Campaigns() {
@@ -36,19 +32,23 @@ function Campaigns() {
     };
     const regions = {};
 
-    if (csvData?.data) {
-        csvData.data.forEach((row) => {
-            const cmsCandidate = findCandidate(
-                cmsData,
-                row[aggregatedKeys.name],
-                row[aggregatedKeys.account]
-            );
-            if (cmsCandidate?.region) {
-                const regType = isRegionalFunction(cmsCandidate?.functionType)
-                    ? municipalTypes.regional
-                    : municipalTypes.local;
-                // has own account => is transparent
-                if (cmsCandidate?.account) {
+    if (cmsData?.candidates) {
+        cmsData.candidates.forEach((cmsCandidate) => {
+            if (!cmsCandidate.region) return;
+
+            const regType = isRegionalFunction(cmsCandidate.functionType)
+                ? municipalTypes.regional
+                : municipalTypes.local;
+
+            if (cmsCandidate.account) {
+                // Find csvData row
+                const row = csvData?.data?.find(
+                    (r) =>
+                        r[aggregatedKeys.account] === cmsCandidate.account &&
+                        r[aggregatedKeys.name] === cmsCandidate.person?.name
+                );
+
+                if (row) {
                     const person = {
                         name: getMunicipalityCmsTickText(cmsCandidate),
                         [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
@@ -59,9 +59,9 @@ function Campaigns() {
 
                     candidates[regType].push(person);
 
-                    const regionName = cmsCandidate?.region;
+                    const regionName = cmsCandidate.region;
                     if (regionName) {
-                        if (!(regions[regionName] ?? false)) {
+                        if (!regions[regionName]) {
                             regions[regionName] = {
                                 name: regionName,
                                 [chartKeys.INCOMING]: 0,
@@ -73,9 +73,9 @@ function Campaigns() {
                         regions[regionName][chartKeys.OUTGOING] +=
                             row[aggregatedKeys.outgoing];
                     }
-                } else {
-                    partyCandidates[regType].push(row);
                 }
+            } else {
+                partyCandidates[regType].push(cmsCandidate);
             }
         });
     }
@@ -114,11 +114,6 @@ function Campaigns() {
                             title={t(labels.elections.municipalTypes.regional)}
                             vertical
                         />
-                        <PartyCandidatesTable
-                            candidates={
-                                partyCandidates[municipalTypes.regional]
-                            }
-                        />
                         <TisBarChart
                             bars={columnVariants.inOut}
                             currency
@@ -127,9 +122,6 @@ function Campaigns() {
                             )}
                             title={t(labels.elections.municipalTypes.local)}
                             vertical
-                        />
-                        <PartyCandidatesTable
-                            candidates={partyCandidates[municipalTypes.local]}
                         />
                     </Accordion.Body>
                 </Accordion.Item>
@@ -147,11 +139,6 @@ function Campaigns() {
                             title={t(labels.elections.municipalTypes.regional)}
                             vertical
                         />
-                        <PartyCandidatesTable
-                            candidates={
-                                partyCandidates[municipalTypes.regional]
-                            }
-                        />
                         <TisBarChart
                             bars={columnVariants.donors}
                             data={[...candidates[municipalTypes.local]].sort(
@@ -160,6 +147,25 @@ function Campaigns() {
                             title={t(labels.elections.municipalTypes.local)}
                             vertical
                         />
+                    </Accordion.Body>
+                </Accordion.Item>
+
+                <Accordion.Item eventKey="3">
+                    <Accordion.Header>
+                        {t(labels.charts.partyCandidatesTitle)}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        <h2 className="mb-4">
+                            {t(labels.elections.municipalTypes.regional)}
+                        </h2>
+                        <PartyCandidatesTable
+                            candidates={
+                                partyCandidates[municipalTypes.regional]
+                            }
+                        />
+                        <h2 className="my-4">
+                            {t(labels.elections.municipalTypes.local)}
+                        </h2>
                         <PartyCandidatesTable
                             candidates={partyCandidates[municipalTypes.local]}
                         />

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../helpers/dictionary';
@@ -77,13 +78,15 @@ function Candidate() {
     });
     const supportingParties = (cmsCandidate?.supportingParties ?? []).map(
         (party) => (
-            <Link
+            <Badge
+                as={Link}
                 key={party.name}
-                className="d-block"
+                bg="secondary"
+                className="me-1 text-decoration-none"
                 to={routes.party(party.name)}
             >
-                {party.name}
-            </Link>
+                {party.abbreviation || party.name}
+            </Badge>
         )
     );
 

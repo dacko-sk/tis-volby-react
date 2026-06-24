@@ -42,7 +42,12 @@ function PartyTags({ tags, className, asLink }) {
                 }
                 const p = findSubjectByTag(cmsData, tag);
                 if (p) {
-                    return [[p.name, routes.party(p.name, segments.NEWS)]];
+                    return [
+                        [
+                            p.abbreviation || p.name,
+                            routes.party(p.name, segments.NEWS),
+                        ],
+                    ];
                 }
                 // otherwise skip
                 return [];

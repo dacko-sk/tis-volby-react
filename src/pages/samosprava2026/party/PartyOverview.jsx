@@ -1,4 +1,5 @@
 import Table from 'react-bootstrap/Table';
+import Badge from 'react-bootstrap/Badge';
 import { Link, useLocation, useOutletContext } from 'react-router-dom';
 
 import { labels, t } from '../../../helpers/dictionary';
@@ -23,16 +24,18 @@ function PartyOverview() {
         cmsData,
         cmsSubject?.primaryParty?.uid
     ).map((candidate) => (
-        <Link
+        <Badge
+            as={Link}
             key={candidate.uid}
-            className="d-block"
+            bg="secondary"
+            className="me-1 text-decoration-none"
             to={routes.candidateMunicipal(
                 candidate.person?.name,
                 candidate.municipality
             )}
         >
             {candidate.person?.name}
-        </Link>
+        </Badge>
     ));
 
     return (

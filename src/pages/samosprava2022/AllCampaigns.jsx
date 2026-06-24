@@ -12,7 +12,7 @@ import useData, {
 } from '../../hooks/AccountsData';
 
 import TisBarChart from '../../components/charts/TisBarChart';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTableLegacy from '../../components/municipal/PartyCandidatesTableLegacy';
 import Title from '../../components/structure/Title';
 
 export const title = 'Výdavky a príjmy všetkých kandidátov';
@@ -66,7 +66,7 @@ function AllCampaigns() {
                 title={t(labels.elections.municipalTypes.regional)}
                 vertical
             />
-            <PartyCandidatesTable
+            <PartyCandidatesTableLegacy
                 candidates={partyCandidates[municipalTypes.regional]}
             />
             <TisBarChart
@@ -76,7 +76,7 @@ function AllCampaigns() {
                 title={t(labels.elections.municipalTypes.local)}
                 vertical
             />
-            <PartyCandidatesTable
+            <PartyCandidatesTableLegacy
                 candidates={partyCandidates[municipalTypes.local]}
             />
         </section>

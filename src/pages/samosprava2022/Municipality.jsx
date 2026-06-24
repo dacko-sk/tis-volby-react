@@ -30,7 +30,7 @@ import {
 } from './Analyses';
 import TisBarChart from '../../components/charts/TisBarChart';
 import Loading from '../../components/general/Loading';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTableLegacy from '../../components/municipal/PartyCandidatesTableLegacy';
 import Title from '../../components/structure/Title';
 import Posts from '../../components/wp/Posts';
 
@@ -96,7 +96,7 @@ function Municipality() {
                 title={spendingTitle}
                 vertical
             />
-            <PartyCandidatesTable candidates={partyCandidates} />
+            <PartyCandidatesTableLegacy candidates={partyCandidates} />
             <TisBarChart
                 bars={columnVariants.donors}
                 data={donors}

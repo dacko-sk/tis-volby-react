@@ -16,7 +16,6 @@ import useData, {
     municipalTypes,
 } from '../../hooks/AccountsData';
 import {
-    findCandidate,
     isMunicipalityRegional,
     isRegionalFunction,
     regionDefs,
@@ -27,7 +26,7 @@ import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
 import TisBarChart from '../../components/charts/TisBarChart';
 import Loading from '../../components/general/Loading';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTable from '../../components/municipal/PartyCandidatesTable';
 import Title from '../../components/structure/Title';
 
 function Municipality() {
@@ -60,32 +59,35 @@ function Municipality() {
     const candidates = [];
     let donors = [];
     const partyCandidates = [];
-    if (town && csvData?.data) {
-        csvData.data.forEach((row) => {
-            const cmsCandidate = findCandidate(
-                cmsData,
-                row[aggregatedKeys.name],
-                row[aggregatedKeys.account]
-            );
-            // TODO: municipality short name support
+    if (town && cmsData?.candidates) {
+        cmsData.candidates.forEach((cmsCandidate) => {
             if (
-                (!region || region === cmsCandidate?.region) &&
-                (cmsCandidate?.municipality === town ||
+                (!region || region === cmsCandidate.region) &&
+                (cmsCandidate.municipality === town ||
                     (regType === municipalTypes.regional &&
-                        isRegionalFunction(cmsCandidate?.functionType)))
+                        isRegionalFunction(cmsCandidate.functionType)))
             ) {
                 // has own account => is transparent
-                if (cmsCandidate?.account) {
-                    const person = {
-                        name: getMunicipalityCmsTickText(cmsCandidate),
-                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                        [chartKeys.UNIQUE]:
-                            row[aggregatedKeys.num_unique_donors],
-                    };
-                    candidates.push(person);
+                if (cmsCandidate.account) {
+                    const row = csvData?.data?.find(
+                        (r) =>
+                            r[aggregatedKeys.account] ===
+                                cmsCandidate.account &&
+                            r[aggregatedKeys.name] === cmsCandidate.person?.name
+                    );
+
+                    if (row) {
+                        const person = {
+                            name: getMunicipalityCmsTickText(cmsCandidate),
+                            [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                            [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                            [chartKeys.UNIQUE]:
+                                row[aggregatedKeys.num_unique_donors],
+                        };
+                        candidates.push(person);
+                    }
                 } else {
-                    partyCandidates.push(row);
+                    partyCandidates.push(cmsCandidate);
                 }
             }
         });
@@ -93,7 +95,7 @@ function Municipality() {
         donors = [...candidates].sort(sortByDonors);
     }
 
-    const content = csvData?.data ? (
+    const content = cmsData?.candidates ? (
         <div>
             <TisBarChart
                 bars={columnVariants.inOut}
@@ -102,24 +104,35 @@ function Municipality() {
                 title={spendingTitle}
                 vertical
             />
-            <PartyCandidatesTable candidates={partyCandidates} />
             <TisBarChart
                 bars={columnVariants.donors}
                 data={donors}
                 title={donorsTitle}
                 vertical
             />
+            {partyCandidates.length > 0 && (
+                <>
+                    <h2 className="my-4">
+                        {t(labels.charts.partyCandidatesTitle)}
+                    </h2>
+                    <PartyCandidatesTable candidates={partyCandidates} />
+                </>
+            )}
         </div>
     ) : (
         <Loading />
     );
 
     useEffect(() => {
-        if (!candidates.length && !partyCandidates.length && csvData?.data) {
+        if (
+            !candidates.length &&
+            !partyCandidates.length &&
+            cmsData?.candidates
+        ) {
             // redirect to home page in case candidate does not exist
             navigate(routes.home);
         }
-    }, [candidates.length, partyCandidates.length, csvData, navigate]);
+    }, [candidates.length, partyCandidates.length, cmsData, navigate]);
 
     setTitle(town);
 

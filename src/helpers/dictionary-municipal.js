@@ -136,6 +136,10 @@ export const labels = {
             'Počet unikátnych darcov na kandidáta',
             'Number of unique donors per candidate',
         ],
+        partyCandidatesTitle: [
+            'Kandidáti bez transparentného účtu a stranícky kandidáti',
+            'Candidates without transparent accounts and party candidates',
+        ],
         campaignsPageTitle: [
             'Zoznam všetkých kandidátov',
             'List of all candidates',

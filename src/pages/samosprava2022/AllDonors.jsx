@@ -10,7 +10,7 @@ import useData, {
 import TisBarChart, {
     columnVariants,
 } from '../../components/charts/TisBarChart';
-import PartyCandidatesTable from '../../components/general/PartyCandidatesTable';
+import PartyCandidatesTableLegacy from '../../components/municipal/PartyCandidatesTableLegacy';
 import Title from '../../components/structure/Title';
 
 export const title = 'Počet unikátnych darcov na kandidáta';
@@ -62,7 +62,7 @@ function AllDonors() {
                 title={t(labels.elections.municipalTypes.regional)}
                 vertical
             />
-            <PartyCandidatesTable
+            <PartyCandidatesTableLegacy
                 candidates={partyCandidates[municipalTypes.regional]}
             />
             <TisBarChart
@@ -71,7 +71,7 @@ function AllDonors() {
                 title={t(labels.elections.municipalTypes.local)}
                 vertical
             />
-            <PartyCandidatesTable
+            <PartyCandidatesTableLegacy
                 candidates={partyCandidates[municipalTypes.local]}
             />
         </section>
