@@ -3,7 +3,11 @@ import { wpTagsMap } from '../../helpers/parties';
 import { getActiveSubsite } from '../../helpers/languages';
 
 import useAdsData from '../../hooks/AdsData';
-import { findCandidateByTag, useElectionData } from '../../hooks/CmsQueries';
+import {
+    findCandidateByTag,
+    findSubjectByTag,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import PartyTag from './PartyTag';
 import { getLastWord } from '../../helpers/helpers';
@@ -36,7 +40,11 @@ function PartyTags({ tags, className, asLink }) {
                         ],
                     ];
                 }
-                // TODO: remove this once party news detail page is set up
+                const p = findSubjectByTag(cmsData, tag);
+                if (p) {
+                    return [[p.name, routes.party(p.name, segments.NEWS)]];
+                }
+                // otherwise skip
                 return [];
             }
 

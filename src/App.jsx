@@ -40,10 +40,12 @@ import S26Home from './pages/samosprava2026/Home';
 import S26Municipality from './pages/samosprava2026/Municipality';
 import S26Region from './pages/samosprava2026/Region';
 import S26News from './pages/samosprava2026/News';
+import S26Party from './pages/samosprava2026/Party';
+import S26PartyOverview from './pages/samosprava2026/party/PartyOverview';
+import S26PartyNews from './pages/samosprava2026/party/PartyNews';
 import S26Search from './pages/samosprava2026/Search';
 import S26Candidates from './pages/samosprava2026/Candidates';
 import S26Parties from './pages/samosprava2026/Parties';
-import S26Party from './pages/samosprava2026/Party';
 import S26Campaigns from './pages/samosprava2026/Campaigns';
 import S26Candidate from './pages/samosprava2026/Candidate';
 
@@ -248,7 +250,14 @@ function App() {
                                 [routes.home(lang), S26Home],
                                 [routes.candidates('', lang), S26Candidates],
                                 [routes.parties('', lang), S26Parties],
-                                [routes.party(true, '', lang), S26Party],
+                                [
+                                    routes.party(true, '', lang),
+                                    S26Party,
+                                    [
+                                        ['', S26PartyOverview],
+                                        [segments.NEWS, S26PartyNews],
+                                    ],
+                                ],
                                 [routes.article(true, lang), SamospravaArticle],
                                 [routes.news(lang), S26News],
                                 [routes.campaigns(lang), S26Campaigns],

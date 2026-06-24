@@ -1,10 +1,16 @@
 import { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Table from 'react-bootstrap/Table';
+import {
+    NavLink,
+    Link,
+    Outlet,
+    useLocation,
+    useNavigate,
+} from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
 
 import { labels, t } from '../../helpers/dictionary';
-import { currencyFormat, setTitle } from '../../helpers/helpers';
-import { routes } from '../../helpers/routes';
+import { setTitle } from '../../helpers/browser';
+import { routes, segments } from '../../helpers/routes';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
 import {
@@ -13,7 +19,6 @@ import {
     useElectionData,
 } from '../../hooks/CmsQueries';
 
-import AccountTransactions from '../../components/accounts/AccountTransactions';
 import Loading from '../../components/general/Loading';
 import Title from '../../components/structure/Title';
 
@@ -45,76 +50,33 @@ function Party() {
         return <Loading />;
     }
 
-    const supportedCandidates = findSubjectSupportedCandidates(
-        cmsData,
-        cmsSubject?.primaryParty?.uid
-    ).map((candidate) => (
-        <Link
-            key={candidate.uid}
-            className="d-block"
-            to={routes.candidateMunicipal(
-                candidate.person?.name,
-                candidate.municipality
-            )}
-        >
-            {candidate.person?.name}
-        </Link>
-    ));
-
-    setTitle(cmsSubject.name);
+    setTitle(cmsSubject?.name);
 
     return (
-        <section className="candidate-page">
-            <Title>{cmsSubject.name}</Title>
-            <Table striped bordered responsive hover>
-                <tbody>
-                    <tr>
-                        <td>{t(labels.charts.incoming)}</td>
-                        <td>
-                            {currencyFormat(
-                                accountData[aggregatedKeys.incoming]
-                            )}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{t(labels.charts.outgoing)}</td>
-                        <td>
-                            {currencyFormat(
-                                accountData[aggregatedKeys.outgoing]
-                            )}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{t(labels.candidate.balance)}</td>
-                        <td>
-                            {currencyFormat(
-                                accountData[aggregatedKeys.balance]
-                            )}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{t(labels.candidate.numIncoming)}</td>
-                        <td>{accountData[aggregatedKeys.num_incoming]}</td>
-                    </tr>
-                    <tr>
-                        <td>{t(labels.candidate.numOutgoing)}</td>
-                        <td>{accountData[[aggregatedKeys.num_outgoing]]}</td>
-                    </tr>
-                    <tr>
-                        <td>{t(labels.charts.uniqueDonors)}</td>
-                        <td>{accountData[aggregatedKeys.num_unique_donors]}</td>
-                    </tr>
+        <section className="party-page">
+            <Title>{cmsSubject?.name}</Title>
 
-                    {supportedCandidates.length > 0 && (
-                        <tr>
-                            <td>{t(labels.party.supportedCandidates)}</td>
-                            <td>{supportedCandidates}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </Table>
+            <div className="tabs-scrollable">
+                <Nav variant="tabs">
+                    <Nav.Link
+                        as={NavLink}
+                        to={routes.party(cmsSubject?.name)}
+                        end
+                    >
+                        {t(labels.parties.overview)}
+                    </Nav.Link>
+                    <Nav.Link
+                        as={NavLink}
+                        to={routes.party(cmsSubject?.name, segments.NEWS)}
+                    >
+                        {t(labels.news.navTitle)}
+                    </Nav.Link>
+                </Nav>
+            </div>
 
-            <AccountTransactions candidate={accountData} />
+            <Outlet
+                context={{ cmsData, accountData }}
+            />
         </section>
     );
 }

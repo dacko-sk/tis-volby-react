@@ -9,6 +9,7 @@ export const categories = {
     news23: 877,
     news24e: 947,
     news24p: 933,
+    news26: 968,
     funding: 963,
     bannerNews: 960,
     bannerNewsEn: 961,
@@ -20,6 +21,7 @@ export const newsCategories = [
     categories.news23,
     categories.news24e,
     categories.news24p,
+    categories.news26,
     categories.funding,
     categories.newsGlobal,
 ];
@@ -156,9 +158,10 @@ export const wpCat = {
     },
     get news() {
         const subsite = getActiveSubsite();
-        if (subsite === 'prezident2024') return 933;
-        if (subsite === 'euro2024') return 947;
-        if (subsite === 'parlament2023') return 877;
+        if (subsite === 'samosprava2026') return categories.news26;
+        if (subsite === 'prezident2024') return categories.news24p;
+        if (subsite === 'euro2024') return categories.news24e;
+        if (subsite === 'parlament2023') return categories.news23;
         return 0;
     },
 };
@@ -338,8 +341,10 @@ export const parseAnalysisData = (html) => {
                         analysis[group] = [];
                         let len = 0;
                         if (group === transparencyIndicators.account) len = 6;
-                        else if (group === transparencyIndicators.financing) len = 4;
-                        else if (group === transparencyIndicators.information) len = 6;
+                        else if (group === transparencyIndicators.financing)
+                            len = 4;
+                        else if (group === transparencyIndicators.information)
+                            len = 6;
 
                         Array.from({ length: len }).forEach(() => {
                             analysis[group].push(

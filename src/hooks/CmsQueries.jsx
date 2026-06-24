@@ -99,7 +99,7 @@ export const findSubjectByPathname = (data, pathname) => {
     if (!data?.subjects || !Array.isArray(data.subjects)) return null;
     return data.subjects.find((subject) => {
         const key = routes.party(subject.name);
-        return pathname === key;
+        return pathname.startsWith(key);
     });
 };
 
@@ -108,6 +108,11 @@ export const findSubjectByAccount = (data, account) => {
     return data.subjects.find((subject) => {
         return subject.account === account;
     });
+};
+
+export const findSubjectByTag = (data, tag) => {
+    if (!data?.subjects || !Array.isArray(data.subjects)) return null;
+    return data.subjects.find((subject) => subject.primaryParty?.wpTag === tag);
 };
 
 export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
