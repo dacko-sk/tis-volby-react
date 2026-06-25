@@ -168,7 +168,7 @@ const subsiteOverrides = {
                 'Number of unique donors per candidate',
             ],
             partyCandidatesTitle: [
-                'Kandidáti bez transparentného účtu a stranícky kandidáti',
+                'Kandidáti bez transparentného účtu a stranícki kandidáti',
                 'Candidates without transparent accounts and party candidates',
             ],
         },
