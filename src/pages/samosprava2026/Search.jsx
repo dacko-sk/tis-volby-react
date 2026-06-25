@@ -5,18 +5,17 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import { labels, t } from '../../helpers/dictionary';
-import {
-    contains,
-    regionalCity,
-    setTitle,
-    sortByNumericProp,
-} from '../../helpers/helpers';
+import { contains, regionalCity, setTitle } from '../../helpers/helpers';
 import { routes, segments } from '../../helpers/routes';
 
-import useData, {
-    municipalTypes,
-    s22AggregatedKeys,
-} from '../../hooks/AccountsData';
+import { municipalTypes } from '../../hooks/AccountsData';
+import {
+    useElectionData,
+    getMunicipalities,
+    getSearchTags,
+    getMunicipalityShortname,
+    isRegionalFunction,
+} from '../../hooks/CmsQueries';
 
 import { newsCategories } from './News';
 import Loading from '../../components/general/Loading';
@@ -28,106 +27,137 @@ function Search() {
     const query = params?.query ?? null;
     const navigate = useNavigate();
 
-    const { csvData } = useData();
+    const { data: cmsData } = useElectionData();
 
     // parse data
+    const municipalities = [];
     const candidates = [];
-    const mun = {};
-    if (csvData?.data) {
-        csvData.data.sort(sortByNumericProp('sum_outgoing')).forEach((row) => {
-            if (!row.isParty) {
-                const city = row[s22AggregatedKeys.municipality] ?? '';
-                // if candidate's municipality name or regional city name matches search query
-                const munMatch =
-                    city &&
-                    (contains(city, query) ||
-                        contains(regionalCity(city), query));
+    const parties = [];
 
-                // municipality matches - list municipality
-                if (munMatch) {
-                    const key = `${row[s22AggregatedKeys.region] ?? '_'}-${
-                        row.municipalityShortName
-                    }`;
-                    const link = routes.municipality(
-                        row.municipalityShortName,
-                        row[s22AggregatedKeys.region] ?? null
-                    );
-                    mun[key] = (
-                        <Col key={key} className="d-flex" sm>
-                            <Link
-                                to={link}
-                                className={`d-flex flex-column justify-content-between w-100 cat-${
-                                    row.isRegional ? 'regional' : 'local'
-                                }`}
-                            >
-                                <h3>{row[s22AggregatedKeys.municipality]}</h3>
-                                <div className="type">
-                                    {t(
-                                        labels.elections.municipalTypes[
-                                            row.isRegional
-                                                ? municipalTypes.regional
-                                                : municipalTypes.local
-                                        ]
-                                    )}
-                                </div>
-                            </Link>
-                        </Col>
-                    );
-                }
+    if (cmsData?.candidates) {
+        getMunicipalities(cmsData).forEach((mun) => {
+            const city = mun.municipality;
+            const shortName = getMunicipalityShortname(city);
+            const munMatch =
+                city &&
+                (contains(city, query) ||
+                    contains(regionalCity(city), query) ||
+                    contains(shortName, query));
 
-                // candidate name or municipalities matches - list candidate
-                if (contains(row[s22AggregatedKeys.name], query) || munMatch) {
-                    const link = routes.candidateMunicipal(
-                        row[s22AggregatedKeys.name],
-                        row.municipalityShortName
-                    );
-                    candidates.push(
-                        <Col
-                            key={
-                                row[s22AggregatedKeys.name] +
-                                row[s22AggregatedKeys.municipality]
-                            }
-                            className="d-flex"
-                            sm
+            if (munMatch) {
+                const key = `${mun.region ?? '_'}-${city}`;
+                const link = routes.municipality(shortName, mun.region ?? null);
+                municipalities.push(
+                    <Col key={key} className="d-flex" sm>
+                        <Link
+                            to={link}
+                            className={`d-flex flex-column justify-content-between w-100 cat-${
+                                mun.isRegional ? 'regional' : 'local'
+                            }`}
                         >
-                            <Link
-                                to={link}
-                                className={`d-flex flex-column justify-content-between w-100 cat-${
-                                    row.isRegional ? 'regional' : 'local'
-                                }`}
-                            >
-                                <h3>{row[s22AggregatedKeys.name]}</h3>
-                                {row[s22AggregatedKeys.municipality] && (
-                                    <div className="town my-3">
-                                        {row.municipalityShortName}
-                                    </div>
+                            <h3>{city}</h3>
+                            <div className="type">
+                                {t(
+                                    labels.elections.municipalTypes[
+                                        mun.isRegional
+                                            ? municipalTypes.regional
+                                            : municipalTypes.local
+                                    ]
                                 )}
-                                <div className="type">
-                                    {t(
-                                        labels.elections.municipalTypes[
-                                            row.isRegional
-                                                ? municipalTypes.regional
-                                                : municipalTypes.local
-                                        ]
-                                    )}
+                            </div>
+                        </Link>
+                    </Col>
+                );
+            }
+        });
+
+        cmsData.candidates.forEach((candidate) => {
+            const city = candidate.municipality;
+            const shortName = getMunicipalityShortname(city);
+
+            if (
+                contains(candidate.person?.name, query) ||
+                (city && contains(city, query)) ||
+                (shortName && contains(shortName, query))
+            ) {
+                const isRegional = isRegionalFunction(candidate.functionType);
+                const link = routes.candidateMunicipal(
+                    candidate.person?.name,
+                    shortName
+                );
+                candidates.push(
+                    <Col
+                        key={`${candidate.person?.name}-${city}`}
+                        className="d-flex"
+                        sm
+                    >
+                        <Link
+                            to={link}
+                            className={`d-flex flex-column justify-content-between w-100 cat-${
+                                isRegional ? 'regional' : 'local'
+                            }`}
+                        >
+                            <h3>{candidate.person?.name}</h3>
+                            {city && (
+                                <div className="town my-3">
+                                    {candidate.municipality}
                                 </div>
-                            </Link>
-                        </Col>
-                    );
-                }
+                            )}
+                            <div className="type">
+                                {t(
+                                    labels.elections.municipalTypes[
+                                        isRegional
+                                            ? municipalTypes.regional
+                                            : municipalTypes.local
+                                    ]
+                                )}
+                            </div>
+                        </Link>
+                    </Col>
+                );
             }
         });
     }
-    const municipalities = Object.values(mun);
+
+    if (cmsData?.subjects) {
+        cmsData.subjects.forEach((subject) => {
+            if (
+                contains(subject.name, query) ||
+                contains(subject.abbreviation, query)
+            ) {
+                const link = routes.party(subject.name);
+                parties.push(
+                    <Col key={subject.name} className="d-flex" sm>
+                        <Link
+                            to={link}
+                            className="d-flex flex-column justify-content-between w-100 cat-regional"
+                        >
+                            <h3>{subject.name}</h3>
+                            {subject.abbreviation && (
+                                <div className="town my-3">
+                                    {subject.abbreviation}
+                                </div>
+                            )}
+                            <div className="type">
+                                {t(labels.search.parties)}
+                            </div>
+                        </Link>
+                    </Col>
+                );
+            }
+        });
+    }
+
+    const tags = getSearchTags(cmsData, query);
 
     useEffect(() => {
         if (!query) {
             // redirect to root page if no query string is provided
             navigate(routes.home);
         }
-    }, [query]);
+    }, [query, navigate]);
 
-    if (!csvData?.data) {
+    if (!cmsData) {
         return <Loading />;
     }
 
@@ -155,12 +185,20 @@ function Search() {
                 </Alert>
             )}
 
+            <h2 className="my-4">{t(labels.search.parties)}</h2>
+            {parties.length ? (
+                <Row className="tiles gx-4 gy-4">{parties}</Row>
+            ) : (
+                <Alert variant="secondary">{t(labels.search.noParty)}</Alert>
+            )}
+
             <h2 className="my-4">{t(labels.search.news)}</h2>
             <Posts
                 categories={newsCategories}
                 noResults={t(labels.search.noNews)}
                 section={segments.NEWS}
-                search={query}
+                search={tags.length > 0 ? undefined : query}
+                tags={tags.length > 0 ? tags : undefined}
             />
         </section>
     );

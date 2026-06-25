@@ -165,17 +165,22 @@ export const labels = {
         results: ['Výsledky vyhľadávania výrazu', 'Search results for'],
         municipalities: ['Samosprávy', 'Municipalities'],
         noMunicipality: [
-            'Hľadanému výrazu nezodpovedá žiadna samospráva.',
-            'No municipality found for the given term.',
+            'Hľadaný výraz sa nenachádza v názvoch samospráv.',
+            'The searched term was not found in any municipality names.',
         ],
         candidates: ['Kandidáti', 'Candidates'],
         noCandidate: [
-            'Hľadanému výrazu nezodpovedá žiaden kandidát.',
-            'No candidate found for the given term.',
+            'Hľadaný výraz sa nenachádza v menách kandidátov.',
+            'The searched term was not found in any candidate names.',
         ],
-        news: ['Aktuality', 'News'],
+        parties: ['Strany a koalície', 'Parties and coalitions'],
+        noParty: [
+            'Hľadaný výraz sa nenachádza v názvoch strán.',
+            'The searched term was not found in any party names.',
+        ],
+        news: ['Aktuality', 'News (Slovak only)'],
         noNews: [
-            'Hľadaný výraz nebol nájdený v žiadnej z aktualít.',
+            'Hľadaný výraz sa nenachádza v žiadnej z aktualít.',
             'The searched term was not found in any of the news.',
         ],
     },

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { contains } from '../helpers/helpers';
 import { getActiveSubsite } from '../helpers/languages';
 import { routes } from '../helpers/routes';
 
@@ -122,4 +123,53 @@ export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
             (party) => party.uid === primaryPartyUid
         )
     );
+};
+
+export const getMunicipalities = (data) => {
+    if (!data?.candidates || !Array.isArray(data.candidates)) return [];
+    const munSet = new Set();
+    const result = [];
+    data.candidates.forEach((candidate) => {
+        if (!candidate.municipality || !candidate.region) return;
+        const isRegional = isRegionalFunction(candidate.functionType);
+        const key = `${candidate.region}-${candidate.municipality}-${isRegional}`;
+        if (!munSet.has(key)) {
+            munSet.add(key);
+            result.push({
+                region: candidate.region,
+                municipality: candidate.municipality,
+                isRegional,
+            });
+        }
+    });
+    return result;
+};
+
+export const getSearchTags = (data, query) => {
+    const tags = new Set();
+
+    if (data?.candidates && Array.isArray(data.candidates)) {
+        data.candidates.forEach((candidate) => {
+            if (contains(candidate.person?.name, query)) {
+                if (candidate.person?.wpTag) {
+                    tags.add(candidate.person.wpTag);
+                }
+            }
+        });
+    }
+
+    if (data?.subjects && Array.isArray(data.subjects)) {
+        data.subjects.forEach((subject) => {
+            if (
+                contains(subject.name, query) ||
+                contains(subject.abbreviation, query)
+            ) {
+                if (subject.primaryParty?.wpTag) {
+                    tags.add(subject.primaryParty.wpTag);
+                }
+            }
+        });
+    }
+
+    return Array.from(tags);
 };
