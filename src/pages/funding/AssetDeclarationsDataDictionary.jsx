@@ -166,7 +166,7 @@ function AssetDeclarationsDataDictionary() {
                             </Table>
                         </Card>
 
-                        <h3 className="mt-5 mb-3">{t(th.rfTitle)}</h3>
+                        {/* <h3 className="mt-5 mb-3">{t(th.rfTitle)}</h3>
                         <Card>
                             <Table
                                 striped
@@ -196,7 +196,7 @@ function AssetDeclarationsDataDictionary() {
                                     </tr>
                                 </tbody>
                             </Table>
-                        </Card>
+                        </Card> */}
                     </Col>
                 </Row>
             </Container>

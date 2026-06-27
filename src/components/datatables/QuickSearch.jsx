@@ -7,7 +7,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { labels, t } from '../../helpers/dictionary';
 import { partyAlias, partyWpTag } from '../../helpers/parties';
 import { routes, rwq, segments } from '../../helpers/routes';
-import { useDemoMode } from '../../helpers/demoMode';
+
 import { newsCategories } from '../../helpers/wp';
 
 import TransactionsQuickResults from '../accounts/TransactionsQuickResults';
@@ -86,7 +86,7 @@ function QuickSearch() {
                 <DonorsQuickResults q={apiQuery} />
 
                 <TransactionsQuickResults q={apiQuery} />
-                {useDemoMode() && apiQuery && (
+                {apiQuery && (
                     <>
                         <h4 className="my-4">
                             {t(labels.assetDeclarations.navTitle)}

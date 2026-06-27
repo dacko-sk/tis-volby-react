@@ -18,6 +18,7 @@ import { endpoints } from '../../helpers/assetDeclarations';
 
 import FundingNav from '../../components/structure/FundingNav';
 import Title from '../../components/structure/Title';
+import DownloadLink from '../../components/general/DownloadLink';
 import Loading from '../../components/general/Loading';
 import TisBarChart from '../../components/charts/TisBarChart';
 
@@ -171,9 +172,9 @@ function AssetDeclaration() {
                                     title={decl.year.toString()}
                                 >
                                     <Row className="g-4">
-                                        {/* Row 1: Basic Info Cards */}
                                         <Col md={6}>
-                                            <Card className="h-100 shadow-sm border-0">
+                                            {/* Table 1: Basic Info Cards */}
+                                            <Card className="shadow-sm border-0">
                                                 <Card.Header className="bg-primary text-white fw-bold py-3">
                                                     ℹ️ {t(labels.usefulInfo)}
                                                 </Card.Header>
@@ -257,9 +258,33 @@ function AssetDeclaration() {
                                             </Card>
                                         </Col>
 
-                                        {/* Row 2: Incomes info */}
                                         <Col md={6}>
-                                            <Card className="h-100 shadow-sm border-0">
+                                            {/* Table 2a: Extended Asset Declaration */}
+                                            {decl.extended_report && (
+                                                <Card className="shadow-sm border-0 mb-4">
+                                                    <Card.Header className="bg-secondary text-white fw-bold py-3">
+                                                        📄{' '}
+                                                        {t(
+                                                            labels
+                                                                .assetDeclarations
+                                                                .extendedReport
+                                                        )}
+                                                    </Card.Header>
+                                                    <DownloadLink
+                                                        to={
+                                                            decl.extended_report
+                                                        }
+                                                    >
+                                                        {t(
+                                                            labels
+                                                                .assetDeclarations
+                                                                .extendedReport
+                                                        )}
+                                                    </DownloadLink>
+                                                </Card>
+                                            )}
+                                            {/* Table 2: Incomes info */}
+                                            <Card className="shadow-sm border-0">
                                                 <Card.Header className="bg-primary text-white fw-bold py-3">
                                                     💰{' '}
                                                     {t(labels.charts.incoming)}
@@ -270,7 +295,7 @@ function AssetDeclaration() {
                                                 >
                                                     <tbody>
                                                         <tr>
-                                                            <th className="ps-3 py-3 w-45">
+                                                            <th className="ps-3 py-3">
                                                                 {t(
                                                                     labels
                                                                         .assetDeclarations
@@ -351,8 +376,8 @@ function AssetDeclaration() {
                                             </Card>
                                         </Col>
 
-                                        {/* Row 3: Asset Details Card (full-width) */}
                                         <Col xs={12}>
+                                            {/* Table 3: Asset Details Card (full-width) */}
                                             <Card className="shadow-sm border-0">
                                                 <Card.Header className="bg-primary text-white fw-bold py-3">
                                                     🏠{' '}

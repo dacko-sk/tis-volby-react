@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-import { useDemoMode } from '../../helpers/demoMode';
+
 import { elections } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
 import { getActiveSubsite, getCurrentLanguage, languages } from '../../helpers/languages';
@@ -149,11 +149,9 @@ function Header() {
                             {t(labels.accounts.navTitle)}
                         </span>
                     </NavDropdown.Item>
-                    {useDemoMode() && (
-                        <NavDropdown.Item as={NavLink} to={routes.assetDeclarations()}>
-                            {t(labels.assetDeclarations.navTitle)}
-                        </NavDropdown.Item>
-                    )}
+                    <NavDropdown.Item as={NavLink} to={routes.assetDeclarations()}>
+                        {t(labels.assetDeclarations.navTitle)}
+                    </NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to={routes.charts()}>
                         {t(labels.charts.pageTitle)}
                     </NavDropdown.Item>
