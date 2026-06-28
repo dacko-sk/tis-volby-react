@@ -40,7 +40,9 @@ function AssetDeclaration() {
         if (
             !isLoading &&
             !error &&
-            (!data || !Array.isArray(data) || data.length === 0)
+            (!data ||
+                !Array.isArray(data.declarations) ||
+                data.declarations.length === 0)
         ) {
             // Redirect to list page if no data was found or invalid slug
             navigate(routes.assetDeclarations());
@@ -57,12 +59,12 @@ function AssetDeclaration() {
         );
     }
 
-    const declarations = data ?? [];
+    const declarations = data?.declarations ?? [];
     if (declarations.length === 0) {
         return null;
     }
 
-    const name = declarations[0].name;
+    const name = data?.name;
     setTitle(`${t(labels.assetDeclarations.pageTitle)} | ${name}`);
 
     // Chronologically sorted declarations for chart (ascending years)
@@ -131,6 +133,30 @@ function AssetDeclaration() {
                     </Card>
                 </Col>
             </Row>
+
+            {/* Extended Asset Declarations */}
+            {data?.extended && data.extended.length > 0 && (
+                <Row className="mb-5">
+                    <Col lg={12}>
+                        <Card className="shadow-sm border-0">
+                            <Card.Header className="bg-secondary text-white fw-bold py-3">
+                                📄 {t(labels.assetDeclarations.extendedReports)}
+                            </Card.Header>
+                            <div>
+                                {data.extended.map((ext, i) => (
+                                    <DownloadLink key={i} to={ext.url}>
+                                        {ext.title ||
+                                            t(
+                                                labels.assetDeclarations
+                                                    .extendedReport
+                                            )}
+                                    </DownloadLink>
+                                ))}
+                            </div>
+                        </Card>
+                    </Col>
+                </Row>
+            )}
 
             {/* Tabbed declarations per year */}
             <Row>
@@ -259,30 +285,6 @@ function AssetDeclaration() {
                                         </Col>
 
                                         <Col md={6}>
-                                            {/* Table 2a: Extended Asset Declaration */}
-                                            {decl.extended_report && (
-                                                <Card className="shadow-sm border-0 mb-4">
-                                                    <Card.Header className="bg-secondary text-white fw-bold py-3">
-                                                        📄{' '}
-                                                        {t(
-                                                            labels
-                                                                .assetDeclarations
-                                                                .extendedReport
-                                                        )}
-                                                    </Card.Header>
-                                                    <DownloadLink
-                                                        to={
-                                                            decl.extended_report
-                                                        }
-                                                    >
-                                                        {t(
-                                                            labels
-                                                                .assetDeclarations
-                                                                .extendedReport
-                                                        )}
-                                                    </DownloadLink>
-                                                </Card>
-                                            )}
                                             {/* Table 2: Incomes info */}
                                             <Card className="shadow-sm border-0">
                                                 <Card.Header className="bg-primary text-white fw-bold py-3">

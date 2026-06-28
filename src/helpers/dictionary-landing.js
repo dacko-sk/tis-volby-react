@@ -66,7 +66,14 @@ export const labels = {
     all: ['Zobraziť všetko', 'Show all'],
     assetDeclarations: {
         assets: ['Majetky', 'Assets'],
-        extendedReport: ['Rozšírené majetkové priznanie', 'Extended asset declaration'],
+        extendedReport: [
+            'Rozšírené majetkové priznanie',
+            'Extended asset declaration',
+        ],
+        extendedReports: [
+            'Rozšírené majetkové priznania',
+            'Extended asset declarations',
+        ],
         back: ['Späť na majetkové priznania', 'Return to asset declarations'],
         dataDictionaryDisclaimer: [
             'Viac informácií o dátach a metodike nájdete na stránke ',
