@@ -56,6 +56,7 @@ function Candidate() {
         <section className="candidate-page">
             <Title secondary={cmsCandidate?.municipality || null}>
                 {cmsCandidate?.person?.name}
+                <br />
             </Title>
 
             <div className="tabs-scrollable mt-4">
