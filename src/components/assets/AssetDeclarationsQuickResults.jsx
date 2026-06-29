@@ -56,7 +56,7 @@ function AssetDeclarationsQuickResults({ maxResults = 3, q }) {
                 variant="secondary"
                 className="mt-3"
             >
-                {t(labels.assetDeclarations.searchPlaceholder)}
+                {t(labels.assetDeclarations.advancedSearch)}
             </Button>
         </>
     );

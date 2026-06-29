@@ -126,6 +126,10 @@ export const labels = {
             "Overview of public officials' asset declarations",
         ],
         searchPlaceholder: ['Meno, funkcia…', 'Name, function…'],
+        advancedSearch: [
+            'Viac výsledkov a podrobné vyhľadávanie majetkových priznaní',
+            'More results & advanced asset declarations search',
+        ],
         declarationsCount: ['%i priznaní', '%i declarations'],
         noData: [
             'Neboli nájdené žiadne majetkové priznania.',
