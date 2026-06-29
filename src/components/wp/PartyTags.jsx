@@ -35,7 +35,8 @@ function PartyTags({ tags, className, asLink }) {
                             getLastWord(c.person?.name ?? ''),
                             routes.candidateMunicipal(
                                 c.person?.name ?? '',
-                                c.municipality
+                                c.municipality,
+                                null
                             ),
                         ],
                     ];

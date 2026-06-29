@@ -78,9 +78,10 @@ export const findCandidateByPathname = (data, pathname) => {
     return data.candidates.find((candidate) => {
         const key = routes.candidateMunicipal(
             candidate.person?.name ?? '',
-            candidate.municipality
+            candidate.municipality,
+            null
         );
-        return pathname === key;
+        return pathname === key || pathname.startsWith(key + '/');
     });
 };
 
@@ -100,7 +101,7 @@ export const findSubjectByPathname = (data, pathname) => {
     if (!data?.subjects || !Array.isArray(data.subjects)) return null;
     return data.subjects.find((subject) => {
         const key = routes.party(subject.name);
-        return pathname.startsWith(key);
+        return pathname === key || pathname.startsWith(key + '/');
     });
 };
 

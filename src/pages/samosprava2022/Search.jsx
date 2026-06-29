@@ -81,7 +81,8 @@ function Search() {
                 if (contains(row[s22AggregatedKeys.name], query) || munMatch) {
                     const link = routes.candidateMunicipal(
                         row[s22AggregatedKeys.name],
-                        row.municipalityShortName
+                        row.municipalityShortName,
+                        null
                     );
                     candidates.push(
                         <Col

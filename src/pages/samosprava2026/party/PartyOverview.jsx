@@ -31,7 +31,8 @@ function PartyOverview() {
             className="me-1 text-decoration-none"
             to={routes.candidateMunicipal(
                 candidate.person?.name,
-                candidate.municipality
+                candidate.municipality,
+                null
             )}
         >
             {candidate.person?.name}

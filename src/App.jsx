@@ -48,6 +48,9 @@ import S26Candidates from './pages/samosprava2026/Candidates';
 import S26Parties from './pages/samosprava2026/Parties';
 import S26Campaigns from './pages/samosprava2026/Campaigns';
 import S26Candidate from './pages/samosprava2026/Candidate';
+import S26CandidateOverview from './pages/samosprava2026/candidate/CandidateOverview';
+import S26CandidateNews from './pages/samosprava2026/candidate/CandidateNews';
+import S26CandidateAssets from './pages/samosprava2026/candidate/CandidateAssets';
 
 // Euro 2024 Pages
 import Euro24Home from './pages/euro2024/Home';
@@ -262,8 +265,16 @@ function App() {
                                 [routes.news(lang), S26News],
                                 [routes.campaigns(lang), S26Campaigns],
                                 [
-                                    routes.candidateMunicipal(true, '', lang),
+                                    routes.candidateMunicipal(true, '', null, lang),
                                     S26Candidate,
+                                    [
+                                        ['', S26CandidateOverview],
+                                        [segments.NEWS, S26CandidateNews],
+                                        [
+                                            segments.ASSET_DECLARATIONS,
+                                            S26CandidateAssets,
+                                        ],
+                                    ],
                                 ],
                                 [
                                     routes.municipality(true, '', lang),

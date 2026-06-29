@@ -28,7 +28,8 @@ function PartyCandidatesTableLegacy({ candidates }) {
                         className="fw-bold text-black"
                         to={routes.candidateMunicipal(
                             candidate[s22AggregatedKeys.name],
-                            candidate.municipalityShortName
+                            candidate.municipalityShortName,
+                            null
                         )}
                     >
                         {candidate[s22AggregatedKeys.name]}

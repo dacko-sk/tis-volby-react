@@ -38,7 +38,7 @@ function PartyCandidatesTable({ candidates }) {
                 <td>
                     <Link
                         className="fw-bold text-black"
-                        to={routes.candidateMunicipal(name, municipality)}
+                        to={routes.candidateMunicipal(name, municipality, null)}
                     >
                         {name}
                     </Link>

@@ -33,7 +33,8 @@ function Candidate() {
         csvData.data.some((row) => {
             const key = routes.candidateMunicipal(
                 row[s22AggregatedKeys.name],
-                row.municipalityShortName
+                row.municipalityShortName,
+                null
             );
             if (pathname === key) {
                 candidate = row;

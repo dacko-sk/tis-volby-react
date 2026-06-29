@@ -339,7 +339,7 @@ export const routes = {
         }
         return languageRoot(lang) + 'grafy/donori';
     }),
-    candidateMunicipal: makeRoute((name, town, lang) => {
+    candidateMunicipal: makeRoute((name, town, subpage, lang) => {
         return (
             languageRoot(lang) +
             urlSegment(segments.CANDIDATES, lang) +
@@ -347,10 +347,14 @@ export const routes = {
             (name === true
                 ? ':slug'
                 : encodeURIComponent(
-                      name.replaceAll(' ', '.') +
+                      (name || '').replaceAll(' ', '.') +
                           separators.value +
-                          getMunicipalityShortname(town).replaceAll(' ', '.')
-                  ))
+                          (getMunicipalityShortname(town) || '').replaceAll(
+                              ' ',
+                              '.'
+                          )
+                  )) +
+            (subpage ? separators.url + urlSegment(subpage, lang) : '')
         );
     }),
     municipality: makeRoute((town, region, lang) => {

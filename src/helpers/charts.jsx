@@ -138,7 +138,9 @@ export const tickLabel = (value, x) => {
             const dy = '1.2em';
 
             const nameLink = (
-                <Link to={routes.candidateMunicipal(name, town)}>{name}</Link>
+                <Link to={routes.candidateMunicipal(name, town, null)}>
+                    {name}
+                </Link>
             );
             const numLines = 1 + 1 + (args.length > 1 && args[1] ? 1 : 0);
             const firstDy = `${-((numLines - 1) * 1.2) / 2}em`;

@@ -83,7 +83,8 @@ function Search() {
                 const isRegional = isRegionalFunction(candidate.functionType);
                 const link = routes.candidateMunicipal(
                     candidate.person?.name,
-                    shortName
+                    shortName,
+                    null
                 );
                 candidates.push(
                     <Col
