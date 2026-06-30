@@ -15,6 +15,7 @@ import {
     getSearchTags,
     getMunicipalityShortname,
     isRegionalFunction,
+    getSubjectShortname,
 } from '../../hooks/CmsQueries';
 
 import { newsCategories } from './News';
@@ -126,7 +127,7 @@ function Search() {
                 contains(subject.name, query) ||
                 contains(subject.abbreviation, query)
             ) {
-                const link = routes.party(subject.name);
+                const link = routes.party(getSubjectShortname(subject));
                 parties.push(
                     <Col key={subject.name} className="d-flex" sm>
                         <Link

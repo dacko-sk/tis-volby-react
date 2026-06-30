@@ -130,7 +130,7 @@ function Municipality() {
             cmsData?.candidates
         ) {
             // redirect to home page in case candidate does not exist
-            navigate(routes.home);
+            navigate(routes.home());
         }
     }, [candidates.length, partyCandidates.length, cmsData, navigate]);
 

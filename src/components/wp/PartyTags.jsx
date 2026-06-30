@@ -6,6 +6,7 @@ import useAdsData from '../../hooks/AdsData';
 import {
     findCandidateByTag,
     findSubjectByTag,
+    getSubjectShortname,
     useElectionData,
 } from '../../hooks/CmsQueries';
 
@@ -41,13 +42,12 @@ function PartyTags({ tags, className, asLink }) {
                         ],
                     ];
                 }
-                const p = findSubjectByTag(cmsData, tag);
-                if (p) {
+                const shortname = getSubjectShortname(
+                    findSubjectByTag(cmsData, tag)
+                );
+                if (shortname) {
                     return [
-                        [
-                            p.abbreviation || p.name,
-                            routes.party(p.name, segments.NEWS),
-                        ],
+                        [shortname, routes.party(shortname, segments.NEWS)],
                     ];
                 }
                 // otherwise skip

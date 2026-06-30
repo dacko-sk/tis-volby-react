@@ -1,5 +1,6 @@
 import TisBarChart from '../../components/charts/TisBarChart';
 import Title from '../../components/structure/Title';
+import Loading from '../../components/general/Loading';
 
 import {
     chartKeys,
@@ -10,28 +11,29 @@ import { labels, t } from '../../helpers/dictionary';
 import { setTitle, sortBySpending } from '../../helpers/helpers';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import { findSubject, useElectionData } from '../../hooks/CmsQueries';
+import { getSubjectShortname, useElectionData } from '../../hooks/CmsQueries';
 
 function Parties() {
     const { csvData } = useData();
-    const { data: cmsData } = useElectionData();
+    const { data: cmsData, isLoading } = useElectionData();
 
     // parse data
     const parties = [];
-    if (csvData?.data) {
-        csvData.data.forEach((row) => {
-            if (
-                findSubject(
-                    cmsData,
-                    row[aggregatedKeys.name],
-                    row[aggregatedKeys.account]
-                )
-            ) {
-                parties.push({
-                    name: getPartyChartLabel(row[aggregatedKeys.name]),
-                    [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                    [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                });
+    if (cmsData?.subjects) {
+        cmsData.subjects.forEach((subject) => {
+            if (subject.account && csvData?.data) {
+                const row = csvData.data.find(
+                    (r) =>
+                        r[aggregatedKeys.name] === subject.name &&
+                        r[aggregatedKeys.account] === subject.account
+                );
+                if (row) {
+                    parties.push({
+                        name: getPartyChartLabel(getSubjectShortname(subject)),
+                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                    });
+                }
             }
         });
         parties.sort(sortBySpending);
@@ -39,6 +41,10 @@ function Parties() {
 
     const title = t(labels.parties.navTitle);
     setTitle(title);
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <section>

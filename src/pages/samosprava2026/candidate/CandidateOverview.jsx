@@ -12,23 +12,28 @@ import { routes } from '../../../helpers/routes';
 
 import { aggregatedKeys, municipalTypes } from '../../../hooks/AccountsData';
 import {
+    findCandidateSupportingSubjects,
     findSubjectByAccount,
     getCandidateMunicipalityShortname,
+    getSubjectShortname,
     isRegionalFunction,
-    useElectionData,
 } from '../../../hooks/CmsQueries';
 
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
 import FinalReport from '../../../components/general/FinalReport';
 
 function CandidateOverview() {
-    const { cmsCandidate, accountData } = useOutletContext();
-    const { data: cmsData } = useElectionData();
+    const { cmsData, cmsCandidate, accountData } = useOutletContext();
 
     const partyAccounts = (cmsCandidate?.partyAccounts ?? []).map((account) => {
         const s = findSubjectByAccount(cmsData, account.trim());
+        const shortname = getSubjectShortname(s);
         return s ? (
-            <Link key={s.name} className="d-block" to={routes.party(s.name)}>
+            <Link
+                key={shortname}
+                className="d-block"
+                to={routes.party(shortname)}
+            >
                 {s.name}
             </Link>
         ) : (
@@ -44,19 +49,22 @@ function CandidateOverview() {
         );
     });
 
-    const supportingParties = (cmsCandidate?.supportingParties ?? []).map(
-        (party) => (
+    const supportingParties = findCandidateSupportingSubjects(
+        cmsData,
+        cmsCandidate
+    )
+        .map((subject) => getSubjectShortname(subject))
+        .map((shortname) => (
             <Badge
                 as={Link}
-                key={party.name}
+                key={shortname}
                 bg="secondary"
                 className="me-1 text-decoration-none"
-                to={routes.party(party.name)}
+                to={routes.party(shortname)}
             >
-                {party.abbreviation || party.name}
+                {shortname}
             </Badge>
-        )
-    );
+        ));
 
     return (
         <div className="candidate-overview">

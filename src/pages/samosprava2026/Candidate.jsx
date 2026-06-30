@@ -100,7 +100,7 @@ function Candidate() {
             </div>
 
             <div className="mt-4">
-                <Outlet context={{ cmsCandidate, accountData }} />
+                <Outlet context={{ cmsData, cmsCandidate, accountData }} />
             </div>
         </section>
     );

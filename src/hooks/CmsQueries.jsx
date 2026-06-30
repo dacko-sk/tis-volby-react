@@ -25,6 +25,7 @@ export const regionDefs = {
 };
 
 // queries
+
 export const getCmsSubsite = () => {
     const activeSubsite = getActiveSubsite();
     return cmsSubsitesMap[activeSubsite] || activeSubsite;
@@ -59,11 +60,19 @@ export const isMunicipalityRegional = (town) =>
 export const getMunicipalityShortname = (town) =>
     Object.values(regionDefs).find((r) => r.name === town)?.shortname ?? town;
 
-// selectors
 export const getCandidateMunicipalityShortname = (candidate) =>
     isRegionalFunction(candidate?.functionType)
         ? (regionDefs[candidate?.region]?.shortname ?? candidate?.municipality)
         : candidate?.municipality;
+
+export const getSubjectShortname = (subject) =>
+    subject
+        ? subject.abbreviation ||
+          subject.primaryParty?.abbreviation ||
+          subject.name
+        : null;
+
+// selectors
 
 export const findCandidate = (data, name, account) => {
     if (!data?.candidates || !Array.isArray(data.candidates)) return null;
@@ -100,7 +109,7 @@ export const findSubject = (data, name, account) => {
 export const findSubjectByPathname = (data, pathname) => {
     if (!data?.subjects || !Array.isArray(data.subjects)) return null;
     return data.subjects.find((subject) => {
-        const key = routes.party(subject.name);
+        const key = routes.party(getSubjectShortname(subject));
         return pathname === key || pathname.startsWith(key + '/');
     });
 };
@@ -123,6 +132,22 @@ export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
         (candidate.supportingParties ?? []).some(
             (party) => party.uid === primaryPartyUid
         )
+    );
+};
+
+export const findCandidateSupportingSubjects = (data, candidate) => {
+    if (
+        !data?.subjects ||
+        !Array.isArray(data.subjects) ||
+        !candidate?.supportingParties
+    ) {
+        return [];
+    }
+    const supportingUids = candidate.supportingParties.map(
+        (party) => party.uid
+    );
+    return data.subjects.filter((subject) =>
+        supportingUids.includes(subject.primaryParty?.uid)
     );
 };
 

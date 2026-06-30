@@ -264,7 +264,7 @@ export const routes = {
         const niceSlug =
             slug === true
                 ? ':slug'
-                : encodeURIComponent(slug.replaceAll(' ', spaceSep));
+                : encodeURIComponent((slug || '').replaceAll(' ', spaceSep));
 
         return (
             languageRoot(lang) +
@@ -289,7 +289,7 @@ export const routes = {
         const niceSlug =
             slug === true
                 ? ':slug'
-                : encodeURIComponent(slug.replaceAll(' ', spaceSep));
+                : encodeURIComponent((slug || '').replaceAll(' ', spaceSep));
         return (
             languageRoot(lang) +
             urlSegment(segments.CANDIDATES, lang) +
@@ -359,7 +359,7 @@ export const routes = {
     }),
     municipality: makeRoute((town, region, lang) => {
         const reg = region
-            ? region.replaceAll(' ', '.') + separators.value
+            ? (region || '').replaceAll(' ', '.') + separators.value
             : '';
         return (
             languageRoot(lang) +
@@ -367,7 +367,7 @@ export const routes = {
             separators.url +
             (town === true
                 ? ':municipality'
-                : encodeURIComponent(reg + town.replaceAll(' ', '.')))
+                : encodeURIComponent(reg + (town || '').replaceAll(' ', '.')))
         );
     }),
     region: makeRoute((region, lang) => {
@@ -375,7 +375,7 @@ export const routes = {
             languageRoot(lang) +
             urlSegment(segments.REGIONS, lang) +
             separators.url +
-            (region === true ? ':region' : encodeURIComponent(region))
+            (region === true ? ':region' : encodeURIComponent(region || ''))
         );
     }),
 
@@ -389,7 +389,9 @@ export const routes = {
             separators.url +
             (slug === true
                 ? ':slug'
-                : encodeURIComponent(slug.replaceAll(' ', separators.space)))
+                : encodeURIComponent(
+                      (slug || '').replaceAll(' ', separators.space)
+                  ))
         );
     }),
     accounts: makeRoute((lang) => {
@@ -429,7 +431,9 @@ export const routes = {
             separators.url +
             (slug === true
                 ? ':slug'
-                : encodeURIComponent(slug.replaceAll(' ', separators.space)))
+                : encodeURIComponent(
+                      (slug || '').replaceAll(' ', separators.space)
+                  ))
         );
     }),
     donor: makeRoute((id, lang) => {
@@ -442,7 +446,7 @@ export const routes = {
                 ? separators.url +
                   urlSegment(segments.DONOR, lang) +
                   separators.url +
-                  (id === true ? ':id' : encodeURIComponent(id))
+                  (id === true ? ':id' : encodeURIComponent(id || ''))
                 : '')
         );
     }),
@@ -504,7 +508,9 @@ export const buildApiQuery = (apiParams, options) => {
 };
 
 export const decodeSlug = (slug) => {
-    const subsite = getActiveSubsite();
-    const spaceSep = subsite === 'parlament2023' ? separators.value : '.';
-    return slug.replaceAll(spaceSep, ' ');
+    const spaceSep =
+        getActiveSubsite() === 'parlament2023'
+            ? separators.value
+            : separators.space;
+    return (slug || '').replaceAll(spaceSep, ' ');
 };

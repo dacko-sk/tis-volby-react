@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
-import {
-    NavLink,
-    Link,
-    Outlet,
-    useLocation,
-    useNavigate,
-} from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 
 import { labels, t } from '../../helpers/dictionary';
@@ -15,7 +9,7 @@ import { routes, segments } from '../../helpers/routes';
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
 import {
     findSubjectByPathname,
-    findSubjectSupportedCandidates,
+    getSubjectShortname,
     useElectionData,
 } from '../../hooks/CmsQueries';
 
@@ -29,54 +23,50 @@ function Party() {
     const { csvData } = useData();
     const { data: cmsData, isLoading } = useElectionData();
 
-    const cmsSubject = findSubjectByPathname(cmsData, pathname);
+    const subject = findSubjectByPathname(cmsData, pathname);
+
+    useEffect(() => {
+        if (!isLoading && !subject) {
+            navigate(routes.home());
+        }
+    }, [subject, isLoading, navigate]);
+
+    if (isLoading || !subject) {
+        return <Loading />;
+    }
+
+    const shortname = getSubjectShortname(subject);
     // parse aggregated data
-    const accountData = cmsSubject
+    const accountData = subject
         ? csvData?.data?.find((row) => {
               return (
-                  row[aggregatedKeys.name] === cmsSubject.name &&
-                  row[aggregatedKeys.account] === cmsSubject.account
+                  row[aggregatedKeys.name] === subject.name &&
+                  row[aggregatedKeys.account] === subject.account
               );
           })
         : null;
 
-    useEffect(() => {
-        if (!isLoading && !cmsSubject) {
-            navigate(routes.home());
-        }
-    }, [cmsSubject, isLoading, navigate]);
-
-    if (isLoading) {
-        return <Loading />;
-    }
-
-    setTitle(cmsSubject?.name);
+    setTitle(subject?.name);
 
     return (
         <section className="party-page">
-            <Title>{cmsSubject?.name}</Title>
+            <Title>{subject?.name}</Title>
 
             <div className="tabs-scrollable">
                 <Nav variant="tabs">
-                    <Nav.Link
-                        as={NavLink}
-                        to={routes.party(cmsSubject?.name)}
-                        end
-                    >
+                    <Nav.Link as={NavLink} to={routes.party(shortname)} end>
                         {t(labels.parties.overview)}
                     </Nav.Link>
                     <Nav.Link
                         as={NavLink}
-                        to={routes.party(cmsSubject?.name, segments.NEWS)}
+                        to={routes.party(shortname, segments.NEWS)}
                     >
                         {t(labels.news.navTitle)}
                     </Nav.Link>
                 </Nav>
             </div>
 
-            <Outlet
-                context={{ cmsData, accountData }}
-            />
+            <Outlet context={{ cmsData, accountData }} />
         </section>
     );
 }

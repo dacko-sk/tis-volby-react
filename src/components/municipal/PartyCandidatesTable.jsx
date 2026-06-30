@@ -5,11 +5,18 @@ import Table from 'react-bootstrap/Table';
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
-import { getCandidateMunicipalityShortname } from '../../hooks/CmsQueries';
+import {
+    findCandidateSupportingSubjects,
+    getCandidateMunicipalityShortname,
+    getSubjectShortname,
+    useElectionData,
+} from '../../hooks/CmsQueries';
 
 import './PartyCandidatesTable.scss';
 
 function PartyCandidatesTable({ candidates }) {
+    const { data: cmsData } = useElectionData();
+
     if (!candidates || !Array.isArray(candidates) || !candidates.length) {
         return null;
     }
@@ -18,17 +25,19 @@ function PartyCandidatesTable({ candidates }) {
     candidates.forEach((candidate) => {
         const municipality = getCandidateMunicipalityShortname(candidate);
         const name = candidate.person?.name || candidate.person?.fullName;
-        const partySupport = candidate.supportingParties?.map((p, index) => (
-            <Badge
-                as={Link}
-                to={routes.party(p.name)}
-                key={index}
-                bg="secondary"
-                className="me-1 text-decoration-none"
-            >
-                {p.abbreviation || p.name}
-            </Badge>
-        ));
+        const partySupport = findCandidateSupportingSubjects(cmsData, candidate)
+            .map((subject) => getSubjectShortname(subject))
+            .map((shortname) => (
+                <Badge
+                    as={Link}
+                    to={routes.party(shortname)}
+                    key={shortname}
+                    bg="secondary"
+                    className="me-1 text-decoration-none"
+                >
+                    {shortname}
+                </Badge>
+            ));
 
         rows.push(
             <tr
