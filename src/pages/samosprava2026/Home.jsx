@@ -8,8 +8,8 @@ import { segments } from '../../helpers/routes';
 
 import { newsCategories } from './News';
 import Top10Spending from '../../components/municipal/Top10Spending';
-import TotalIncomes from '../../components/accounts/TotalIncomes';
-import TotalSpending from '../../components/accounts/TotalSpending';
+import TotalTransfers from '../../components/accounts/TotalTransfers';
+import { aggregatedKeys } from '../../hooks/AccountsData';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
 import Map from '../../components/map/Map';
 import SiteNavigator from '../../components/structure/SiteNavigator';
@@ -40,10 +40,10 @@ function Home() {
 
             <Row className="gy-3 gy-lg-0 text-center mb-4">
                 <Col lg={6}>
-                    <TotalIncomes />
+                    <TotalTransfers direction={aggregatedKeys.incoming} />
                 </Col>
                 <Col lg={6}>
-                    <TotalSpending />
+                    <TotalTransfers direction={aggregatedKeys.outgoing} />
                 </Col>
             </Row>
 

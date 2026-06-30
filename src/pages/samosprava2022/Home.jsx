@@ -8,7 +8,8 @@ import { segments } from '../../helpers/routes';
 import { analysesCategories, newAnalysesAlert, winnersAlert } from './Analyses';
 import { newsCategories } from './News';
 import Top15 from '../../components/charts/Top15';
-import TotalSpending from '../../components/accounts/TotalSpending';
+import TotalTransfers from '../../components/accounts/TotalTransfers';
+import { aggregatedKeys } from '../../hooks/AccountsData';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
 import Map from '../../components/map/Map';
 import SiteNavigator from '../../components/structure/SiteNavigator';
@@ -38,7 +39,7 @@ function Home() {
                     />
                 </Col>
                 <Col lg={6}>
-                    <TotalSpending />
+                    <TotalTransfers direction={aggregatedKeys.outgoing} />
                 </Col>
             </Row>
 

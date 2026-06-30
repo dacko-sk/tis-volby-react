@@ -4,8 +4,7 @@ import Row from 'react-bootstrap/Row';
 import TisBarChart from '../../components/charts/TisBarChart';
 import Title from '../../components/structure/Title';
 import Loading from '../../components/general/Loading';
-import TotalIncomes from '../../components/accounts/TotalIncomes';
-import TotalSpending from '../../components/accounts/TotalSpending';
+import TotalTransfers from '../../components/accounts/TotalTransfers';
 
 import {
     chartKeys,
@@ -62,14 +61,16 @@ function Parties() {
 
             <Row className="gy-3 gy-lg-0 text-center mt-4">
                 <Col lg={6}>
-                    <TotalIncomes
+                    <TotalTransfers
                         accountsFilter={subjectAccounts}
+                        direction={aggregatedKeys.incoming}
                         title={t(labels.account.totalIncomesParties)}
                     />
                 </Col>
                 <Col lg={6}>
-                    <TotalSpending
+                    <TotalTransfers
                         accountsFilter={subjectAccounts}
+                        direction={aggregatedKeys.outgoing}
                         title={t(labels.account.totalSpendingParties)}
                     />
                 </Col>

@@ -8,7 +8,8 @@ import { labels, t } from '../../helpers/dictionary';
 import { wpCat } from '../../helpers/wp';
 
 import Top10FinalReports from '../../components/accounts/Top10FinalReports';
-import TotalSpending from '../../components/accounts/TotalSpending';
+import TotalTransfers from '../../components/accounts/TotalTransfers';
+import { aggregatedKeys } from '../../hooks/AccountsData';
 import Top10Ads from '../../components/ads/Top10Ads';
 import DonateButton from '../../components/general/DonateButton';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
@@ -38,7 +39,7 @@ function Home() {
                     />
                 </Col>
                 <Col lg={6}>
-                    <TotalSpending />
+                    <TotalTransfers direction={aggregatedKeys.outgoing} />
                 </Col>
             </Row>
 

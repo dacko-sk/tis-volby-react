@@ -10,7 +10,8 @@ import TotalAdsSpending from '../../components/ads/TotalAdsSpending';
 import Top10FinalReports from '../../components/accounts/Top10FinalReports';
 import Top10Ads from '../../components/ads/Top10Ads';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
-import TotalSpending from '../../components/accounts/TotalSpending';
+import TotalTransfers from '../../components/accounts/TotalTransfers';
+import { aggregatedKeys } from '../../hooks/AccountsData';
 import SiteNavigator from '../../components/structure/SiteNavigator';
 import Title from '../../components/structure/Title';
 import Posts, { templates } from '../../components/wp/Posts';
@@ -37,7 +38,7 @@ function Home() {
                     />
                 </Col>
                 <Col lg={6}>
-                    <TotalSpending />
+                    <TotalTransfers direction={aggregatedKeys.outgoing} />
                 </Col>
             </Row>
 

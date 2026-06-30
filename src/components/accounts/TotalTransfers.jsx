@@ -10,14 +10,14 @@ import useAdsData, { csvConfig } from '../../hooks/AdsData';
 
 import HeroNumber from '../general/HeroNumber';
 
-function TotalSpending({ accountsFilter = null, title = null }) {
+function TotalTransfers({ direction = agk.outgoing, accountsFilter = null, title = null }) {
     const subsite = getActiveSubsite();
     const finalReports =
         subsite === 'euro2024' ||
         subsite === 'prezident2024' ||
         subsite === 'parlament2023';
 
-    if (finalReports) {
+    if (finalReports && direction === agk.outgoing) {
         const {
             sheetsData,
             getAllPartiesNames,
@@ -64,25 +64,29 @@ function TotalSpending({ accountsFilter = null, title = null }) {
                 return;
             }
 
-            // sum of outgoing amounts from all transparent accounts
-            if (row[agk.outgoing] >= 0) {
+            // sum amounts from all transparent accounts
+            if (row[direction] >= 0) {
                 // add each account number only once
                 // For valid urls, group them. For invalid/empty urls, treat them independently
                 if (accountKey && accountKey !== '') {
                     if (!(uniqueAccounts[accountKey] ?? false)) {
                         uniqueAccounts[accountKey] = 1;
-                        total += row[agk.outgoing];
+                        total += row[direction];
                     }
                 } else {
-                    total += row[agk.outgoing];
+                    total += row[direction];
                 }
             }
             // remove manually added duplicate expenses
-            if (row?.duplicateExpenses > 0) {
+            if (direction === agk.outgoing && row?.duplicateExpenses > 0) {
                 total -= row.duplicateExpenses;
             }
         });
     }
+
+    const defaultTitle = direction === agk.outgoing 
+        ? t(labels.account.totalSpending) 
+        : t(labels.account.totalIncomes);
 
     return (
         <HeroNumber
@@ -91,9 +95,9 @@ function TotalSpending({ accountsFilter = null, title = null }) {
             lastUpdate={accountsData.lastUpdate ?? null}
             loading={!(accountsData.data ?? false)}
             number={total}
-            title={title || t(labels.account.totalSpending)}
+            title={title || defaultTitle}
         />
     );
 }
 
-export default TotalSpending;
+export default TotalTransfers;
