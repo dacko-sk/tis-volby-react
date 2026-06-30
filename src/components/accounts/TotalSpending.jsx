@@ -10,7 +10,7 @@ import useAdsData, { csvConfig } from '../../hooks/AdsData';
 
 import HeroNumber from '../general/HeroNumber';
 
-function TotalSpending() {
+function TotalSpending({ accountsFilter = null, title = null }) {
     const subsite = getActiveSubsite();
     const finalReports =
         subsite === 'euro2024' ||
@@ -49,7 +49,7 @@ function TotalSpending() {
                 lastUpdate={getTimestampFromIsoDate(dates.monitoringEnd)}
                 loading={!sheetsData.loaded}
                 number={total}
-                title={t(labels.account.totalSpending)}
+                title={title || t(labels.account.totalSpending)}
             />
         );
     }
@@ -59,10 +59,14 @@ function TotalSpending() {
     const uniqueAccounts = {};
     if (accountsData.data) {
         accountsData.data.forEach((row) => {
+            const accountKey = row[agk.account];
+            if (accountsFilter && !accountsFilter.includes(accountKey)) {
+                return;
+            }
+
             // sum of outgoing amounts from all transparent accounts
             if (row[agk.outgoing] >= 0) {
                 // add each account number only once
-                const accountKey = row[agk.account];
                 // For valid urls, group them. For invalid/empty urls, treat them independently
                 if (accountKey && accountKey !== '') {
                     if (!(uniqueAccounts[accountKey] ?? false)) {
@@ -87,7 +91,7 @@ function TotalSpending() {
             lastUpdate={accountsData.lastUpdate ?? null}
             loading={!(accountsData.data ?? false)}
             number={total}
-            title={t(labels.account.totalSpending)}
+            title={title || t(labels.account.totalSpending)}
         />
     );
 }
