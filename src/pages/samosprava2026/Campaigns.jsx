@@ -10,7 +10,7 @@ import useData, {
     municipalTypes,
     aggregatedKeys,
 } from '../../hooks/AccountsData';
-import { isRegionalFunction, useElectionData } from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../../components/charts/TisBarChart';
 import PartyCandidatesTable from '../../components/municipal/PartyCandidatesTable';
@@ -36,7 +36,7 @@ function Campaigns() {
         cmsData.candidates.forEach((cmsCandidate) => {
             if (!cmsCandidate.region) return;
 
-            const regType = isRegionalFunction(cmsCandidate.functionType)
+            const regType = cmsCandidate.isRegionalFunction
                 ? municipalTypes.regional
                 : municipalTypes.local;
 

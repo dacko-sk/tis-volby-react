@@ -20,7 +20,7 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import { isRegionalFunction, useElectionData } from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
@@ -50,7 +50,7 @@ function Region() {
     if (cmsData?.candidates) {
         cmsData.candidates.forEach((cmsCandidate) => {
             if (region === cmsCandidate.region) {
-                const regType = isRegionalFunction(cmsCandidate.functionType)
+                const regType = cmsCandidate.isRegionalFunction
                     ? municipalTypes.regional
                     : municipalTypes.local;
                 // has own account => is transparent

@@ -16,7 +16,7 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import { isRegionalFunction, useElectionData } from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../charts/TisBarChart';
 import Loading from '../general/Loading';
@@ -48,7 +48,7 @@ function Regions() {
                     charts[region] = false;
                 }
 
-                const regType = isRegionalFunction(cmsCandidate.functionType)
+                const regType = cmsCandidate.isRegionalFunction
                     ? municipalTypes.regional
                     : municipalTypes.local;
 

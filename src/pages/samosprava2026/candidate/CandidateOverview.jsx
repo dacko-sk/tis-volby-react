@@ -16,7 +16,6 @@ import {
     findSubjectByAccount,
     getCandidateMunicipalityShortname,
     getSubjectShortname,
-    isRegionalFunction,
 } from '../../../hooks/CmsQueries';
 
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
@@ -75,9 +74,7 @@ function CandidateOverview() {
                         <td>
                             {t(
                                 labels.elections.municipalTypes[
-                                    isRegionalFunction(
-                                        cmsCandidate?.functionType
-                                    )
+                                    cmsCandidate?.isRegionalFunction
                                         ? municipalTypes.regional
                                         : municipalTypes.local
                                 ]

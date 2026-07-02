@@ -17,7 +17,6 @@ import useData, {
 } from '../../hooks/AccountsData';
 import {
     isMunicipalityRegional,
-    isRegionalFunction,
     regionDefs,
     useElectionData,
 } from '../../hooks/CmsQueries';
@@ -65,7 +64,7 @@ function Municipality() {
                 (!region || region === cmsCandidate.region) &&
                 (cmsCandidate.municipality === town ||
                     (regType === municipalTypes.regional &&
-                        isRegionalFunction(cmsCandidate.functionType)))
+                        cmsCandidate.isRegionalFunction))
             ) {
                 // has own account => is transparent
                 if (cmsCandidate.account) {

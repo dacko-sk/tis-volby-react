@@ -14,7 +14,6 @@ import {
     getMunicipalities,
     getSearchTags,
     getMunicipalityShortname,
-    isRegionalFunction,
     getSubjectShortname,
 } from '../../hooks/CmsQueries';
 
@@ -81,7 +80,7 @@ function Search() {
                 (city && contains(city, query)) ||
                 (shortName && contains(shortName, query))
             ) {
-                const isRegional = isRegionalFunction(candidate.functionType);
+                const isRegional = candidate.isRegionalFunction;
                 const link = routes.candidateMunicipal(
                     candidate.person?.name,
                     shortName,

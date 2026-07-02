@@ -52,8 +52,6 @@ export const useElectionData = () => {
 
 // helpers
 
-export const isRegionalFunction = (functionType) => functionType === F_ZUPAN;
-
 export const isMunicipalityRegional = (town) =>
     Object.values(regionDefs).some((r) => r.shortname === town);
 
@@ -61,7 +59,7 @@ export const getMunicipalityShortname = (town) =>
     Object.values(regionDefs).find((r) => r.name === town)?.shortname ?? town;
 
 export const getCandidateMunicipalityShortname = (candidate) =>
-    isRegionalFunction(candidate?.functionType)
+    candidate?.isRegionalFunction
         ? (regionDefs[candidate?.region]?.shortname ?? candidate?.municipality)
         : candidate?.municipality;
 
@@ -157,7 +155,7 @@ export const getMunicipalities = (data) => {
     const result = [];
     data.candidates.forEach((candidate) => {
         if (!candidate.municipality || !candidate.region) return;
-        const isRegional = isRegionalFunction(candidate.functionType);
+        const isRegional = candidate.isRegionalFunction;
         const key = `${candidate.region}-${candidate.municipality}-${isRegional}`;
         if (!munSet.has(key)) {
             munSet.add(key);

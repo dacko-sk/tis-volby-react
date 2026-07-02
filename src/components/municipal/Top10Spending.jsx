@@ -11,7 +11,6 @@ import { routes } from '../../helpers/routes';
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
 import {
     findCandidate,
-    isRegionalFunction,
     useElectionData,
 } from '../../hooks/CmsQueries';
 
@@ -34,9 +33,7 @@ function Top10Spending() {
                 const unqKey =
                     row[aggregatedKeys.account] || row[aggregatedKeys.name];
                 // add each candidate only once and prioritize regional campaign over local
-                const isRegional = isRegionalFunction(
-                    cmsCandidate?.functionType
-                );
+                const isRegional = cmsCandidate?.isRegionalFunction;
                 if (people[unqKey] === undefined || isRegional) {
                     people[unqKey] = {
                         name: getMunicipalityCmsTickText(cmsCandidate, true),
