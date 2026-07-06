@@ -227,7 +227,11 @@ function TisBarChart({
         fill: '#333',
         fontSize: tickFontSize,
     };
-    const tooltipContent = BarsTooltip(bars, showSum, tooltipNumFormat);
+    const hasIncomingAndOutgoing =
+        bars.some((bar) => bar.key === chartKeys.INCOMING) &&
+        bars.some((bar) => bar.key === chartKeys.OUTGOING);
+    const finalShowSum = showSum && !hasIncomingAndOutgoing;
+    const tooltipContent = BarsTooltip(bars, finalShowSum, tooltipNumFormat);
 
     const refLine = diffFromAverage ? (
         <ReferenceLine
