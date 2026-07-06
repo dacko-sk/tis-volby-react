@@ -8,8 +8,6 @@ import {
     languages,
 } from './languages';
 
-import { getMunicipalityShortname } from '../hooks/CmsQueries';
-
 export { getCurrentLanguage, languages };
 
 export const homepage = '/';
@@ -349,10 +347,7 @@ export const routes = {
                 : encodeURIComponent(
                       (name || '').replaceAll(' ', '.') +
                           separators.value +
-                          (getMunicipalityShortname(town) || '').replaceAll(
-                              ' ',
-                              '.'
-                          )
+                          (town || '').replaceAll(' ', '.')
                   )) +
             (subpage ? separators.url + urlSegment(subpage, lang) : '')
         );

@@ -8,9 +8,6 @@ import { isNumeric, shortenValue } from './helpers';
 import { routes, separators } from './routes';
 
 import { municipalTypes, s22AggregatedKeys } from '../hooks/AccountsData';
-import {
-    getCandidateMunicipalityShortname,
-} from '../hooks/CmsQueries';
 
 const tooltipSeparator = ' : ';
 
@@ -445,7 +442,7 @@ export const getMunicipalityCmsTickText = (candidate, showType = false) => {
         separators.newline +
         candidate?.region +
         separators.parts +
-        getCandidateMunicipalityShortname(candidate) +
+        candidate?.municipality +
         type
     );
 };

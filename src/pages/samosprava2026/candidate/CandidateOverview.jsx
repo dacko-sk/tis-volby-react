@@ -14,7 +14,6 @@ import { aggregatedKeys, municipalTypes } from '../../../hooks/AccountsData';
 import {
     findCandidateSupportingSubjects,
     findSubjectByAccount,
-    getCandidateMunicipalityShortname,
     getSubjectShortname,
 } from '../../../hooks/CmsQueries';
 
@@ -97,9 +96,7 @@ function CandidateOverview() {
                             <td>
                                 <Link
                                     to={routes.municipality(
-                                        getCandidateMunicipalityShortname(
-                                            cmsCandidate
-                                        ),
+                                        cmsCandidate?.municipality,
                                         cmsCandidate?.region ?? null
                                     )}
                                 >

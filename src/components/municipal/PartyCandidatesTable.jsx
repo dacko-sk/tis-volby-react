@@ -7,7 +7,6 @@ import { routes } from '../../helpers/routes';
 
 import {
     findCandidateSupportingSubjects,
-    getCandidateMunicipalityShortname,
     getSubjectShortname,
     useElectionData,
 } from '../../hooks/CmsQueries';
@@ -23,7 +22,6 @@ function PartyCandidatesTable({ candidates }) {
 
     const rows = [];
     candidates.forEach((candidate) => {
-        const municipality = getCandidateMunicipalityShortname(candidate);
         const name = candidate.person?.name || candidate.person?.fullName;
         const partySupport = findCandidateSupportingSubjects(cmsData, candidate)
             .map((subject) => getSubjectShortname(subject))
@@ -47,7 +45,11 @@ function PartyCandidatesTable({ candidates }) {
                 <td>
                     <Link
                         className="fw-bold text-black"
-                        to={routes.candidateMunicipal(name, municipality, null)}
+                        to={routes.candidateMunicipal(
+                            name,
+                            candidate?.municipality,
+                            null
+                        )}
                     >
                         {name}
                     </Link>
@@ -57,7 +59,7 @@ function PartyCandidatesTable({ candidates }) {
                         <Link
                             className="me-2"
                             to={routes.municipality(
-                                municipality,
+                                candidate?.municipality,
                                 candidate.region ?? null
                             )}
                         >

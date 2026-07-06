@@ -20,7 +20,7 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import { useElectionData } from '../../hooks/CmsQueries';
+import { useRegionData } from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
@@ -35,56 +35,42 @@ function Region() {
     const navigate = useNavigate();
 
     const { csvData } = useData();
-    const { data: cmsData } = useElectionData();
+    const { data: regionData, isLoading } = useRegionData(region);
 
     // parse data
     const candidates = {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
-    let donors = {};
-    const partyCandidates = {
+    let donors = {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
-    if (cmsData?.candidates) {
-        cmsData.candidates.forEach((cmsCandidate) => {
-            if (region === cmsCandidate.region) {
-                const regType = cmsCandidate.isRegionalFunction
-                    ? municipalTypes.regional
-                    : municipalTypes.local;
-                // has own account => is transparent
-                if (cmsCandidate.account) {
-                    const row = csvData?.data?.find(
-                        (r) =>
-                            r[aggregatedKeys.account] ===
-                                cmsCandidate.account &&
-                            r[aggregatedKeys.name] === cmsCandidate.person?.name
-                    );
-                    if (row) {
-                        const person = {
-                            name: getMunicipalityCmsTickText(cmsCandidate),
-                            [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                            [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                            [chartKeys.UNIQUE]:
-                                row[aggregatedKeys.num_unique_donors],
-                        };
-                        candidates[regType].push(person);
-                    }
-                } else {
-                    partyCandidates[regType].push(cmsCandidate);
+    const partyCandidates = regionData?.partyCandidates || {
+        [municipalTypes.regional]: [],
+        [municipalTypes.local]: [],
+    };
+
+    if (regionData?.candidates && csvData?.data) {
+        Object.values(municipalTypes).forEach((type) => {
+            regionData.candidates[type].forEach((cmsCandidate) => {
+                const row = csvData.data.find(
+                    (r) =>
+                        r[aggregatedKeys.account] === cmsCandidate.account &&
+                        r[aggregatedKeys.name] === cmsCandidate.person?.name
+                );
+                if (row) {
+                    candidates[type].push({
+                        name: getMunicipalityCmsTickText(cmsCandidate),
+                        [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                        [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                        [chartKeys.UNIQUE]: row[aggregatedKeys.num_unique_donors],
+                    });
                 }
-            }
+            });
+
+            donors[type] = [...candidates[type]].sort(sortByDonors);
         });
-        // clone arrays for different sort via unique donors
-        donors = {
-            [municipalTypes.regional]: [
-                ...candidates[municipalTypes.regional],
-            ].sort(sortByDonors),
-            [municipalTypes.local]: [...candidates[municipalTypes.local]].sort(
-                sortByDonors
-            ),
-        };
     }
 
     // create accordions for both types of elections
@@ -99,7 +85,7 @@ function Region() {
                 <div key={type}>
                     <h2>{t(labels.elections.municipalTypes[type])}</h2>
 
-                    {cmsData?.candidates ? (
+                    {!isLoading ? (
                         <Accordion
                             className="my-3"
                             alwaysOpen

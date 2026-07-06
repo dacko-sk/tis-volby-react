@@ -15,34 +15,28 @@ import { labels, t } from '../../helpers/dictionary';
 import { setTitle, sortBySpending } from '../../helpers/helpers';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import { getSubjectShortname, useElectionData } from '../../hooks/CmsQueries';
+import { getSubjectShortname, usePartiesData } from '../../hooks/CmsQueries';
 
 function Parties() {
     const { csvData } = useData();
-    const { data: cmsData, isLoading } = useElectionData();
+    const { data: partiesData, isLoading } = usePartiesData();
 
     // parse data
     const parties = [];
-    const subjectAccounts = [];
-    if (cmsData?.subjects) {
-        cmsData.subjects.forEach((subject) => {
-            if (subject.account) {
-                subjectAccounts.push(subject.account);
-
-                if (csvData?.data) {
-                    const row = csvData.data.find(
-                        (r) =>
-                            r[aggregatedKeys.name] === subject.name &&
-                            r[aggregatedKeys.account] === subject.account
-                    );
-                    if (row) {
-                        parties.push({
-                            name: getPartyChartLabel(getSubjectShortname(subject)),
-                            [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                            [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                        });
-                    }
-                }
+    const subjectAccounts = partiesData?.subjectAccounts || [];
+    if (partiesData?.subjects && csvData?.data) {
+        partiesData.subjects.forEach((subject) => {
+            const row = csvData.data.find(
+                (r) =>
+                    r[aggregatedKeys.name] === subject.name &&
+                    r[aggregatedKeys.account] === subject.account
+            );
+            if (row) {
+                parties.push({
+                    name: getPartyChartLabel(getSubjectShortname(subject)),
+                    [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                    [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                });
             }
         });
         parties.sort(sortBySpending);

@@ -9,7 +9,6 @@ import { routes, segments } from '../../helpers/routes';
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
 import {
     findCandidateByPathname,
-    getCandidateMunicipalityShortname,
     useElectionData,
 } from '../../hooks/CmsQueries';
 
@@ -43,8 +42,6 @@ function Candidate() {
         return <Loading />;
     }
 
-    const shortName = getCandidateMunicipalityShortname(cmsCandidate);
-
     const hasNews = !!cmsCandidate?.person?.wpTag;
     const hasAssets =
         !!cmsCandidate?.person?.assetDeclarationsId ||
@@ -65,7 +62,7 @@ function Candidate() {
                         as={NavLink}
                         to={routes.candidateMunicipal(
                             cmsCandidate?.person?.name,
-                            shortName,
+                            cmsCandidate?.municipality,
                             null
                         )}
                         end
@@ -77,7 +74,7 @@ function Candidate() {
                             as={NavLink}
                             to={routes.candidateMunicipal(
                                 cmsCandidate?.person?.name,
-                                shortName,
+                                cmsCandidate?.municipality,
                                 segments.NEWS
                             )}
                         >
@@ -89,7 +86,7 @@ function Candidate() {
                             as={NavLink}
                             to={routes.candidateMunicipal(
                                 cmsCandidate?.person?.name,
-                                shortName,
+                                cmsCandidate?.municipality,
                                 segments.ASSET_DECLARATIONS
                             )}
                         >

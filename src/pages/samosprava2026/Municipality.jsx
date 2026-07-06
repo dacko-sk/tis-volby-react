@@ -15,11 +15,7 @@ import useData, {
     aggregatedKeys,
     municipalTypes,
 } from '../../hooks/AccountsData';
-import {
-    isMunicipalityRegional,
-    regionDefs,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { useMunicipalityData } from '../../hooks/CmsQueries';
 
 import { title as spendingTitle } from '../samosprava2022/AllCampaigns';
 import { title as donorsTitle } from '../samosprava2022/AllDonors';
@@ -30,9 +26,10 @@ import Title from '../../components/structure/Title';
 
 function Municipality() {
     const params = useParams();
+    const navigate = useNavigate();
+
     let town = null;
     let region = null;
-    let regType = municipalTypes.local;
     if (params?.municipality !== undefined) {
         const municipality = params.municipality.split(separators.value);
         town = municipality[municipality.length > 1 ? 1 : 0].replaceAll(
@@ -43,58 +40,40 @@ function Municipality() {
             municipality.length > 1
                 ? municipality[0].replaceAll(separators.space, ' ')
                 : null;
-        if (isMunicipalityRegional(town)) {
-            regType = municipalTypes.regional;
-            town = (regionDefs[region]?.name ?? town) || town;
-        }
     }
-
-    const navigate = useNavigate();
 
     const { csvData } = useData();
-    const { data: cmsData } = useElectionData();
+    const { data: municipalData, isLoading } = useMunicipalityData(
+        town,
+        region
+    );
 
     // parse data
+    const fullName = municipalData?.fullName ?? town;
     const candidates = [];
-    let donors = [];
-    const partyCandidates = [];
-    if (town && cmsData?.candidates) {
-        cmsData.candidates.forEach((cmsCandidate) => {
-            if (
-                (!region || region === cmsCandidate.region) &&
-                (cmsCandidate.municipality === town ||
-                    (regType === municipalTypes.regional &&
-                        cmsCandidate.isRegionalFunction))
-            ) {
-                // has own account => is transparent
-                if (cmsCandidate.account) {
-                    const row = csvData?.data?.find(
-                        (r) =>
-                            r[aggregatedKeys.account] ===
-                                cmsCandidate.account &&
-                            r[aggregatedKeys.name] === cmsCandidate.person?.name
-                    );
+    const partyCandidates = municipalData?.partyCandidates || [];
+    if (municipalData?.candidates && csvData?.data) {
+        municipalData.candidates.forEach((cmsCandidate) => {
+            const row = csvData.data.find(
+                (r) =>
+                    r[aggregatedKeys.account] === cmsCandidate.account &&
+                    r[aggregatedKeys.name] === cmsCandidate.person?.name
+            );
 
-                    if (row) {
-                        const person = {
-                            name: getMunicipalityCmsTickText(cmsCandidate),
-                            [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
-                            [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                            [chartKeys.UNIQUE]:
-                                row[aggregatedKeys.num_unique_donors],
-                        };
-                        candidates.push(person);
-                    }
-                } else {
-                    partyCandidates.push(cmsCandidate);
-                }
+            if (row) {
+                candidates.push({
+                    name: getMunicipalityCmsTickText(cmsCandidate),
+                    [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
+                    [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
+                    [chartKeys.UNIQUE]: row[aggregatedKeys.num_unique_donors],
+                });
             }
         });
-        // clone arrays for different sort via unique donors
-        donors = [...candidates].sort(sortByDonors);
     }
 
-    const content = cmsData?.candidates ? (
+    const donors = [...candidates].sort(sortByDonors);
+
+    const content = !isLoading ? (
         <div>
             <TisBarChart
                 bars={columnVariants.inOut}
@@ -123,22 +102,24 @@ function Municipality() {
     );
 
     useEffect(() => {
-        if (
-            !candidates.length &&
-            !partyCandidates.length &&
-            cmsData?.candidates
-        ) {
+        if (!isLoading && !candidates.length && !partyCandidates.length) {
             // redirect to home page in case candidate does not exist
             navigate(routes.home());
         }
-    }, [candidates.length, partyCandidates.length, cmsData, navigate]);
+    }, [candidates.length, partyCandidates.length, isLoading, navigate]);
 
-    setTitle(town);
+    setTitle(fullName);
 
     return (
         <section className="municipality-page">
-            <Title secondary={t(labels.elections.municipalTypes[regType])}>
-                {town}
+            <Title
+                secondary={t(
+                    labels.elections.municipalTypes[
+                        municipalData?.regType ?? municipalTypes.local
+                    ]
+                )}
+            >
+                {fullName}
                 <br />
             </Title>
             {content}

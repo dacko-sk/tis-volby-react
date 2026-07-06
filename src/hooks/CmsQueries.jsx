@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { contains } from '../helpers/helpers';
 import { getActiveSubsite } from '../helpers/languages';
 import { routes } from '../helpers/routes';
+
+import { municipalTypes } from './AccountsData';
 
 export const CMS_BASE_URL = 'https://tiacms.transparency.sk';
 export const F_STAROSTA = 1;
@@ -13,17 +16,6 @@ export const cmsSubsitesMap = {
     samosprava2026: 's-26',
 };
 
-export const regionDefs = {
-    BA: { name: 'Bratislavský samosprávny kraj', shortname: 'BSK' },
-    BB: { name: 'Banskobystrický samosprávny kraj', shortname: 'BBSK' },
-    KE: { name: 'Košický samosprávny kraj', shortname: 'KSK' },
-    NR: { name: 'Nitriansky samosprávny kraj', shortname: 'NSK' },
-    PO: { name: 'Prešovský samosprávny kraj', shortname: 'PSK' },
-    TN: { name: 'Trenčiansky samosprávny kraj', shortname: 'TSK' },
-    TT: { name: 'Trnavský samosprávny kraj', shortname: 'TTSK' },
-    ZA: { name: 'Žilinský samosprávny kraj', shortname: 'ŽSK' },
-};
-
 // queries
 
 export const getCmsSubsite = () => {
@@ -31,7 +23,7 @@ export const getCmsSubsite = () => {
     return cmsSubsitesMap[activeSubsite] || activeSubsite;
 };
 
-export const useElectionData = () => {
+export const useElectionData = (selectFn) => {
     const subsite = getCmsSubsite();
 
     return useQuery({
@@ -46,22 +38,159 @@ export const useElectionData = () => {
             }
             return response.json();
         },
+        select: selectFn,
         refetchOnMount: false,
     });
 };
 
+export const useCandidateByPathname = (pathname) => {
+    return useElectionData((data) => findCandidateByPathname(data, pathname));
+};
+
+export const useSubjectByPathname = (pathname) => {
+    return useElectionData((data) => findSubjectByPathname(data, pathname));
+};
+
+export const useSubjectSupportedCandidates = (primaryPartyUid) => {
+    return useElectionData((data) =>
+        findSubjectSupportedCandidates(data, primaryPartyUid)
+    );
+};
+
+export const useCandidateSupportingSubjects = (candidate) => {
+    return useElectionData((data) =>
+        findCandidateSupportingSubjects(data, candidate)
+    );
+};
+
+export const useMunicipalityData = (town, region) => {
+    return useElectionData((data) => {
+        const candidates = [];
+        const partyCandidates = [];
+        let fullName = town;
+        let regType = municipalTypes.local;
+        if (town && data?.candidates) {
+            if (isMunicipalityRegional(data, town)) {
+                regType = municipalTypes.regional;
+                fullName = getMunicipalityNameByRegionCode(data, region);
+            }
+            data.candidates.forEach((cmsCandidate) => {
+                if (
+                    (!region || region === cmsCandidate.region) &&
+                    cmsCandidate.municipality === town
+                ) {
+                    if (cmsCandidate.account) {
+                        candidates.push(cmsCandidate);
+                    } else {
+                        partyCandidates.push(cmsCandidate);
+                    }
+                }
+            });
+        }
+        return { candidates, partyCandidates, fullName, regType };
+    });
+};
+
+export const useSearchData = (query) => {
+    return useElectionData((data) => {
+        const municipalities = getMunicipalities(data).filter((mun) => {
+            const city = mun.municipality;
+            const longName = getMunicipalityNameByRegionCode(data, city);
+            return city && (contains(city, query) || contains(longName, query));
+        });
+
+        const candidates = (data?.candidates || []).filter(
+            (candidate) =>
+                contains(candidate.person?.name, query) ||
+                contains(candidate.municipality, query)
+        );
+
+        const subjects = (data?.subjects || []).filter(
+            (subject) =>
+                contains(subject.name, query) ||
+                contains(subject.abbreviation, query)
+        );
+
+        const tagsSet = new Set();
+        candidates.forEach((c) => {
+            if (c.person?.wpTag) tagsSet.add(c.person.wpTag);
+        });
+        subjects.forEach((s) => {
+            if (s.primaryParty?.wpTag) tagsSet.add(s.primaryParty.wpTag);
+        });
+
+        return {
+            municipalities,
+            candidates,
+            subjects,
+            tags: Array.from(tagsSet),
+        };
+    });
+};
+
+export const useCampaignsData = () => {
+    return useElectionData((data) => {
+        const candidates = {
+            [municipalTypes.regional]: [],
+            [municipalTypes.local]: [],
+        };
+        const partyCandidates = {
+            [municipalTypes.regional]: [],
+            [municipalTypes.local]: [],
+        };
+        if (data?.candidates) {
+            data.candidates.forEach((cmsCandidate) => {
+                const regType = cmsCandidate.isRegionalFunction
+                    ? municipalTypes.regional
+                    : municipalTypes.local;
+                if (cmsCandidate.account) {
+                    candidates[regType].push(cmsCandidate);
+                } else {
+                    partyCandidates[regType].push(cmsCandidate);
+                }
+            });
+        }
+        return { candidates, partyCandidates };
+    });
+};
+
+export const usePartiesData = () => {
+    return useElectionData((data) => {
+        const subjects = (data?.subjects || []).filter((s) => !!s.account);
+        const subjectAccounts = subjects.map((s) => s.account);
+        return { subjects, subjectAccounts };
+    });
+};
+
+export const useRegionData = (region) => {
+    return useElectionData((data) => {
+        const candidates = {
+            [municipalTypes.regional]: [],
+            [municipalTypes.local]: [],
+        };
+        const partyCandidates = {
+            [municipalTypes.regional]: [],
+            [municipalTypes.local]: [],
+        };
+        if (data?.candidates) {
+            data.candidates.forEach((cmsCandidate) => {
+                if (region === cmsCandidate.region) {
+                    const regType = cmsCandidate.isRegionalFunction
+                        ? municipalTypes.regional
+                        : municipalTypes.local;
+                    if (cmsCandidate.account) {
+                        candidates[regType].push(cmsCandidate);
+                    } else {
+                        partyCandidates[regType].push(cmsCandidate);
+                    }
+                }
+            });
+        }
+        return { candidates, partyCandidates };
+    });
+};
+
 // helpers
-
-export const isMunicipalityRegional = (town) =>
-    Object.values(regionDefs).some((r) => r.shortname === town);
-
-export const getMunicipalityShortname = (town) =>
-    Object.values(regionDefs).find((r) => r.name === town)?.shortname ?? town;
-
-export const getCandidateMunicipalityShortname = (candidate) =>
-    candidate?.isRegionalFunction
-        ? (regionDefs[candidate?.region]?.shortname ?? candidate?.municipality)
-        : candidate?.municipality;
 
 export const getSubjectShortname = (subject) =>
     subject
@@ -196,4 +325,16 @@ export const getSearchTags = (data, query) => {
     }
 
     return Array.from(tags);
+};
+
+export const isMunicipalityRegional = (data, town) => {
+    if (!data?.regions || !Array.isArray(data.regions)) return false;
+    return data.regions.some(
+        (r) => r.abbreviation === town || r.municipality === town
+    );
+};
+
+export const getMunicipalityNameByRegionCode = (data, code) => {
+    if (!data?.regions || !Array.isArray(data.regions)) return code;
+    return data.regions.find((r) => r.code === code)?.municipality ?? code;
 };

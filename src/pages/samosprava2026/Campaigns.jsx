@@ -10,7 +10,7 @@ import useData, {
     municipalTypes,
     aggregatedKeys,
 } from '../../hooks/AccountsData';
-import { useElectionData } from '../../hooks/CmsQueries';
+import { useCampaignsData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../../components/charts/TisBarChart';
 import PartyCandidatesTable from '../../components/municipal/PartyCandidatesTable';
@@ -19,45 +19,35 @@ import Title from '../../components/structure/Title';
 function Campaigns() {
     const title = t(labels.charts.campaignsPageTitle);
     const { csvData } = useData();
-    const { data: cmsData } = useElectionData();
+    const { data: campaignsData } = useCampaignsData();
 
     // parse data
     const candidates = {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
-    const partyCandidates = {
+    const partyCandidates = campaignsData?.partyCandidates || {
         [municipalTypes.regional]: [],
         [municipalTypes.local]: [],
     };
     const regions = {};
 
-    if (cmsData?.candidates) {
-        cmsData.candidates.forEach((cmsCandidate) => {
-            if (!cmsCandidate.region) return;
-
-            const regType = cmsCandidate.isRegionalFunction
-                ? municipalTypes.regional
-                : municipalTypes.local;
-
-            if (cmsCandidate.account) {
-                // Find csvData row
-                const row = csvData?.data?.find(
+    if (campaignsData?.candidates && csvData?.data) {
+        Object.values(municipalTypes).forEach((regType) => {
+            campaignsData.candidates[regType].forEach((cmsCandidate) => {
+                const row = csvData.data.find(
                     (r) =>
                         r[aggregatedKeys.account] === cmsCandidate.account &&
                         r[aggregatedKeys.name] === cmsCandidate.person?.name
                 );
 
                 if (row) {
-                    const person = {
+                    candidates[regType].push({
                         name: getMunicipalityCmsTickText(cmsCandidate),
                         [chartKeys.INCOMING]: row[aggregatedKeys.incoming],
                         [chartKeys.OUTGOING]: row[aggregatedKeys.outgoing],
-                        [chartKeys.UNIQUE]:
-                            row[aggregatedKeys.num_unique_donors],
-                    };
-
-                    candidates[regType].push(person);
+                        [chartKeys.UNIQUE]: row[aggregatedKeys.num_unique_donors],
+                    });
 
                     const regionName = cmsCandidate.region;
                     if (regionName) {
@@ -74,9 +64,7 @@ function Campaigns() {
                             row[aggregatedKeys.outgoing];
                     }
                 }
-            } else {
-                partyCandidates[regType].push(cmsCandidate);
-            }
+            });
         });
     }
 
