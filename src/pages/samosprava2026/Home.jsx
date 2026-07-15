@@ -4,17 +4,17 @@ import Row from 'react-bootstrap/Row';
 import { dates, elections } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
 import { nl2r, setTitle } from '../../helpers/helpers';
-import { segments } from '../../helpers/routes';
 
-import { newsCategories } from './News';
+import { aggregatedKeys } from '../../hooks/AccountsData';
+import { cmsSubsitesMap } from '../../hooks/CmsQueries';
+
 import Top10Spending from '../../components/municipal/Top10Spending';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
-import { aggregatedKeys } from '../../hooks/AccountsData';
 import ElectionsCountdown from '../../components/general/ElectionsCountdown';
 import Map from '../../components/map/Map';
+import CmsNews, { templates } from '../../components/news/CmsNews';
 import SiteNavigator from '../../components/structure/SiteNavigator';
 import Title from '../../components/structure/Title';
-import Posts, { templates } from '../../components/wp/Posts';
 
 function Home() {
     setTitle(t(labels.home.navTitle));
@@ -52,11 +52,10 @@ function Home() {
             <Top10Spending />
 
             <h2 className="mt-4">{t(labels.news.latest)}</h2>
-            <Posts
-                categories={newsCategories}
+            <CmsNews
+                election={cmsSubsitesMap.samosprava2026}
                 limit={2}
-                section={segments.NEWS}
-                template={templates.condensed}
+                template={templates.featured}
             />
         </section>
     );

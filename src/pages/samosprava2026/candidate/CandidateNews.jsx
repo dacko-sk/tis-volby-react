@@ -1,9 +1,9 @@
 import { useOutletContext } from 'react-router-dom';
 
 import { labels, t } from '../../../helpers/dictionary';
-import { segments } from '../../../helpers/routes';
+import { cmsSubsitesMap } from '../../../hooks/CmsQueries';
 
-import Posts from '../../../components/wp/Posts';
+import CombinedNews from '../../../components/news/CombinedNews';
 import { newsCategories } from '../News';
 
 function CandidateNews() {
@@ -14,11 +14,12 @@ function CandidateNews() {
 
     return (
         <div className="candidate-news mt-4">
-            <Posts
+            <CombinedNews
+                election={cmsSubsitesMap.samosprava2026}
                 categories={newsCategories}
                 noResults={t(labels.search.noNews)}
-                section={segments.NEWS}
                 tags={[wpTag]}
+                person={cmsCandidate?.person?.uid}
             />
         </div>
     );

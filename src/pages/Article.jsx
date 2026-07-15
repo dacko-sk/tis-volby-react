@@ -3,66 +3,140 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import { setTitle } from '../helpers/browser';
+import { getCurrentLanguage } from '../helpers/languages';
 import { processArticles } from '../helpers/wp';
 
 import Loading from '../components/general/Loading';
 import Title from '../components/structure/Title';
 import NewsDetail from '../components/wp/templates/NewsDetail';
+import DetailItem from '../components/news/templates/DetailItem';
 
 function Article() {
     const params = useParams();
     const slug = params.slug ?? null;
     const navigate = useNavigate();
+    const location = useLocation();
+    const lang = getCurrentLanguage();
 
     // try to set article data object from location.state
-    const location = useLocation();
-    let article =
+    const article =
         location.state && (location.state.article ?? false)
             ? location.state.article
             : {};
 
-    // load article data from API (if needed)
-    const { isLoading, error, data } = useQuery({
+    const isCmsFromState = !!(article.bodytext || article.uid);
+    const isWpFromState = !!(
+        article.title?.rendered || article.content?.rendered
+    );
+    const hasArticleFromState = isCmsFromState || isWpFromState;
+
+    // 1. Try to fetch from TYPO3 CMS
+    const {
+        isLoading: isCmsLoading,
+        error: cmsError,
+        data: cmsData,
+    } = useQuery({
+        queryKey: [`cms_article_${slug}`, lang],
+        queryFn: async () => {
+            const endpoint = lang === 'en' ? 'news-en' : 'news';
+            const url = `${process.env.DHC_TYPO3_API_DOMAIN}/elections/${endpoint}/${slug}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                return null;
+            }
+            return response.json();
+        },
+        enabled: !hasArticleFromState,
+        retry: false,
+    });
+
+    const cmsArticleLoaded =
+        !hasArticleFromState &&
+        !isCmsLoading &&
+        !cmsError &&
+        cmsData &&
+        (cmsData.title ?? false);
+
+    // 2. Try to fetch from WordPress if CMS fetch completed without an article
+    const {
+        isLoading: isWpLoading,
+        error: wpError,
+        data: wpData,
+    } = useQuery({
         queryKey: [`article_${slug}`],
         queryFn: () =>
             fetch(
                 `https://cms.transparency.sk/wp-json/wp/v2/posts?slug=${slug}`
-            ).then((response) => response.json()),
-        queryOptions: {
-            // run only if article data were not delivered via location.state
-            enabled: !(article.title ?? false),
-        },
+            ).then((response) => {
+                if (!response.ok) return null;
+                return response.json();
+            }),
+        enabled: !hasArticleFromState && !isCmsLoading && !cmsArticleLoaded,
     });
 
-    if (!isLoading && !error && data && data.length) {
-        // article successfully loaded from API - show it!
-        article = {
-            ...article,
-            ...processArticles(data)[0],
-        };
+    let finalArticle = null;
+    let isCms = false;
+
+    if (isCmsFromState) {
+        finalArticle = article;
+        isCms = true;
+    } else if (isWpFromState) {
+        finalArticle = article;
+        isCms = false;
+    } else if (cmsArticleLoaded) {
+        finalArticle = cmsData;
+        isCms = true;
+    } else if (!isWpLoading && !wpError && wpData && wpData.length) {
+        finalArticle = processArticles(wpData)[0];
+        isCms = false;
     }
 
-    // this has to be wrapped in useEffect, otherwise react is bitching about rendering router before unfinished rendering of article :-D
+    const isLoaderActive =
+        !hasArticleFromState &&
+        (isCmsLoading || (!cmsArticleLoaded && isWpLoading));
+
+    // Redirect if loading is finished, and no article could be found in either source
     useEffect(() => {
-        if (!isLoading && !error && data && !data.length) {
-            // redirect to parent page (all articles) in case article does not exist in API
+        const noArticleFound =
+            !hasArticleFromState &&
+            !isCmsLoading &&
+            !cmsArticleLoaded &&
+            !isWpLoading &&
+            !(wpData && wpData.length);
+
+        if (noArticleFound) {
             navigate(location.pathname.replace(`/${slug}`, ''));
         }
-    }, [isLoading, error, data, navigate, location.pathname, slug]);
+    }, [
+        hasArticleFromState,
+        isCmsLoading,
+        cmsArticleLoaded,
+        isWpLoading,
+        wpData,
+        navigate,
+        location.pathname,
+        slug,
+    ]);
 
-    if (!(article.title ?? false) || error) {
-        // waiting for data or error in loding
-        return <Loading error={error} />;
+    if (isLoaderActive || !finalArticle || !(finalArticle.title ?? false)) {
+        return <Loading error={cmsError || wpError} />;
     }
 
-    const template = <NewsDetail article={article} />;
+    const titleText =
+        typeof finalArticle.title === 'object'
+            ? finalArticle.title.rendered
+            : finalArticle.title;
 
-    setTitle(article.title.rendered);
+    setTitle(titleText);
 
     return (
         <section className="article-detail">
-            <Title>{article.title.rendered}</Title>
-            {template}
+            <Title>{titleText}</Title>
+            {isCms ? (
+                <DetailItem article={finalArticle} />
+            ) : (
+                <NewsDetail article={finalArticle} />
+            )}
         </section>
     );
 }

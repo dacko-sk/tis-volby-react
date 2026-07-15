@@ -3,11 +3,10 @@ import { useLocation, useOutletContext } from 'react-router-dom';
 import { setTitle } from '../../../helpers/browser';
 import { labels, t } from '../../../helpers/dictionary';
 import { wpCat } from '../../../helpers/wp';
-
-import { findSubjectByPathname } from '../../../hooks/CmsQueries';
+import { findSubjectByPathname, cmsSubsitesMap } from '../../../hooks/CmsQueries';
 
 import AlertWithIcon from '../../../components/general/AlertWithIcon';
-import Posts, { templates } from '../../../components/wp/Posts';
+import CombinedNews from '../../../components/news/CombinedNews';
 
 function PartyNews() {
     const { pathname } = useLocation();
@@ -16,10 +15,11 @@ function PartyNews() {
     const cmsSubject = findSubjectByPathname(cmsData, pathname);
 
     const content = cmsSubject?.primaryParty?.wpTag ? (
-        <Posts
+        <CombinedNews
+            election={cmsSubsitesMap.samosprava2026}
             categories={[wpCat.news]}
             tags={[cmsSubject?.primaryParty?.wpTag]}
-            template={templates.list}
+            party={cmsSubject?.primaryParty?.uid}
         />
     ) : (
         <AlertWithIcon className="my-4" variant="danger">

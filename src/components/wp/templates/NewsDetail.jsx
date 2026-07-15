@@ -1,4 +1,4 @@
-import { dateFormat } from '../../../helpers/helpers';
+import { dateTimeFormat } from '../../../helpers/helpers';
 import { parseWpHtml } from '../../../helpers/wp';
 
 import PartyTags from '../PartyTags';
@@ -8,7 +8,7 @@ function NewsDetail({ article }) {
         <div className="article-body">
             <div className="d-md-flex">
                 <div className="article-date my-4 me-auto">
-                    {dateFormat(article.date)}
+                    {dateTimeFormat(article.date)}
                 </div>
                 <PartyTags
                     asLink

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { setTitle } from '../helpers/browser';
 import { labels, t } from '../helpers/dictionary';
-import { newsCategories } from '../helpers/wp';
 
 import QuickSearch from '../components/datatables/QuickSearch';
 import Top10Donors from '../components/donors/Top10Donors';
@@ -11,7 +10,7 @@ import PartiesFundingChart from '../components/charts/PartiesFundingChart';
 import SiteNavigator from '../components/structure/SiteNavigator';
 import Title from '../components/structure/Title';
 import BannerNews from '../components/wp/BannerNews';
-import Posts, { templates } from '../components/wp/Posts';
+import CmsNews, { templates } from '../components/news/CmsNews';
 
 function Home() {
     setTitle(t(labels.home.pageTitle));
@@ -42,11 +41,7 @@ function Home() {
             <BannerNews />
 
             <h2 className="mt-4 text-center">{t(labels.news.latest)}</h2>
-            <Posts
-                categories={newsCategories}
-                limit={2}
-                template={templates.condensed}
-            />
+            <CmsNews limit={2} template={templates.featured} election={null} />
 
             <PartiesFundingChart
                 className="mt-4"

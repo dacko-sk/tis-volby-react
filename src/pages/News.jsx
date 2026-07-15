@@ -3,7 +3,7 @@ import { labels, t } from '../helpers/dictionary';
 import { newsCategories } from '../helpers/wp';
 
 import Title from '../components/structure/Title';
-import Posts from '../components/wp/Posts';
+import CombinedNews from '../components/news/CombinedNews';
 
 function News() {
     setTitle(t(labels.news.navTitle));
@@ -11,7 +11,7 @@ function News() {
     return (
         <section>
             <Title>{t(labels.news.pageTitle)}</Title>
-            <Posts categories={newsCategories} />
+            <CombinedNews categories={newsCategories} />
         </section>
     );
 }

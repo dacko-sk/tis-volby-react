@@ -1,10 +1,10 @@
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
-import { segments } from '../../helpers/routes';
 import { categories } from '../../helpers/wp';
+import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import Title from '../../components/structure/Title';
-import Posts from '../../components/wp/Posts';
+import CombinedNews from '../../components/news/CombinedNews';
 
 export const newsCategories = [categories.news26];
 
@@ -14,7 +14,10 @@ function News() {
     return (
         <section>
             <Title>{t(labels.news.title)}</Title>
-            <Posts categories={newsCategories} section={segments.NEWS} />
+            <CombinedNews
+                election={cmsSubsitesMap.samosprava2026}
+                categories={newsCategories}
+            />
         </section>
     );
 }

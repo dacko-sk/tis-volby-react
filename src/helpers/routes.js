@@ -220,6 +220,7 @@ export const routes = {
                 : '')
         );
     }),
+
     search: makeRoute((query, lang) => {
         const subsite = getActiveSubsite();
         if (subsite === 'samosprava2022') {

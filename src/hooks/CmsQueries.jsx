@@ -6,7 +6,7 @@ import { routes } from '../helpers/routes';
 
 import { municipalTypes } from './AccountsData';
 
-export const CMS_BASE_URL = 'https://tiacms.transparency.sk';
+export const CMS_BASE_URL = process.env.DHC_TYPO3_API_DOMAIN;
 export const F_STAROSTA = 1;
 export const F_PRIMATOR = 2;
 export const F_ZUPAN = 3;
@@ -337,4 +337,18 @@ export const isMunicipalityRegional = (data, town) => {
 export const getMunicipalityNameByRegionCode = (data, code) => {
     if (!data?.regions || !Array.isArray(data.regions)) return code;
     return data.regions.find((r) => r.code === code)?.municipality ?? code;
+};
+
+export const findCandidateByPersonUid = (data, personUid) => {
+    if (!data?.candidates || !Array.isArray(data.candidates)) return null;
+    return data.candidates.find(
+        (candidate) => candidate.person?.uid === personUid
+    );
+};
+
+export const findSubjectByPartyUid = (data, partyUid) => {
+    if (!data?.subjects || !Array.isArray(data.subjects)) return null;
+    return data.subjects.find(
+        (subject) => subject.primaryParty?.uid === partyUid
+    );
 };

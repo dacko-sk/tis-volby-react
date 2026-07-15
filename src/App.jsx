@@ -261,7 +261,7 @@ function App() {
                                         [segments.NEWS, S26PartyNews],
                                     ],
                                 ],
-                                [routes.article(true, lang), SamospravaArticle],
+                                [routes.article(true, lang), Article],
                                 [routes.news(lang), S26News],
                                 [routes.campaigns(lang), S26Campaigns],
                                 [
