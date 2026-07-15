@@ -4,8 +4,10 @@ import { dirname } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+import webpack from 'webpack';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
-import Dotenv from 'dotenv-webpack';
 import appManifest from './public/manifest.json' with { type: 'json' };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,37 +47,36 @@ export default (env, argv) => {
             },
         }),
     ];
-    // Load env vars with prefix DHC_ (base file)
-    plugins.push(
-        new Dotenv({
-            path: `.env`,
-            allowlist: [/^DHC_/],
-        })
-    );
-    // Apply stage overrides if present
-    plugins.push(
-        new Dotenv({
-            path: `.env.${argv.mode}`,
-            allowlist: [/^DHC_/],
-            ignoreStub: true, // do not generate empty vars when file missing
-        })
-    );
-    // Apply .env.local overrides if present (git‑ignored, not committed)
-    plugins.push(
-        new Dotenv({
-            path: `.env.local`,
-            allowlist: [/^DHC_/],
-            ignoreStub: true, // do not generate empty vars when file missing
-        })
-    );
-    // Apply .env.{mode}.local overrides (e.g. .env.development.local)
-    plugins.push(
-        new Dotenv({
-            path: `.env.${argv.mode}.local`,
-            allowlist: [/^DHC_/],
-            ignoreStub: true,
-        })
-    );
+    // Load and merge .env files in order of priority (overriding previous ones)
+    const envFiles = [
+        '.env',
+        `.env.${argv.mode}`,
+        '.env.local',
+        `.env.${argv.mode}.local`,
+    ];
+
+    const mergedEnv = {};
+    envFiles.forEach((file) => {
+        const filePath = path.resolve(__dirname, file);
+        if (fs.existsSync(filePath)) {
+            try {
+                const content = fs.readFileSync(filePath);
+                const parsed = dotenv.parse(content);
+                Object.assign(mergedEnv, parsed);
+            } catch (e) {
+                console.error(`Failed to load ${file}:`, e);
+            }
+        }
+    });
+
+    const allowedEnv = {};
+    Object.entries(mergedEnv).forEach(([key, value]) => {
+        if (/^DHC_/.test(key)) {
+            allowedEnv[`process.env.${key}`] = JSON.stringify(value);
+        }
+    });
+
+    plugins.push(new webpack.DefinePlugin(allowedEnv));
     if (isEnvProduction) {
         plugins.push(
             new MiniCssExtractPlugin({
