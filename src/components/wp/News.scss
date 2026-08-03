@@ -196,6 +196,14 @@ ul.blocks-gallery-grid {
   width: 150px;
 }
 
+figure.text-center figcaption {
+  margin-left: auto;
+  margin-right: auto;
+}
+figure.text-end figcaption {
+  margin-left: auto;
+}
+
 @media (min-width: map.get($grid-breakpoints, 'md')) {
   .articles.featured {
     & > .col-md {

@@ -5,7 +5,29 @@ import fallbackImg from '../../public/img/news.png';
 
 const cmsParserOptions = {
     replace: (node) => {
-        const { name, attribs } = node;
+        const { name, attribs, children } = node;
+        if (name === 'figure') {
+            // add bootstrap 5 classes to figures, remove positioning classes
+            return (
+                <figure
+                    className={`figure w-100 ${(attribs.class || '')
+                        .replace('image-left', 'text-start')
+                        .replace('image-center', 'text-center')
+                        .replace('image-right', 'text-end')
+                        .trim()}`}
+                >
+                    {domToReact(children, cmsParserOptions)}
+                </figure>
+            );
+        }
+        if (name === 'figcaption') {
+            // add bootstrap 5 classes to figcaptions
+            return (
+                <figcaption className="figure-caption col-11 col-md-10 col-lg-8 col-xl-6">
+                    {domToReact(children, cmsParserOptions)}
+                </figcaption>
+            );
+        }
         if (name === 'img' && attribs && attribs.src) {
             let src = attribs.src;
             if (src.startsWith('/')) {
