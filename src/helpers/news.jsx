@@ -50,7 +50,10 @@ export const parseCmsHtml = (html) => {
 
 export const stripHtml = (html) => {
     if (!html) return '';
-    return html.replace(/<[^>]*>?/gm, '');
+    const withoutTags = html.replace(/<[^>]*>?/gm, '');
+
+    const doc = new DOMParser().parseFromString(withoutTags, 'text/html');
+    return doc.documentElement.textContent || '';
 };
 
 export const generateExcerpt = (html, length) => {
