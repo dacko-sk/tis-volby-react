@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import { elections as el, links } from '../../helpers/constants';

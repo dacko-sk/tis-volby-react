@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { setTitle } from '../helpers/browser';
 import { labels, t } from '../helpers/dictionary';

@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { usePapaParse } from 'react-papaparse';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { contains, compareStr } from '../helpers/helpers';
 import { getActiveSubsite } from '../helpers/languages';

@@ -13,7 +13,7 @@
     "react-error-boundary": "^6.1.2",
     "react-leaflet": "^5.0.0",
     "react-papaparse": "^4.4.0",
-    "react-router-dom": "^6.30.4",
+    "react-router": "^8.3.0",
     "react-social-icons": "^6.26.0",
     "recharts": "^3.8.1",
     "use-debounce": "^10.1.1",

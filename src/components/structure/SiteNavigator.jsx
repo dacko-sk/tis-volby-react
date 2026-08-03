@@ -2,7 +2,7 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { elections as el, icons, links } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';

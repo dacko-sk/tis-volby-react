@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Badge from 'react-bootstrap/Badge';
 import FunctionBadge from '../components/assets/FunctionBadge';
 

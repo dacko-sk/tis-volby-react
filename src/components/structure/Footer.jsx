@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { SocialIcon } from 'react-social-icons';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { colorOrange, elections as el, links } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';

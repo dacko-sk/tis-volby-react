@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import Nav from 'react-bootstrap/Nav';
 
 import { labels, t } from '../../helpers/dictionary';

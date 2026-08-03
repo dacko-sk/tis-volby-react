@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Curve, DefaultLegendContent, Sector } from 'recharts';
 
 import { isMobile } from './browser';

@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 
 import { labels, t } from '../../helpers/dictionary';

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import Button from 'react-bootstrap/Button';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { assetDeclarationsColumns as ac } from '../../helpers/constants';

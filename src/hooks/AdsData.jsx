@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { usePapaParse } from 'react-papaparse';
 import { useQuery } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import { getActiveSubsite } from '../helpers/languages';
 import { parties as partyConfig } from '../helpers/parties';

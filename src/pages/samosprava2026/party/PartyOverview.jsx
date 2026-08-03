@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
-import { Link, useLocation, useOutletContext } from 'react-router-dom';
+import { Link, useLocation, useOutletContext } from 'react-router';
 
 import { labels, t } from '../../../helpers/dictionary';
 import { currencyFormat } from '../../../helpers/helpers';

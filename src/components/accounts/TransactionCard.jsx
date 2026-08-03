@@ -2,7 +2,7 @@ import Badge from 'react-bootstrap/Badge';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Stack from 'react-bootstrap/Stack';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { detailLink, getColumnIndex } from '../../helpers/accounts';
 import { icons, transactionsColumns as tc } from '../../helpers/constants';

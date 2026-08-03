@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import linkIcon from '../../../public/img/external_link_icon.svg?url';
 import pdfIcon from '../../../public/img/PDF_icon.svg?url';

@@ -1,4 +1,4 @@
-import { useLocation, useOutletContext } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router';
 
 import { setTitle } from '../../../helpers/browser';
 import { labels, t } from '../../../helpers/dictionary';

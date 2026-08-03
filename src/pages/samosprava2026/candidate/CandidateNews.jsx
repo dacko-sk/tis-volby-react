@@ -1,4 +1,4 @@
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router';
 
 import { labels, t } from '../../../helpers/dictionary';
 import { cmsSubsitesMap } from '../../../hooks/CmsQueries';

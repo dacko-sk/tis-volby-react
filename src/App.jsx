@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 
 import { languages, setSubsiteOverride } from './helpers/languages';
 import {
@@ -124,7 +124,12 @@ import './scss/volby-landing.scss';
 
 function App() {
     return (
-        <BrowserRouter>
+        <BrowserRouter
+            future={{
+                v7_relativeSplatPath: true,
+                v7_startTransition: true,
+            }}
+        >
             <ContextProviders>
                 <Routes>
                     <Route path={homepage} element={<Layout />}>
@@ -265,7 +270,12 @@ function App() {
                                 [routes.news(lang), S26News],
                                 [routes.campaigns(lang), S26Campaigns],
                                 [
-                                    routes.candidateMunicipal(true, '', null, lang),
+                                    routes.candidateMunicipal(
+                                        true,
+                                        '',
+                                        null,
+                                        lang
+                                    ),
                                     S26Candidate,
                                     [
                                         ['', S26CandidateOverview],

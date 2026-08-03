@@ -1,6 +1,6 @@
 import Pagination from 'react-bootstrap/Pagination';
 import PageItem, { Ellipsis } from 'react-bootstrap/PageItem';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { scrollToTop } from '../../helpers/browser';
 

@@ -1,6 +1,6 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';

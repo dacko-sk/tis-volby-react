@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router';
 
 function PartyTag({ name, route }) {
     const currentEntity = useOutletContext();

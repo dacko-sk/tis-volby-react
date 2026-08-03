@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 

@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { setTitle } from '../../helpers/browser';
 import { labels, t } from '../../helpers/dictionary';

@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { wpTagsMap } from '../../helpers/parties';
 import { getActiveSubsite } from '../../helpers/languages';
 

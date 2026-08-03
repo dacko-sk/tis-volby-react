@@ -1,4 +1,4 @@
-import { useLocation, useOutletContext } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { setTitle } from '../../../helpers/browser';

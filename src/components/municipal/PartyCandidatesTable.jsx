@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 

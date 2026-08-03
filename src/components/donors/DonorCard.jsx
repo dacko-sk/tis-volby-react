@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Stack from 'react-bootstrap/Stack';
 
 import { DonorFlags, DonorParties, entityIcon } from '../../helpers/dontaions';

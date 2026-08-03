@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../helpers/dictionary';

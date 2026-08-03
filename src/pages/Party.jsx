@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav';
-import { NavLink, Outlet, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { labels, t } from '../helpers/dictionary';

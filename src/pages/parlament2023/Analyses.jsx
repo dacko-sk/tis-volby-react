@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { setTitle } from '../../helpers/browser';
 import { labels, t } from '../../helpers/dictionary';

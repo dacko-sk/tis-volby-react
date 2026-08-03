@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat, numFormat } from '../../helpers/helpers';

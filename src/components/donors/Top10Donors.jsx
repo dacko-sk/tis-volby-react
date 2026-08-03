@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Table from 'react-bootstrap/Table';
 import { useQuery } from '@tanstack/react-query';
 

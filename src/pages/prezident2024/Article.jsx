@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 
 import { setTitle } from '../../helpers/browser';
