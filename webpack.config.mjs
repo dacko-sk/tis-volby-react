@@ -130,6 +130,7 @@ export default (env, argv) => {
                                         'if-function',
                                         'import',
                                     ],
+                                    charset: false,
                                 },
                             },
                         },
