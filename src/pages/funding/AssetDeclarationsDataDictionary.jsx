@@ -10,6 +10,7 @@ import { setTitle } from '../../helpers/browser';
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 import { getCurrentLanguage, languages } from '../../helpers/languages';
+import { useDemoMode } from '../../helpers/demoMode';
 import Title from '../../components/structure/Title';
 
 // We import the static metadata JSONs to render the variables table
@@ -22,6 +23,7 @@ function AssetDeclarationsDataDictionary() {
     const isEn = getCurrentLanguage() === languages.en;
     const metadata = isEn ? metadataEn : metadataSk;
     const th = labels.assetDeclarations.dataDictionaryLabels;
+    const isDemo = useDemoMode();
 
     return (
         <section>
@@ -166,37 +168,47 @@ function AssetDeclarationsDataDictionary() {
                             </Table>
                         </Card>
 
-                        {/* <h3 className="mt-5 mb-3">{t(th.rfTitle)}</h3>
-                        <Card>
-                            <Table
-                                striped
-                                bordered
-                                hover
-                                responsive
-                                className="mb-0"
-                            >
-                                <thead className="bg-light">
-                                    <tr>
-                                        <th className="w-25">{t(th.rfName)}</th>
-                                        <th>{t(th.desc)}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Lorem Ipsum (placeholder)</td>
-                                        <td>
-                                            Lorem ipsum dolor sit amet,
-                                            consectetur adipiscing elit. Sed do
-                                            eiusmod tempor incididunt ut labore
-                                            et dolore magna aliqua. Ut enim ad
-                                            minim veniam, quis nostrud
-                                            exercitation ullamco laboris nisi ut
-                                            aliquip ex ea commodo consequat.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </Card> */}
+                        {isDemo && (
+                            <>
+                                <h3 className="mt-5 mb-3">{t(th.rfTitle)}</h3>
+                                <Card>
+                                    <Table
+                                        striped
+                                        bordered
+                                        hover
+                                        responsive
+                                        className="mb-0"
+                                    >
+                                        <thead className="bg-light">
+                                            <tr>
+                                                <th className="w-25">
+                                                    {t(th.rfName)}
+                                                </th>
+                                                <th>{t(th.desc)}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {t(
+                                                        labels.assetDeclarations
+                                                            .redFlags
+                                                            .dictionaryRowName
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {t(
+                                                        labels.assetDeclarations
+                                                            .redFlags
+                                                            .dictionaryRowDesc
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </Card>
+                            </>
+                        )}
                     </Col>
                 </Row>
             </Container>

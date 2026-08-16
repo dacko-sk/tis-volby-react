@@ -183,6 +183,29 @@ export const labels = {
         ],
         function_condition_true: ['Áno', 'Yes'],
         function_condition_false: ['Nie', 'No'],
+
+        redFlags: {
+            switchLabel: [
+                'Zobraziť rozdiely oproti predošlému roku',
+                'Show differences from previous year',
+            ],
+            tooltipChanged: [
+                'Zmena oproti predošlému roku',
+                'Change from previous year',
+            ],
+            tooltipUnchanged: [
+                'Bez zmeny oproti predošlému roku',
+                'No change from previous year',
+            ],
+            dictionaryRowName: [
+                'Zmena položky majetkového priznania oproti predošlému roku',
+                'Change in an asset declaration item vs. previous year',
+            ],
+            dictionaryRowDesc: [
+                'Ak sa text niektorej položky v tabuľke „Majetky“ oproti predošlému priznaniu funkcionára zmenil, riadok označíme touto ikonou; porovnanie zámerne ignoruje veľkosť písmen, diakritiku, interpunkciu a poradie slov, keďže priznania sa vypĺňajú ručne. Zmena sama osebe neznamená pochybenie - iba upozorňuje, že text je iný než v predchádzajúcom roku.',
+                'If the text of an item in the "Assets" table differs from the official\'s previous declaration, the row is marked with this icon; the comparison deliberately ignores case, accents, punctuation and word order, since declarations are filled in by hand. A change does not by itself indicate wrongdoing - it only flags that the text differs from last year.',
+            ],
+        },
     },
     charts: {
         amount: ['Suma', 'Amount'],

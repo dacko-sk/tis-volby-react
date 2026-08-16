@@ -1,18 +1,82 @@
+import { useState } from 'react';
+
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
 import Tabs from 'react-bootstrap/Tabs';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat, nl2r } from '../../helpers/helpers';
 import { colors } from '../../helpers/constants';
+import { useDemoMode } from '../../helpers/demoMode';
+import {
+    diffAssetField,
+    extractLoanDate,
+    extractLvId,
+    findPreviousDeclaration,
+} from '../../helpers/assetDeclarations';
 
 import DownloadLink from '../general/DownloadLink';
 import TisBarChart from '../charts/TisBarChart';
 
+import flagChangedIcon from '../../../public/img/asset-flag-changed.svg?url';
+import flagUnchangedIcon from '../../../public/img/asset-flag-unchanged.svg?url';
+
+// Row config for the Majetky (assets) table - shared between the cell
+// rendering and the year-over-year diff lookup below.
+const assetRows = [
+    {
+        key: 'real_estates',
+        label: labels.assetDeclarations.real_estates,
+        groupBy: extractLvId,
+    },
+    { key: 'movable', label: labels.assetDeclarations.movable },
+    {
+        key: 'property_rights',
+        label: labels.assetDeclarations.property_rights,
+    },
+    {
+        key: 'credits',
+        label: labels.assetDeclarations.credits,
+        groupBy: extractLoanDate,
+    },
+    {
+        key: 'use_real_estates',
+        label: labels.assetDeclarations.use_real_estates,
+    },
+    { key: 'use_movable', label: labels.assetDeclarations.use_movable },
+    { key: 'donations', label: labels.assetDeclarations.donations },
+];
+
+// Renders a field's lines with <br/> between them, optionally highlighting
+// the ones that differ from the previous year's declaration.
+function renderAssetFieldLines(lines, highlightDiff) {
+    if (!lines.length) return null;
+    return lines.map((line, index) => (
+        <span key={index}>
+            {index > 0 && <br />}
+            <span
+                className={
+                    highlightDiff && line.changed
+                        ? 'bg-warning-subtle'
+                        : undefined
+                }
+            >
+                {line.text}
+            </span>
+        </span>
+    ));
+}
+
 function AssetDeclarationData({ declarations = [], extended = [] }) {
+    const [showDiff, setShowDiff] = useState(false);
+    const isDemo = useDemoMode();
+
     // Chronologically sorted declarations for chart (ascending years)
     const sortedForChart = [...declarations]
         .sort((a, b) => a.year - b.year)
@@ -101,15 +165,16 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                             className="mb-4 justify-content-center custom-tabs"
                         >
                             {sortedForTabs.map((decl) => {
-                                const reportedOnStartLabel = decl.reported_on_start
-                                    ? t(
-                                          labels.assetDeclarations
-                                              .reported_on_start_true
-                                      )
-                                    : t(
-                                          labels.assetDeclarations
-                                              .reported_on_start_false
-                                      );
+                                const reportedOnStartLabel =
+                                    decl.reported_on_start
+                                        ? t(
+                                              labels.assetDeclarations
+                                                  .reported_on_start_true
+                                          )
+                                        : t(
+                                              labels.assetDeclarations
+                                                  .reported_on_start_false
+                                          );
 
                                 const functionConditionLabel =
                                     decl.function_condition
@@ -122,6 +187,11 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                                                   .function_condition_false
                                           );
 
+                                const prevDecl = findPreviousDeclaration(
+                                    decl,
+                                    declarations
+                                );
+
                                 return (
                                     <Tab
                                         key={decl.year}
@@ -133,7 +203,8 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                                                 {/* Table 1: Basic Info Cards */}
                                                 <Card className="shadow-sm border-0">
                                                     <Card.Header className="bg-primary text-white fw-bold py-3">
-                                                        ℹ️ {t(labels.usefulInfo)}
+                                                        ℹ️{' '}
+                                                        {t(labels.usefulInfo)}
                                                     </Card.Header>
                                                     <Table
                                                         responsive
@@ -315,12 +386,36 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                                             <Col xs={12}>
                                                 {/* Table 3: Asset Details Card (full-width) */}
                                                 <Card className="shadow-sm border-0">
-                                                    <Card.Header className="bg-primary text-white fw-bold py-3">
-                                                        🏠{' '}
-                                                        {t(
-                                                            labels
-                                                                .assetDeclarations
-                                                                .assets
+                                                    <Card.Header className="bg-primary text-white fw-bold py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                                        <span>
+                                                            🏠{' '}
+                                                            {t(
+                                                                labels
+                                                                    .assetDeclarations
+                                                                    .assets
+                                                            )}
+                                                        </span>
+                                                        {prevDecl && isDemo && (
+                                                            <Form.Check
+                                                                type="switch"
+                                                                id={`show-asset-diff-${decl.year}`}
+                                                                label={t(
+                                                                    labels
+                                                                        .assetDeclarations
+                                                                        .redFlags
+                                                                        .switchLabel
+                                                                )}
+                                                                checked={
+                                                                    showDiff
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setShowDiff(
+                                                                        e.target
+                                                                            .checked
+                                                                    )
+                                                                }
+                                                                className="text-white small mb-0 fw-normal"
+                                                            />
                                                         )}
                                                     </Card.Header>
                                                     <Table
@@ -329,104 +424,105 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                                                         className="mb-0 align-middle"
                                                     >
                                                         <tbody>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .real_estates
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.real_estates
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .movable
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.movable
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .property_rights
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.property_rights
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .credits
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.credits
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .use_real_estates
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.use_real_estates
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .use_movable
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.use_movable
-                                                                    )}
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th className="ps-3 py-3 w-25 bg-light">
-                                                                    {t(
-                                                                        labels
-                                                                            .assetDeclarations
-                                                                            .donations
-                                                                    )}
-                                                                </th>
-                                                                <td className="ps-3 py-3 text-dark">
-                                                                    {nl2r(
-                                                                        decl.donations
-                                                                    )}
-                                                                </td>
-                                                            </tr>
+                                                            {assetRows.map(
+                                                                ({
+                                                                    key,
+                                                                    label,
+                                                                    groupBy,
+                                                                }) => {
+                                                                    const diff =
+                                                                        prevDecl
+                                                                            ? diffAssetField(
+                                                                                  decl[
+                                                                                      key
+                                                                                  ],
+                                                                                  prevDecl[
+                                                                                      key
+                                                                                  ],
+                                                                                  groupBy
+                                                                              )
+                                                                            : null;
+
+                                                                    return (
+                                                                        <tr
+                                                                            key={
+                                                                                key
+                                                                            }
+                                                                        >
+                                                                            <th className="ps-3 py-3 w-25 bg-light">
+                                                                                {t(
+                                                                                    label
+                                                                                )}
+                                                                            </th>
+                                                                            <td className="ps-3 py-3 text-dark">
+                                                                                {diff
+                                                                                    ? renderAssetFieldLines(
+                                                                                          diff.lines,
+                                                                                          showDiff
+                                                                                      )
+                                                                                    : nl2r(
+                                                                                          decl[
+                                                                                              key
+                                                                                          ]
+                                                                                      )}
+                                                                            </td>
+                                                                            {prevDecl &&
+                                                                                isDemo && (
+                                                                                    <td
+                                                                                        className="text-center"
+                                                                                        style={{
+                                                                                            width: '3rem',
+                                                                                        }}
+                                                                                    >
+                                                                                        <OverlayTrigger
+                                                                                            placement="left"
+                                                                                            overlay={
+                                                                                                <Tooltip>
+                                                                                                    {t(
+                                                                                                        diff.changed
+                                                                                                            ? labels
+                                                                                                                  .assetDeclarations
+                                                                                                                  .redFlags
+                                                                                                                  .tooltipChanged
+                                                                                                            : labels
+                                                                                                                  .assetDeclarations
+                                                                                                                  .redFlags
+                                                                                                                  .tooltipUnchanged
+                                                                                                    )}
+                                                                                                </Tooltip>
+                                                                                            }
+                                                                                        >
+                                                                                            <img
+                                                                                                src={
+                                                                                                    diff.changed
+                                                                                                        ? flagChangedIcon
+                                                                                                        : flagUnchangedIcon
+                                                                                                }
+                                                                                                alt={t(
+                                                                                                    diff.changed
+                                                                                                        ? labels
+                                                                                                              .assetDeclarations
+                                                                                                              .redFlags
+                                                                                                              .tooltipChanged
+                                                                                                        : labels
+                                                                                                              .assetDeclarations
+                                                                                                              .redFlags
+                                                                                                              .tooltipUnchanged
+                                                                                                )}
+                                                                                                width={
+                                                                                                    24
+                                                                                                }
+                                                                                                height={
+                                                                                                    24
+                                                                                                }
+                                                                                            />
+                                                                                        </OverlayTrigger>
+                                                                                    </td>
+                                                                                )}
+                                                                        </tr>
+                                                                    );
+                                                                }
+                                                            )}
                                                         </tbody>
                                                     </Table>
                                                 </Card>
