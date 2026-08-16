@@ -492,30 +492,43 @@ function AssetDeclarationData({ declarations = [], extended = [] }) {
                                                                                                 </Tooltip>
                                                                                             }
                                                                                         >
-                                                                                            <img
-                                                                                                src={
-                                                                                                    diff.changed
-                                                                                                        ? flagChangedIcon
-                                                                                                        : flagUnchangedIcon
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                className="p-0 border-0 bg-transparent"
+                                                                                                onClick={() =>
+                                                                                                    setShowDiff(
+                                                                                                        (
+                                                                                                            prev
+                                                                                                        ) =>
+                                                                                                            !prev
+                                                                                                    )
                                                                                                 }
-                                                                                                alt={t(
-                                                                                                    diff.changed
-                                                                                                        ? labels
-                                                                                                              .assetDeclarations
-                                                                                                              .redFlags
-                                                                                                              .tooltipChanged
-                                                                                                        : labels
-                                                                                                              .assetDeclarations
-                                                                                                              .redFlags
-                                                                                                              .tooltipUnchanged
-                                                                                                )}
-                                                                                                width={
-                                                                                                    24
-                                                                                                }
-                                                                                                height={
-                                                                                                    24
-                                                                                                }
-                                                                                            />
+                                                                                            >
+                                                                                                <img
+                                                                                                    src={
+                                                                                                        diff.changed
+                                                                                                            ? flagChangedIcon
+                                                                                                            : flagUnchangedIcon
+                                                                                                    }
+                                                                                                    alt={t(
+                                                                                                        diff.changed
+                                                                                                            ? labels
+                                                                                                                  .assetDeclarations
+                                                                                                                  .redFlags
+                                                                                                                  .tooltipChanged
+                                                                                                            : labels
+                                                                                                                  .assetDeclarations
+                                                                                                                  .redFlags
+                                                                                                                  .tooltipUnchanged
+                                                                                                    )}
+                                                                                                    width={
+                                                                                                        24
+                                                                                                    }
+                                                                                                    height={
+                                                                                                        24
+                                                                                                    }
+                                                                                                />
+                                                                                            </button>
                                                                                         </OverlayTrigger>
                                                                                     </td>
                                                                                 )}
