@@ -140,6 +140,27 @@
       "description": "List of financial liabilities, credits, and loans",
       "notes_limitations": "May contain multiple records separated by a newline",
       "source": "NRSR"
+    },
+    {
+      "name": "declarations.use_real_estates",
+      "data_type": "Text",
+      "description": "Use of real estate owned by another person",
+      "notes_limitations": "May contain multiple records separated by a newline",
+      "source": "NRSR"
+    },
+    {
+      "name": "declarations.use_movable",
+      "data_type": "Text",
+      "description": "Use of movable property owned by another person",
+      "notes_limitations": "May contain multiple records separated by a newline",
+      "source": "NRSR"
+    },
+    {
+      "name": "declarations.donations",
+      "data_type": "Text",
+      "description": "Donations or other benefits received",
+      "notes_limitations": "May contain multiple records separated by a newline",
+      "source": "NRSR"
     }
   ]
 }

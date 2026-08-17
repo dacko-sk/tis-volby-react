@@ -140,6 +140,27 @@
       "description": "existencia záväzku",
       "notes_limitations": "Môže obsahovať viacero záznamov oddelených novým riadkom",
       "source": "NRSR"
+    },
+    {
+      "name": "declarations.use_real_estates",
+      "data_type": "Text",
+      "description": "užívanie nehnuteľnej veci vo vlastníctve inej osoby",
+      "notes_limitations": "Môže obsahovať viacero záznamov oddelených novým riadkom",
+      "source": "NRSR"
+    },
+    {
+      "name": "declarations.use_movable",
+      "data_type": "Text",
+      "description": "užívanie hnuteľnej veci vo vlastníctve inej osoby",
+      "notes_limitations": "Môže obsahovať viacero záznamov oddelených novým riadkom",
+      "source": "NRSR"
+    },
+    {
+      "name": "declarations.donations",
+      "data_type": "Text",
+      "description": "prijaté dary alebo iné výhody",
+      "notes_limitations": "Môže obsahovať viacero záznamov oddelených novým riadkom",
+      "source": "NRSR"
     }
   ]
 }
