@@ -184,7 +184,7 @@ function DonationsFilters({
         // copy all options except p & o
         const { p, o, ...linkOpt } = options;
         if (e.target.value !== '') {
-            linkOpt.p = e.target.value;
+            linkOpt.p = encodeURIComponent(e.target.value);
         }
         updateRouteQuery(linkOpt);
     };

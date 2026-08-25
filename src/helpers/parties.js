@@ -111,6 +111,7 @@ export const parties = {
             n23: 2942147187,
             r22: 5192786986,
         },
+        aliases: ['PROGRESÍVNE SLOVENSKO'],
         fullName: 'PROGRESÍVNE SLOVENSKO',
         wp: 906,
     },
