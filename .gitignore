@@ -8,6 +8,9 @@
 # visual studio
 .vscode
 
+# claude code
+.claude
+
 # testing
 /coverage
 
