@@ -76,11 +76,6 @@ export default (env, argv) => {
         }
     });
 
-    if (!isEnvProduction) {
-        // Requests go through the dev-server proxy below as same-origin
-        // relative paths, so they don't hit the CMS's CORS policy.
-        allowedEnv['process.env.DHC_WP_API_DOMAIN'] = JSON.stringify('');
-    }
     plugins.push(new webpack.DefinePlugin(allowedEnv));
     if (isEnvProduction) {
         plugins.push(
@@ -100,13 +95,6 @@ export default (env, argv) => {
             hot: true,
             open: [rootPath],
             port: 3000,
-            proxy: [
-                {
-                    context: ['/wp-json'],
-                    target: 'https://cms.transparency.sk',
-                    changeOrigin: true,
-                },
-            ],
         },
         entry: './src/index.jsx',
         module: {

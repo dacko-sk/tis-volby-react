@@ -8,7 +8,7 @@ function Media({ alt, id, fallback }) {
     const { isLoading, error, data } = useQuery({
         queryKey: [`media_${id}`],
         queryFn: () =>
-            fetch(`${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/media/${id}`).then(
+            fetch(`https://cms.transparency.sk/wp-json/wp/v2/media/${id}`).then(
                 (response) => response.json()
             ),
         queryOptions: {

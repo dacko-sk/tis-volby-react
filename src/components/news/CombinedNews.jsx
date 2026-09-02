@@ -73,7 +73,7 @@ function CombinedNews({
                 ? `&tags=${tags.join()}&tax_relation=AND`
                 : '';
             const searchParam = search ? `&search=${search}` : '';
-            const url = `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?per_page=1${catParam}${tagParam}${searchParam}`;
+            const url = `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=1${catParam}${tagParam}${searchParam}`;
             const res = await fetch(url);
             if (!res.ok) {
                 return { total: 0 };
@@ -191,7 +191,7 @@ function CombinedNews({
                 ? `&tags=${tags.join()}&tax_relation=AND`
                 : '';
             const searchParam = search ? `&search=${search}` : '';
-            const url = `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?per_page=${wpNeeded}&offset=${wpOffset}${catParam}${tagParam}${searchParam}`;
+            const url = `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=${wpNeeded}&offset=${wpOffset}${catParam}${tagParam}${searchParam}`;
             const res = await fetch(url);
             if (!res.ok) {
                 return [];

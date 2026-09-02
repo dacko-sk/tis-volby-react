@@ -26,7 +26,7 @@ function Article() {
         queryKey: [`article_${slug}`],
         queryFn: () =>
             fetch(
-                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?slug=${slug}`
+                `https://cms.transparency.sk/wp-json/wp/v2/posts?slug=${slug}`
             ).then((response) => response.json()),
         // run only if article data were not delivered via location.state
         enabled: !(article.title ?? false),
