@@ -22,7 +22,7 @@ function PartyAssets() {
         queryKey: [`party_asets_${party[legacyAggregatedKeys.name]}`],
         queryFn: () =>
             fetch(
-                `https://cms.transparency.sk/wp-json/wp/v2/posts?categories=${wpCat.assets}&tags=${party.tag}&tax_relation=AND`
+                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?categories=${wpCat.assets}&tags=${party.tag}&tax_relation=AND`
             ).then((response) => response.json()),
         // run only if party has WP tag
         enabled: !!(party.tag ?? false),

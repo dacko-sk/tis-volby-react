@@ -64,7 +64,7 @@ function Posts({
         ],
         queryFn: () =>
             fetch(
-                `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=${blocksize}&page=${activePage}${catParam}${catExParam}${tagParam}${searchParam}`
+                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?per_page=${blocksize}&page=${activePage}${catParam}${catExParam}${tagParam}${searchParam}`
             ).then((response) => {
                 if (response.headers) {
                     const wptp = Number(

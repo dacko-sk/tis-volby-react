@@ -14,7 +14,7 @@ function BannerNews() {
         queryKey: [`banner_news_${bannerCat}`],
         queryFn: () =>
             fetch(
-                `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=10&page=1&categories=${bannerCat}`
+                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?per_page=10&page=1&categories=${bannerCat}`
             ).then((response) => response.json()),
     });
 

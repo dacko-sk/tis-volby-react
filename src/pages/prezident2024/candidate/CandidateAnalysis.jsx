@@ -27,7 +27,7 @@ function CandidateAnalysis() {
         queryKey: [`candidate_analysis_${candidate.name}`],
         queryFn: () =>
             fetch(
-                `https://cms.transparency.sk/wp-json/wp/v2/posts?categories=${
+                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?categories=${
                     wpCat.analyses
                 }&tags=${
                     candidate[csvConfig.ACCOUNTS.columns.WP]

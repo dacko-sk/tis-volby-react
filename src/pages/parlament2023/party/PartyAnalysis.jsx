@@ -28,7 +28,7 @@ function PartyAnalysis() {
         queryKey: [`party_analysis_${party[legacyAggregatedKeys.name]}`],
         queryFn: () =>
             fetch(
-                `https://cms.transparency.sk/wp-json/wp/v2/posts?categories=${wpCat.analyses}&tags=${wpTag}&tax_relation=AND`
+                `${process.env.DHC_WP_API_DOMAIN}/wp-json/wp/v2/posts?categories=${wpCat.analyses}&tags=${wpTag}&tax_relation=AND`
             ).then((response) => response.json()),
         // run only if article data were not delivered via location.state
         // and only if party has WP tag
