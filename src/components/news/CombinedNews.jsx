@@ -59,11 +59,7 @@ function CombinedNews({
     const totalCms = cmsHeaderData?.total || 0;
 
     // 2. Fetch WordPress news count
-    const {
-        data: wpHeaderData,
-        isLoading: isWpHeaderLoading,
-        error: wpHeaderError,
-    } = useQuery({
+    const { data: wpHeaderData, isLoading: isWpHeaderLoading } = useQuery({
         queryKey: ['wp_news_count', categories, tags, search],
         queryFn: async () => {
             const catParam = categories.length
@@ -170,11 +166,7 @@ function CombinedNews({
     });
 
     // 5. Fetch page-specific WP items
-    const {
-        data: wpPageData,
-        isLoading: isWpPageLoading,
-        error: wpPageError,
-    } = useQuery({
+    const { data: wpPageData, isLoading: isWpPageLoading } = useQuery({
         queryKey: [
             'wp_news_page',
             categories,
@@ -207,11 +199,9 @@ function CombinedNews({
         (cmsBlocksize > 0 && isCmsPageLoading) ||
         (wpNeeded > 0 && isWpPageLoading);
 
-    const error =
-        cmsHeaderError ||
-        wpHeaderError ||
-        (cmsBlocksize > 0 && cmsPageError) ||
-        (wpNeeded > 0 && wpPageError);
+    // WP fetch errors (e.g. CORS/rate-limiting on cms.transparency.sk) don't
+    // block the page — fall back to showing CMS news only.
+    const error = cmsHeaderError || (cmsBlocksize > 0 && cmsPageError);
 
     let content = null;
 
