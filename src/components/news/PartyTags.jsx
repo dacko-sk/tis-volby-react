@@ -46,6 +46,24 @@ function PartyTags({ relations, className, asLink }) {
         }
     });
 
+    (relations.municipalities || []).forEach((mun) => {
+        if (mun?.name) {
+            matchedTags.push([
+                mun.name,
+                routes.municipality(mun.name, mun.region ?? null),
+            ]);
+        }
+    });
+
+    (relations.regions || []).forEach((region) => {
+        if (region?.abbreviation) {
+            matchedTags.push([
+                region.abbreviation,
+                routes.region(region.code ?? region.abbreviation),
+            ]);
+        }
+    });
+
     const renderedTags = matchedTags.map(([name, route]) => (
         <PartyTag key={name} name={name} route={asLink ? route : null} />
     ));
