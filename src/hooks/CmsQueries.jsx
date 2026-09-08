@@ -112,11 +112,15 @@ export const useSearchData = (query) => {
         );
 
         const tagsSet = new Set();
+        const personUidsSet = new Set();
+        const partyUidsSet = new Set();
         candidates.forEach((c) => {
             if (c.person?.wpTag) tagsSet.add(c.person.wpTag);
+            if (c.person?.uid) personUidsSet.add(c.person.uid);
         });
         subjects.forEach((s) => {
             if (s.primaryParty?.wpTag) tagsSet.add(s.primaryParty.wpTag);
+            if (s.primaryParty?.uid) partyUidsSet.add(s.primaryParty.uid);
         });
 
         return {
@@ -124,6 +128,8 @@ export const useSearchData = (query) => {
             candidates,
             subjects,
             tags: Array.from(tagsSet),
+            personUids: Array.from(personUidsSet),
+            partyUids: Array.from(partyUidsSet),
         };
     });
 };

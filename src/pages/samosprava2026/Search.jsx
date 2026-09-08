@@ -6,15 +6,19 @@ import Row from 'react-bootstrap/Row';
 
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
-import { routes, segments } from '../../helpers/routes';
+import { routes } from '../../helpers/routes';
 
 import { municipalTypes } from '../../hooks/AccountsData';
-import { useSearchData, getSubjectShortname } from '../../hooks/CmsQueries';
+import {
+    useSearchData,
+    getSubjectShortname,
+    cmsSubsitesMap,
+} from '../../hooks/CmsQueries';
 
 import { newsCategories } from './News';
 import Loading from '../../components/general/Loading';
 import Title from '../../components/structure/Title';
-import Posts from '../../components/wp/Posts';
+import CombinedNews from '../../components/news/CombinedNews';
 
 function Search() {
     const params = useParams();
@@ -118,6 +122,8 @@ function Search() {
     }
 
     const tags = searchData?.tags || [];
+    const personUids = searchData?.personUids || [];
+    const partyUids = searchData?.partyUids || [];
 
     useEffect(() => {
         if (!query) {
@@ -162,12 +168,14 @@ function Search() {
             )}
 
             <h2 className="my-4">{t(labels.search.news)}</h2>
-            <Posts
+            <CombinedNews
+                election={cmsSubsitesMap.samosprava2026}
                 categories={newsCategories}
                 noResults={t(labels.search.noNews)}
-                section={segments.NEWS}
-                search={tags.length > 0 ? undefined : query}
+                search={query}
                 tags={tags.length > 0 ? tags : undefined}
+                person={personUids.length > 0 ? personUids : undefined}
+                party={partyUids.length > 0 ? partyUids : undefined}
             />
         </section>
     );

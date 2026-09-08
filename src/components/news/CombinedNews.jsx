@@ -31,22 +31,35 @@ function CombinedNews({
     const lang = getCurrentLanguage();
     const B = 10; // Blocksize / items per page
 
+    // party/person accept either a single uid or an array of uids (API takes a comma-separated list)
+    const partyParam = Array.isArray(party) ? party.join(',') : party;
+    const personParam = Array.isArray(person) ? person.join(',') : person;
+    // when party/person are given, rely on them alone rather than ANDing with free-text search
+    const hasCmsIdFilter = !!partyParam || !!personParam;
+
     // 1. Fetch CMS news count
     const {
         data: cmsHeaderData,
         isLoading: isCmsHeaderLoading,
         error: cmsHeaderError,
     } = useQuery({
-        queryKey: ['cms_news_count', lang, election, party, person, search],
+        queryKey: [
+            'cms_news_count',
+            lang,
+            election,
+            partyParam,
+            personParam,
+            search,
+        ],
         queryFn: async () => {
             const endpoint = lang === 'en' ? 'news-en' : 'news';
             const params = new URLSearchParams();
             params.append('page', '1');
             params.append('blocksize', '1');
             if (election) params.append('e', election);
-            if (party) params.append('party', party.toString());
-            if (person) params.append('person', person.toString());
-            if (search) params.append('q', search);
+            if (partyParam) params.append('party', partyParam);
+            if (personParam) params.append('person', personParam);
+            if (!hasCmsIdFilter && search) params.append('q', search);
             const url = `${process.env.DHC_TYPO3_API_DOMAIN}/elections/${endpoint}?${params.toString()}`;
             const res = await fetch(url);
             if (!res.ok) {
@@ -68,7 +81,9 @@ function CombinedNews({
             const tagParam = tags.length
                 ? `&tags=${tags.join()}&tax_relation=AND`
                 : '';
-            const searchParam = search ? `&search=${search}` : '';
+            // when tags are given, rely on them alone rather than ANDing with free-text search
+            const searchParam =
+                search && !tags.length ? `&search=${search}` : '';
             const url = `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=1${catParam}${tagParam}${searchParam}`;
             const res = await fetch(url);
             if (!res.ok) {
@@ -133,8 +148,8 @@ function CombinedNews({
             election,
             cmsPage,
             cmsBlocksize,
-            party,
-            person,
+            partyParam,
+            personParam,
             search,
         ],
         queryFn: async () => {
@@ -143,9 +158,9 @@ function CombinedNews({
             params.append('page', cmsPage.toString());
             params.append('blocksize', cmsBlocksize.toString());
             if (election) params.append('e', election);
-            if (party) params.append('party', party.toString());
-            if (person) params.append('person', person.toString());
-            if (search) params.append('q', search);
+            if (partyParam) params.append('party', partyParam);
+            if (personParam) params.append('person', personParam);
+            if (!hasCmsIdFilter && search) params.append('q', search);
             const url = `${process.env.DHC_TYPO3_API_DOMAIN}/elections/${endpoint}?${params.toString()}`;
             const res = await fetch(url);
             if (!res.ok) {
@@ -182,7 +197,8 @@ function CombinedNews({
             const tagParam = tags.length
                 ? `&tags=${tags.join()}&tax_relation=AND`
                 : '';
-            const searchParam = search ? `&search=${search}` : '';
+            const searchParam =
+                search && !tags.length ? `&search=${search}` : '';
             const url = `https://cms.transparency.sk/wp-json/wp/v2/posts?per_page=${wpNeeded}&offset=${wpOffset}${catParam}${tagParam}${searchParam}`;
             const res = await fetch(url);
             if (!res.ok) {
