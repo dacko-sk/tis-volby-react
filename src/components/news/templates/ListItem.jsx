@@ -22,7 +22,7 @@ function ListItem({ article }) {
                 <Row className="align-items-center">
                     <Col md={5} lg={3}>
                         <div className="thumb mb-2 mb-md-0">
-                            <figure className="text-center text-xxl-start">
+                            <figure className="text-center">
                                 <img
                                     alt={article.title}
                                     src={article.image}

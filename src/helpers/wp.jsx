@@ -11,8 +11,6 @@ export const categories = {
     news24p: 933,
     news26: 968,
     funding: 963,
-    bannerNews: 960,
-    bannerNewsEn: 961,
     newsGlobal: 875,
 };
 

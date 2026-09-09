@@ -9,7 +9,7 @@ import Top10Donors from '../components/donors/Top10Donors';
 import PartiesFundingChart from '../components/charts/PartiesFundingChart';
 import SiteNavigator from '../components/structure/SiteNavigator';
 import Title from '../components/structure/Title';
-import BannerNews from '../components/wp/BannerNews';
+import BannerNews from '../components/news/BannerNews';
 import CmsNews, { templates } from '../components/news/CmsNews';
 
 function Home() {
