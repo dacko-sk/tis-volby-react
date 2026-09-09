@@ -59,7 +59,7 @@ function PartyTags({ relations, className, asLink }) {
         if (region?.abbreviation) {
             matchedTags.push([
                 region.abbreviation,
-                routes.region(region.code ?? region.abbreviation),
+                routes.municipality(region.abbreviation, region.code ?? null),
             ]);
         }
     });
