@@ -19,6 +19,7 @@ import '../wp/News.scss'; // Reuses general news styles (.articles, .article, .a
 
 function CombinedNews({
     election = null,
+    display = null,
     categories = [],
     tags = [],
     party = null,
@@ -47,6 +48,7 @@ function CombinedNews({
             'cms_news_count',
             lang,
             election,
+            display,
             partyParam,
             personParam,
             search,
@@ -57,6 +59,7 @@ function CombinedNews({
             params.append('page', '1');
             params.append('blocksize', '1');
             if (election) params.append('e', election);
+            if (display) params.append('display', display);
             if (partyParam) params.append('party', partyParam);
             if (personParam) params.append('person', personParam);
             if (!hasCmsIdFilter && search) params.append('q', search);
@@ -146,6 +149,7 @@ function CombinedNews({
             'cms_news_page',
             lang,
             election,
+            display,
             cmsPage,
             cmsBlocksize,
             partyParam,
@@ -158,6 +162,7 @@ function CombinedNews({
             params.append('page', cmsPage.toString());
             params.append('blocksize', cmsBlocksize.toString());
             if (election) params.append('e', election);
+            if (display) params.append('display', display);
             if (partyParam) params.append('party', partyParam);
             if (personParam) params.append('person', personParam);
             if (!hasCmsIdFilter && search) params.append('q', search);
