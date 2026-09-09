@@ -1,6 +1,20 @@
 import { transparencyIndicators as ati } from './wp';
 
 export const labels = {
+    campaignDonorsLink: [
+        'Zoznam darcov kampane Rande s demokraciou',
+        'List of Rande s demokraciou campaign donors',
+    ],
+    campaignDonorsPage: {
+        title: [
+            'Darcovia a darkyne kampane Rande s demokraciou',
+            'Donors of the Rande s demokraciou campaign',
+        ],
+        intro: [
+            'Podstránka „Samosprávne voľby 2026” vznikla aj vďaka podpore 117 darcov a darkýň v rámci kampane Rande s demokraciou. Mená niektorých uvádzame so súhlasom nižšie. Všetkým za podporu ďakujeme!',
+            'The "Municipal Elections 2026" section was also made possible thanks to 117 donors within the Rande s demokraciou campaign. Below we list the names of some of them, with their consent. We thank everyone for their support!',
+        ],
+    },
     analysis: {
         indicators22: {
             [ati.account]: [

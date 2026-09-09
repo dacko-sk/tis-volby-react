@@ -51,6 +51,7 @@ import S26Candidate from './pages/samosprava2026/Candidate';
 import S26CandidateOverview from './pages/samosprava2026/candidate/CandidateOverview';
 import S26CandidateNews from './pages/samosprava2026/candidate/CandidateNews';
 import S26CandidateAssets from './pages/samosprava2026/candidate/CandidateAssets';
+import S26Donors from './pages/samosprava2026/Donors';
 
 // Euro 2024 Pages
 import Euro24Home from './pages/euro2024/Home';
@@ -292,6 +293,7 @@ function App() {
                                 ],
                                 [routes.region(true, lang), S26Region],
                                 [routes.search(true, lang), S26Search],
+                                [routes.campaignDonors(lang), S26Donors],
                             ];
                             setSubsiteOverride(null);
                             return s26Routes.map(([path, Page, subpages]) => {

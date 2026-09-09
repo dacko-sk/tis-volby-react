@@ -43,6 +43,7 @@ export const segments = {
     ANALYSIS: 'ANALYSIS',
     ASSETS: 'ASSETS',
     CAMPAIGNS: 'CAMPAIGNS',
+    CAMPAIGN_DONORS: 'CAMPAIGN_DONORS',
     CANDIDATES: 'CANDIDATES',
     CANDIDATES_LISTS: 'CANDIDATES_LISTS',
     MUNICIPALITIES: 'MUNICIPALITIES',
@@ -76,6 +77,7 @@ export const localSegments = {
         [segments.CANDIDATES]: 'kandidati',
         [segments.CANDIDATES_LISTS]: 'kandidatne-listiny',
         [segments.CAMPAIGNS]: 'kampane',
+        [segments.CAMPAIGN_DONORS]: 'darcovia-kampane',
         [segments.MUNICIPALITIES]: 'samospravy',
         [segments.ONLINE]: 'online',
         [segments.REGIONS]: 'kraje',
@@ -105,6 +107,7 @@ export const localSegments = {
         [segments.CANDIDATES]: 'candidates',
         [segments.CANDIDATES_LISTS]: 'candidates-lists',
         [segments.CAMPAIGNS]: 'campaigns',
+        [segments.CAMPAIGN_DONORS]: 'campaign-donors',
         [segments.MUNICIPALITIES]: 'municipalities',
         [segments.ONLINE]: 'online',
         [segments.REGIONS]: 'regions',
@@ -373,6 +376,9 @@ export const routes = {
             separators.url +
             (region === true ? ':region' : encodeURIComponent(region || ''))
         );
+    }),
+    campaignDonors: makeRoute((lang) => {
+        return languageRoot(lang) + urlSegment(segments.CAMPAIGN_DONORS, lang);
     }),
 
     // Landing page specific routes
