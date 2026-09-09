@@ -124,6 +124,12 @@ function Search() {
     const tags = searchData?.tags || [];
     const personUids = searchData?.personUids || [];
     const partyUids = searchData?.partyUids || [];
+    // the CMS API ANDs `person` and `party` together rather than OR-ing them,
+    // so combining both would wrongly require a single article tagged with
+    // both a matched person and a matched party — only filter by id when the
+    // query matched just one of the two, otherwise fall back to text search
+    const useCmsIdFilter =
+        (personUids.length > 0) !== (partyUids.length > 0);
 
     useEffect(() => {
         if (!query) {
@@ -174,8 +180,16 @@ function Search() {
                 noResults={t(labels.search.noNews)}
                 search={query}
                 tags={tags.length > 0 ? tags : undefined}
-                person={personUids.length > 0 ? personUids : undefined}
-                party={partyUids.length > 0 ? partyUids : undefined}
+                person={
+                    useCmsIdFilter && personUids.length > 0
+                        ? personUids
+                        : undefined
+                }
+                party={
+                    useCmsIdFilter && partyUids.length > 0
+                        ? partyUids
+                        : undefined
+                }
             />
         </section>
     );
