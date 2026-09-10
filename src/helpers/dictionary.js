@@ -182,6 +182,9 @@ const subsiteOverrides = {
 export const t = (label, replacements) => {
     const subsite = getActiveSubsite();
     const lang = getCurrentLanguage();
+    // work on a local copy so callers' arrays aren't mutated by shift() below
+    // (a shared array reused across renders would otherwise get drained)
+    const queue = Array.isArray(replacements) ? [...replacements] : null;
 
     // Check if there is a subsite override for the label first
     const labelPath = typeof label === 'string' ? label : labelPaths.get(label);
@@ -199,11 +202,9 @@ export const t = (label, replacements) => {
                     tl = override[1] ?? tl;
                 }
             }
-            if (Array.isArray(replacements)) {
+            if (queue) {
                 tl = tl.replace(/%[dfis]/g, (match) => {
-                    return replacements.length > 0
-                        ? replacements.shift()
-                        : match;
+                    return queue.length > 0 ? queue.shift() : match;
                 });
             }
             return tl;
@@ -219,9 +220,9 @@ export const t = (label, replacements) => {
     } else if (labels[label] ?? false) {
         return t(labels[label], replacements);
     }
-    if (Array.isArray(replacements)) {
+    if (queue) {
         tl = tl.replace(/%[dfis]/g, (match) => {
-            return replacements.length > 0 ? replacements.shift() : match;
+            return queue.length > 0 ? queue.shift() : match;
         });
     }
     return tl;

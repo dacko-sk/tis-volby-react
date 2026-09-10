@@ -1,5 +1,6 @@
 import { partyChartLabel } from '../../helpers/charts';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 import { sortByNumericProp } from '../../helpers/helpers';
 
 import { pdKeys, usePartiesDonationsData } from '../../hooks/Queries';
@@ -28,7 +29,7 @@ function PartiesUniqueChart() {
             bars={columnVariants.uniqueDonors}
             data={totals}
             lastUpdate={false}
-            subtitle={t(labels.donations.uniqueDonorsDisclaimer)}
+            subtitle={t(labels.donations.uniqueDonorsDisclaimer, [yearUpdated])}
             vertical
         />
     );

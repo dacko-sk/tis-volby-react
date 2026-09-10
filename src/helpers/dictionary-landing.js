@@ -215,8 +215,8 @@ export const labels = {
             'Companies ranking by donations and loans amount',
         ],
         companiesDisclaimer: [
-            'Súčet príspevkov od firiem v rokoch 2002 - 2024. Rebríček neobsahuje bankové úvery.',
-            'Sum of donations from companies in the years 2002 - 2024. Ranking excludes bank credits.',
+            'Súčet príspevkov od firiem v rokoch 2002 - %i. Rebríček neobsahuje bankové úvery.',
+            'Sum of donations from companies in the years 2002 - %i. Ranking excludes bank credits.',
         ],
         demographyTitle: [
             'Demografické rozloženie darcov',
@@ -235,8 +235,8 @@ export const labels = {
         pageTitle: ['Grafy\na súhrny', 'Stats\n& Charts'],
         outgoing: ['Výdavky', 'Expenses'],
         regionsDisclaimer: [
-            'Súčet príspevkov od darcov v kraji rokoch 2002 - 2024.',
-            'Sum of donations from donors in the region in years 2002 - 2024.',
+            'Súčet príspevkov od darcov v kraji rokoch 2002 - %i.',
+            'Sum of donations from donors in the region in years 2002 - %i.',
         ],
         regionsTitle: [
             'Výška darov podľa krajov',
@@ -247,6 +247,14 @@ export const labels = {
             'Unique donors in each region',
         ],
         showMore: ['Ďalšie grafy a štatistiky', 'More charts & statistics'],
+        yearsDisclaimer: [
+            'Súčet darov a úverov v jednotlivých rokoch.',
+            'Sum of donations and credits in each year.',
+        ],
+        yearsTitle: [
+            'Výška darov podľa rokov',
+            'Sum of donations by year',
+        ],
         sum: ['Spolu', 'Total'],
     },
     contact: ['Kontakt', 'Contact'],
@@ -302,12 +310,12 @@ export const labels = {
         },
         credits: ['Úvery a pôžičky', 'Credits & loans'],
         disclaimer: [
-            'Zdroj: Výročné správy politických strán 2002 - 2024',
-            'Source: Annual reports of political parties 2002 - 2024',
+            'Zdroj: Výročné správy politických strán 2002 - %i',
+            'Source: Annual reports of political parties 2002 - %i',
         ],
         disclaimerNoCredits: [
-            'Zdroj: Výročné správy politických strán 2002 - 2024, neobsahuje úvery a pôžičky',
-            'Source: Annual reports of political parties 2002 - 2024, excludes credits & loans',
+            'Zdroj: Výročné správy politických strán 2002 - %i, neobsahuje úvery a pôžičky',
+            'Source: Annual reports of political parties 2002 - %i, excludes credits & loans',
         ],
         donorInfo: ['Údaje o darcovi', 'Donor details'],
         dac: ['Dary, úvery a pôžičky', 'Donations, credits & loans'],
@@ -401,16 +409,16 @@ export const labels = {
             'Political parties ranking by non-government incomes',
         ],
         topPartiesDisclaimer: [
-            'Súčet príspevkov od darcov v rokoch 2002 - 2024.',
-            'Sum of donations from donors in the years 2002 - 2024.',
+            'Súčet príspevkov od darcov v rokoch 2002 - %i.',
+            'Sum of donations from donors in the years 2002 - %i.',
         ],
         totalDisclaimer: [
-            'Súčet príspevkov od darcov všetkých strán v rokoch 2002 - 2024.',
-            'Sum of donations from donors to all political parties in the years 2002 - 2024.',
+            'Súčet príspevkov od darcov všetkých strán v rokoch 2002 - %i.',
+            'Sum of donations from donors to all political parties in the years 2002 - %i.',
         ],
         totalDisclaimerParty: [
-            'Súčet príspevkov od individuálnych darcov strany v rokoch 2002 - 2024.',
-            'Sum of donations from individual donors of political party in the years 2002 - 2024.',
+            'Súčet príspevkov od individuálnych darcov strany v rokoch 2002 - %i.',
+            'Sum of donations from individual donors of political party in the years 2002 - %i.',
         ],
         types: [
             [
@@ -461,8 +469,8 @@ export const labels = {
             'Amount of unique donors & creditors',
         ],
         uniqueDonorsDisclaimer: [
-            'Unikátni darcovia a veritelia všetkých strán v rokoch 2002 - 2024.',
-            'Unique donors & creditors of political parties in the years 2002 - 2024.',
+            'Unikátni darcovia a veritelia všetkých strán v rokoch 2002 - %i.',
+            'Unique donors & creditors of political parties in the years 2002 - %i.',
         ],
     },
     donor: {

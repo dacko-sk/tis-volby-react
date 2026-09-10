@@ -18,6 +18,8 @@ import { routes, segments, separators } from './routes';
 
 import { settingsParams } from '../components/datatables/TableSettings';
 
+export const yearUpdated = 2025;
+
 export const apiEndpoints = {
     donations: 'https://volby.transparency.sk/api/donors/donations.php',
     donors: 'https://volby.transparency.sk/api/donors/donors.php',

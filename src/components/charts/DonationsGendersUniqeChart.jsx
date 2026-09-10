@@ -1,5 +1,6 @@
 import { colors } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 
 import { pdKeys, useDonationsStatsData } from '../../hooks/Queries';
 
@@ -42,7 +43,7 @@ function DonationsGendersUniqueChart() {
             lastUpdate={false}
             percent={false}
             pie={gendersPie}
-            subtitle={t(labels.donations.uniqueDonorsDisclaimer)}
+            subtitle={t(labels.donations.uniqueDonorsDisclaimer, [yearUpdated])}
             title={t(labels.charts.gendersUniqueTitle)}
         />
     );

@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 
 import { colors, links } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 import { routes, segments } from '../../helpers/routes';
 
 import useGovData from '../../hooks/GovData';
@@ -124,7 +125,8 @@ function FundingSources({ party }) {
                                 party
                                     ? 'totalDisclaimerParty'
                                     : 'totalDisclaimer'
-                            ]
+                            ],
+                            [yearUpdated]
                         )}
                         link={
                             party

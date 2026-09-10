@@ -1,4 +1,5 @@
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 import { sortByNumericProp } from '../../helpers/helpers';
 
 import { pdKeys, useDonationsStatsData } from '../../hooks/Queries';
@@ -37,7 +38,7 @@ function DonationsRegionsChart() {
             currency
             data={regions}
             lastUpdate={false}
-            subtitle={t(labels.charts.regionsDisclaimer)}
+            subtitle={t(labels.charts.regionsDisclaimer, [yearUpdated])}
             vertical
         />
     );

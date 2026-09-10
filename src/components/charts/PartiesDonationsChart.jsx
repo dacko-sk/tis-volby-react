@@ -1,5 +1,6 @@
 import { partyChartLabel } from '../../helpers/charts';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 import { sortByNumericProp } from '../../helpers/helpers';
 
 import { pdKeys, usePartiesDonationsData } from '../../hooks/Queries';
@@ -31,7 +32,7 @@ function PartiesDonationsChart() {
             currency
             data={totals}
             lastUpdate={false}
-            subtitle={t(labels.donations.topPartiesDisclaimer)}
+            subtitle={t(labels.donations.topPartiesDisclaimer, [yearUpdated])}
             vertical
         />
     );

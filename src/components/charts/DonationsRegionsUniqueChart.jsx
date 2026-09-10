@@ -1,4 +1,5 @@
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 import { sortByNumericProp } from '../../helpers/helpers';
 
 import { pdKeys, useDonationsStatsData } from '../../hooks/Queries';
@@ -32,7 +33,7 @@ function DonationsRegionsUniqueChart() {
             bars={columnVariants.uniqueDonors}
             data={regions}
             lastUpdate={false}
-            subtitle={t(labels.donations.uniqueDonorsDisclaimer)}
+            subtitle={t(labels.donations.uniqueDonorsDisclaimer, [yearUpdated])}
             vertical
         />
     );

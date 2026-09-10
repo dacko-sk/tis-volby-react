@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { setTitle } from '../helpers/browser';
 import { labels, t } from '../helpers/dictionary';
+import { yearUpdated } from '../helpers/dontaions';
 
 import QuickSearch from '../components/datatables/QuickSearch';
 import Top10Donors from '../components/donors/Top10Donors';
@@ -55,6 +56,7 @@ function Home() {
                 file="top10individual"
                 title={labels.donations.top10sponsors}
                 disclaimer={labels.donations.disclaimer}
+                disclaimerReplacements={[yearUpdated]}
             />
 
             <Top10Donors
@@ -63,6 +65,7 @@ function Home() {
                 file="top10donors"
                 title={labels.donations.top10donors}
                 disclaimer={labels.donations.disclaimerNoCredits}
+                disclaimerReplacements={[yearUpdated]}
             />
         </section>
     );

@@ -1,5 +1,6 @@
 import { colors } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 
 import { pdKeys, useDonationsStatsData } from '../../hooks/Queries';
 
@@ -48,7 +49,7 @@ function DonationsGendersChart() {
             lastUpdate={false}
             percent={false}
             pie={gendersPie}
-            subtitle={t(labels.donations.totalDisclaimer)}
+            subtitle={t(labels.donations.totalDisclaimer, [yearUpdated])}
             title={t(labels.charts.gendersTitle)}
         />
     );

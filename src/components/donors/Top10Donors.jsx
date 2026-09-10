@@ -15,7 +15,13 @@ import { routes } from '../../helpers/routes';
 
 import Loading from '../general/Loading';
 
-function Top10Donors({ className, disclaimer, file, title }) {
+function Top10Donors({
+    className,
+    disclaimer,
+    disclaimerReplacements,
+    file,
+    title,
+}) {
     const { isLoading, error, data } = useQuery({
         queryKey: [`donors_${file}`],
         queryFn: () =>
@@ -79,7 +85,9 @@ function Top10Donors({ className, disclaimer, file, title }) {
         <div className={className}>
             <h2 className="mb-4">{t(title)}</h2>
             {content}
-            <em className="disclaimer">{t(disclaimer)}</em>
+            <em className="disclaimer">
+                {t(disclaimer, disclaimerReplacements)}
+            </em>
         </div>
     );
 }

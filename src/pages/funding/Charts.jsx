@@ -5,11 +5,13 @@ import Row from 'react-bootstrap/Row';
 
 import { setTitle } from '../../helpers/browser';
 import { labels, t } from '../../helpers/dictionary';
+import { yearUpdated } from '../../helpers/dontaions';
 
 import DonationsGendersChart from '../../components/charts/DonationsGendersChart';
 import DonationsGendersUniqueChart from '../../components/charts/DonationsGendersUniqeChart';
 import DonationsRegionsChart from '../../components/charts/DonationsRegionsChart';
 import DonationsRegionsUniqueChart from '../../components/charts/DonationsRegionsUniqueChart';
+import DonationsYearsChart from '../../components/charts/DonationsYearsChart';
 import PartiesFundingChart from '../../components/charts/PartiesFundingChart';
 import PartiesDonationsChart from '../../components/charts/PartiesDonationsChart';
 import PartiesUniqueChart from '../../components/charts/PartiesUniqueChart';
@@ -22,6 +24,7 @@ const ACC_KEYS = {
     PARTIES: 'p',
     PARTIES_DONATIONS: 'pd',
     PARTIES_UNIQUE: 'pu',
+    YEARS: 'y',
     REGIONS: 'r',
     REGIONS_UNUQUE: 'ru',
     DEMOGRAPHY: 'd',
@@ -100,6 +103,17 @@ function Charts() {
                     </Accordion.Body>
                 </Accordion.Item>
 
+                <Accordion.Item key={ACC_KEYS.YEARS} eventKey={ACC_KEYS.YEARS}>
+                    <Accordion.Header>
+                        {t(labels.charts.yearsTitle)}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        {loaded.includes(ACC_KEYS.YEARS) && (
+                            <DonationsYearsChart />
+                        )}
+                    </Accordion.Body>
+                </Accordion.Item>
+
                 <Accordion.Item
                     key={ACC_KEYS.REGIONS}
                     eventKey={ACC_KEYS.REGIONS}
@@ -163,6 +177,7 @@ function Charts() {
                                 file="top10companies"
                                 title={labels.charts.companies}
                                 disclaimer={labels.charts.companiesDisclaimer}
+                                disclaimerReplacements={[yearUpdated]}
                             />
                         )}
                     </Accordion.Body>
