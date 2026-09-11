@@ -145,8 +145,8 @@ const subsiteOverrides = {
         },
         account: {
             totalSpending: [
-                'Celkové výdavky kandidátov',
-                'Total candidates spending',
+                'Celkové výdavky kandidátov a strán',
+                'Total spending of candidates and parties',
             ],
             totalIncomes: [
                 'Celkové príjmy kandidátov',

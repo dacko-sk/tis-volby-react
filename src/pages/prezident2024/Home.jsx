@@ -13,7 +13,7 @@ import { aggregatedKeys } from '../../hooks/AccountsData';
 import Top10Ads from '../../components/ads/Top10Ads';
 import TotalAdsSpending from '../../components/ads/TotalAdsSpending';
 import DonateButton from '../../components/general/DonateButton';
-import ElectionsCountdown from '../../components/general/ElectionsCountdown';
+import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import SiteNavigator from '../../components/structure/SiteNavigator';
 import Title from '../../components/structure/Title';
 import Posts, { templates } from '../../components/wp/Posts';

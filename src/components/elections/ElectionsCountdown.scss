@@ -1,7 +1,14 @@
+@use 'sass:map';
 @import './../../scss/variables';
 
 .countdown {
   padding-bottom: 20px;
+  &.hero-number {
+    font-size: 48px;
+    @media (max-width: map.get($grid-breakpoints, 'sm')) {
+      font-size: 32px;
+    }
+  }
 }
 
 [class^='countdown-bg'] {

@@ -10,7 +10,7 @@ import { newsCategories } from './News';
 import Top15 from '../../components/charts/Top15';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
 import { aggregatedKeys } from '../../hooks/AccountsData';
-import ElectionsCountdown from '../../components/general/ElectionsCountdown';
+import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import Map from '../../components/map/Map';
 import SiteNavigator from '../../components/structure/SiteNavigator';
 import Title from '../../components/structure/Title';

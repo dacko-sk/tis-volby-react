@@ -5,7 +5,7 @@ import { dateFormat } from '../../helpers/helpers';
 
 import './ElectionsCountdown.scss';
 
-function ElectionsCountdown({ start = null, end, noHeader = false }) {
+function ElectionsCountdown({ start = null, end }) {
     const dateEnd = new Date(end).getTime();
     const dateStart = start ? new Date(start).getTime() : dateEnd;
     const dateCurrent = new Date().getTime();
@@ -20,7 +20,7 @@ function ElectionsCountdown({ start = null, end, noHeader = false }) {
         }
         // Render a countdown
         return (
-            <div className="countdown hero-number">
+            <div className="countdown hero-number mt-4">
                 <span className="countdown-bg-o me-3" data-label="dní">
                     {formatted.days}
                 </span>
@@ -39,20 +39,18 @@ function ElectionsCountdown({ start = null, end, noHeader = false }) {
 
     return dateCurrent > dateEnd ? (
         <div className="elections-countdown">
-            {!noHeader && <h2>{t(labels.elections.date)}</h2>}
+            <h2>{t(labels.elections.date)}</h2>
             <div className="hero-number">{dateFormat(end)}</div>
         </div>
     ) : (
         <div className="elections-countdown">
-            {!noHeader && (
-                <h2>
-                    {t(
-                        dateCurrent > dateStart
-                            ? labels.elections.timeTillend
-                            : labels.elections.timeTillstart
-                    )}
-                </h2>
-            )}
+            <h2>
+                {t(
+                    dateCurrent > dateStart
+                        ? labels.elections.timeTillend
+                        : labels.elections.timeTillstart
+                )}
+            </h2>
             <Countdown
                 date={dateCurrent > dateStart ? dateEnd : dateStart}
                 renderer={renderer}

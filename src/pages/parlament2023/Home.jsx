@@ -9,7 +9,7 @@ import { wpCat } from '../../helpers/wp';
 import TotalAdsSpending from '../../components/ads/TotalAdsSpending';
 import Top10FinalReports from '../../components/accounts/Top10FinalReports';
 import Top10Ads from '../../components/ads/Top10Ads';
-import ElectionsCountdown from '../../components/general/ElectionsCountdown';
+import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
 import { aggregatedKeys } from '../../hooks/AccountsData';
 import SiteNavigator from '../../components/structure/SiteNavigator';

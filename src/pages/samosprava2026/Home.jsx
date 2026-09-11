@@ -10,7 +10,7 @@ import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import Top10Spending from '../../components/municipal/Top10Spending';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
-import ElectionsCountdown from '../../components/general/ElectionsCountdown';
+import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import Map from '../../components/map/Map';
 import CmsNews, { templates } from '../../components/news/CmsNews';
 import SiteNavigator from '../../components/structure/SiteNavigator';
@@ -29,18 +29,12 @@ function Home() {
                 <SiteNavigator site={elections.s26} />
             </div>
 
-            <Row className="mb-4 text-center">
-                <Col>
+            <Row className="gy-3 gy-lg-0 text-center mb-4">
+                <Col lg={6}>
                     <ElectionsCountdown
                         start={dates.electionsStart}
                         end={dates.electionsEnd}
                     />
-                </Col>
-            </Row>
-
-            <Row className="gy-3 gy-lg-0 text-center mb-4">
-                <Col lg={6}>
-                    <TotalTransfers direction={aggregatedKeys.incoming} />
                 </Col>
                 <Col lg={6}>
                     <TotalTransfers direction={aggregatedKeys.outgoing} />
