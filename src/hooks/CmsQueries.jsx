@@ -168,6 +168,16 @@ export const usePartiesData = () => {
     });
 };
 
+export const useCandidatesData = () => {
+    return useElectionData((data) => {
+        const candidates = (data?.candidates || []).filter(
+            (c) => !!c.account
+        );
+        const candidateAccounts = candidates.map((c) => c.account);
+        return { candidates, candidateAccounts };
+    });
+};
+
 export const useRegionData = (region) => {
     return useElectionData((data) => {
         const candidates = {

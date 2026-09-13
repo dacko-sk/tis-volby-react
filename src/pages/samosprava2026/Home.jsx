@@ -8,7 +8,6 @@ import { nl2r, setTitle } from '../../helpers/helpers';
 import { aggregatedKeys } from '../../hooks/AccountsData';
 import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
-import Top10Spending from '../../components/municipal/Top10Spending';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
 import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import Map from '../../components/map/Map';
@@ -42,8 +41,6 @@ function Home() {
             </Row>
 
             <Map />
-
-            <Top10Spending />
 
             <h2 className="mt-4">{t(labels.news.latest)}</h2>
             <CmsNews

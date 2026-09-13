@@ -5,8 +5,6 @@ import {
 } from '../../helpers/charts';
 import { labels, t } from '../../helpers/dictionary';
 import { sortBySpending } from '../../helpers/helpers';
-import { getActiveSubsite } from '../../helpers/languages';
-import { routes } from '../../helpers/routes';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
 import {
@@ -48,11 +46,6 @@ function Top10Spending() {
     return (
         <TisBarChart
             bars={columnVariants.inOut}
-            buttonLink={
-                getActiveSubsite() === 'samosprava2026'
-                    ? routes.candidates()
-                    : routes.charts()
-            }
             currency
             data={Object.values(people).sort(sortBySpending).slice(0, 10)}
             title={t(labels.charts.Top10SpendingTitle)}

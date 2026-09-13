@@ -58,6 +58,14 @@ export const labels = {
             'Celkové príjmy strán',
             'Total parties incomes',
         ],
+        totalIncomesCandidates: [
+            'Celkové príjmy kandidátov',
+            'Total candidates incomes',
+        ],
+        totalSpendingCandidates: [
+            'Celkové výdavky kandidátov',
+            'Total candidates spending',
+        ],
     },
     ads: {
         amount: {
