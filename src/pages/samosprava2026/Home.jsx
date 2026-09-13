@@ -9,6 +9,7 @@ import { aggregatedKeys } from '../../hooks/AccountsData';
 import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import TotalTransfers from '../../components/accounts/TotalTransfers';
+import WeeklySpending from '../../components/charts/WeeklySpending';
 import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import Map from '../../components/map/Map';
 import CmsNews, { templates } from '../../components/news/CmsNews';
@@ -39,6 +40,8 @@ function Home() {
                     <TotalTransfers direction={aggregatedKeys.outgoing} />
                 </Col>
             </Row>
+
+            <WeeklySpending />
 
             <Map />
 

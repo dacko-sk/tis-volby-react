@@ -142,6 +142,15 @@ export const labels = {
             'Top 10 kampaní kandidátov na primátorov a županov podľa výdavkov a príjmov',
             'Top 10 campaigns of mayoral and regional candidates by spending and income',
         ],
+        weeklySpendingTitle: [
+            'Vývoj výdavkov na kampaň',
+            'Campaign spending development',
+        ],
+        weeklySpendingSeries: [
+            'Výdavky kandidátov a strán spolu',
+            'Total candidate and party spending',
+        ],
+        weeklySpendingPreviousElections: ['Voľby 2022', '2022 elections'],
         allCampaignsTitle: [
             'Výdavky a príjmy všetkých kandidátov',
             'Income and spending of all candidates',

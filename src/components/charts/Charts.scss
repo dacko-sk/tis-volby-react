@@ -45,6 +45,10 @@ tspan {
   }
 }
 
+.aspect-11-4 .chart {
+  aspect-ratio: 11/4;
+}
+
 .recharts-tooltip-wrapper {
   &:focus,
   &:focus-visible {
@@ -89,5 +93,3 @@ tspan {
 .has-active-sector .sector-inactive {
   opacity: 0.5;
 }
-
-

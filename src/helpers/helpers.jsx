@@ -98,6 +98,12 @@ export const dateNumericFormat = (timestamp) =>
         day: 'numeric',
     });
 
+export const dateShortFormat = (timestamp) =>
+    slovakDateFormat(timestamp, {
+        month: 'numeric',
+        day: 'numeric',
+    });
+
 export const datePickerFormat = (timestamp) =>
     timestamp
         ? new Date(

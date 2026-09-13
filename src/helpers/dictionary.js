@@ -144,13 +144,13 @@ const subsiteOverrides = {
             pageTitle: ['Samosprávne\nvoľby 2026', 'Municipal\nelections 2026'],
         },
         account: {
+            totalIncomes: [
+                'Celkové príjmy kandidátov a strán',
+                'Total candidates and parties incomes',
+            ],
             totalSpending: [
                 'Celkové výdavky kandidátov a strán',
                 'Total spending of candidates and parties',
-            ],
-            totalIncomes: [
-                'Celkové príjmy kandidátov',
-                'Total candidate incomes',
             ],
             totalDisclaimer: ['', ''],
         },

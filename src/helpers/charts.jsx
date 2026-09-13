@@ -304,6 +304,53 @@ export const BarsTooltip = (bars, showSum, valueFormatter) =>
         return null;
     };
 
+export const LinesTooltip = (lines, valueFormatter, labelFormatter) =>
+    function ({ active, label, payload }) {
+        if (active && payload && payload.length) {
+            return (
+                <div className="recharts-default-tooltip">
+                    <p className="recharts-tooltip-label fw-bold">
+                        {labelFormatter ? labelFormatter(label) : label}
+                    </p>
+                    <ul className="recharts-tooltip-item-list">
+                        {lines
+                            .filter((line) =>
+                                isNumeric(
+                                    payload.find((p) => p.dataKey === line.key)
+                                        ?.value ?? NaN
+                                )
+                            )
+                            .map((line) => (
+                                <li
+                                    key={line.key}
+                                    className="recharts-tooltip-item"
+                                    style={{
+                                        color: line.dotColor ?? line.color,
+                                    }}
+                                >
+                                    <span className="recharts-tooltip-item-name">
+                                        {t(line.name)}
+                                    </span>
+                                    <span className="recharts-tooltip-item-separator">
+                                        {tooltipSeparator}
+                                    </span>
+                                    <span className="recharts-tooltip-item-value fw-bold">
+                                        {valueFormatter(
+                                            payload.find(
+                                                (p) => p.dataKey === line.key
+                                            )?.value
+                                        )}
+                                    </span>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        return null;
+    };
+
 export const PieTooltip = (dataKeys, dataLabels, formatter) =>
     function ({ active, payload }) {
         if (active && payload && payload.length) {

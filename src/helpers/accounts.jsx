@@ -16,7 +16,12 @@ import { settingsParams } from '../components/datatables/TableSettings';
 
 export const apiEndpoints = {
     transactions: 'https://volby.transparency.sk/api/accounts/search.php',
+    weeklySpending: 'https://volby.transparency.sk/api/accounts/weekly.php',
 };
+
+// total campaign spending in the 2022 municipal elections, used as a
+// reference line on the samosprava2026 weekly spending chart
+export const spending2022 = 11536453.95;
 export const apiParams = [
     'o', // offset (page number - 1)
     'b', // block size

@@ -49,14 +49,11 @@ export const labels = {
             'Sum of spendings on accounts of all political parties.',
         ],
         totalSpending: ['Celkové výdavky strán', 'Total parties spending'],
+        totalIncomes: ['Celkové príjmy kandidátov', 'Total candidate incomes'],
+        totalIncomesParties: ['Celkové príjmy strán', 'Total parties incomes'],
         totalSpendingParties: [
             'Celkové výdavky strán',
             'Total parties spending',
-        ],
-        totalIncomes: ['Celkové príjmy kandidátov', 'Total candidate incomes'],
-        totalIncomesParties: [
-            'Celkové príjmy strán',
-            'Total parties incomes',
         ],
         totalIncomesCandidates: [
             'Celkové príjmy kandidátov',
@@ -595,7 +592,10 @@ export const labels = {
         account: ['Transparentný účet', 'Transparent account'],
         date: ['Dátum konania volieb', 'Elections date'],
         over: ['Voľby sa skončili', 'Elections ended'],
-        timeTillstart: ['Zostávajúci čas do volieb', 'Countdown to elections start'],
+        timeTillstart: [
+            'Zostávajúci čas do volieb',
+            'Countdown to elections start',
+        ],
         timeTillend: [
             'Zostávajúci čas do konca volieb',
             'Time to elections end',
