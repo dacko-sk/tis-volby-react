@@ -16,6 +16,11 @@ export const cmsSubsitesMap = {
     samosprava2026: 's-26',
 };
 
+export const cmsChartPlacements = {
+    landing: 'landing',
+    charts: 'charts',
+};
+
 // queries
 
 export const getCmsSubsite = () => {
@@ -40,6 +45,27 @@ export const useElectionData = (selectFn) => {
         },
         select: selectFn,
         refetchOnMount: false,
+    });
+};
+
+export const useCmsCharts = (election, placement) => {
+    return useQuery({
+        queryKey: ['cms_charts', election],
+        queryFn: async () => {
+            if (!election) throw new Error('No election provided for CMS charts');
+            const response = await fetch(
+                `${CMS_BASE_URL}/elections/charts/${election}`
+            );
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        },
+        select: (charts) =>
+            placement
+                ? (charts || []).filter((chart) => chart.placement === placement)
+                : charts,
+        enabled: !!election,
     });
 };
 

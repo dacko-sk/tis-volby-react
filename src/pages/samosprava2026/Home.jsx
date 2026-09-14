@@ -6,9 +6,10 @@ import { labels, t } from '../../helpers/dictionary';
 import { nl2r, setTitle } from '../../helpers/helpers';
 
 import { aggregatedKeys } from '../../hooks/AccountsData';
-import { cmsSubsitesMap } from '../../hooks/CmsQueries';
+import { cmsChartPlacements, cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import TotalTransfers from '../../components/accounts/TotalTransfers';
+import CmsCharts from '../../components/charts/CmsCharts';
 import WeeklySpending from '../../components/charts/WeeklySpending';
 import ElectionsCountdown from '../../components/elections/ElectionsCountdown';
 import Map from '../../components/map/Map';
@@ -44,6 +45,11 @@ function Home() {
             <WeeklySpending />
 
             <Map />
+
+            <CmsCharts
+                election={cmsSubsitesMap.samosprava2026}
+                placement={cmsChartPlacements.landing}
+            />
 
             <h2 className="mt-4">{t(labels.news.latest)}</h2>
             <CmsNews
