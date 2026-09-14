@@ -31,6 +31,7 @@ function CmsCharts({ election, placement = null }) {
                             color: chart.color || colors.colorOrange,
                         },
                     ]}
+                    className="my-4"
                     currency
                     data={(chart.chartItems || []).map((item) => ({
                         name: getMunicipalityCmsTickText(item.candidate, true),

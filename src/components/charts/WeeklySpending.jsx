@@ -34,7 +34,7 @@ function WeeklySpending() {
 
     return (
         <TisLineChart
-            className="aspect-11-4"
+            className="aspect-11-4 my-4"
             currency
             data={data}
             lastUpdate={false}

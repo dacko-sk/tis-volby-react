@@ -42,9 +42,9 @@ function Home() {
                 </Col>
             </Row>
 
-            <WeeklySpending />
-
             <Map />
+
+            <WeeklySpending />
 
             <CmsCharts
                 election={cmsSubsitesMap.samosprava2026}
