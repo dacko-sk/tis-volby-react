@@ -1,21 +1,14 @@
 import { Link } from 'react-router';
-import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
-import {
-    findCandidateSupportingSubjects,
-    getSubjectShortname,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import SupportingPartiesBadges from './SupportingPartiesBadges';
 
 import './PartyCandidatesTable.scss';
 
 function PartyCandidatesTable({ candidates }) {
-    const { data: cmsData } = useElectionData();
-
     if (!candidates || !Array.isArray(candidates) || !candidates.length) {
         return null;
     }
@@ -23,19 +16,6 @@ function PartyCandidatesTable({ candidates }) {
     const rows = [];
     candidates.forEach((candidate) => {
         const name = candidate.person?.name || candidate.person?.fullName;
-        const partySupport = findCandidateSupportingSubjects(cmsData, candidate)
-            .map((subject) => getSubjectShortname(subject))
-            .map((shortname) => (
-                <Badge
-                    as={Link}
-                    to={routes.party(shortname)}
-                    key={shortname}
-                    bg="secondary"
-                    className="me-1 text-decoration-none"
-                >
-                    {shortname}
-                </Badge>
-            ));
 
         rows.push(
             <tr
@@ -67,7 +47,9 @@ function PartyCandidatesTable({ candidates }) {
                         </Link>
                     )}
                 </td>
-                <td>{partySupport}</td>
+                <td>
+                    <SupportingPartiesBadges candidate={candidate} />
+                </td>
             </tr>
         );
     });

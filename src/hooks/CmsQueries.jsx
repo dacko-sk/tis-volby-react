@@ -52,7 +52,8 @@ export const useCmsCharts = (election, placement) => {
     return useQuery({
         queryKey: ['cms_charts', election],
         queryFn: async () => {
-            if (!election) throw new Error('No election provided for CMS charts');
+            if (!election)
+                throw new Error('No election provided for CMS charts');
             const response = await fetch(
                 `${CMS_BASE_URL}/elections/charts/${election}`
             );
@@ -63,7 +64,9 @@ export const useCmsCharts = (election, placement) => {
         },
         select: (charts) =>
             placement
-                ? (charts || []).filter((chart) => chart.placement === placement)
+                ? (charts || []).filter(
+                      (chart) => chart.placement === placement
+                  )
                 : charts,
         enabled: !!election,
     });
@@ -80,12 +83,6 @@ export const useSubjectByPathname = (pathname) => {
 export const useSubjectSupportedCandidates = (primaryPartyUid) => {
     return useElectionData((data) =>
         findSubjectSupportedCandidates(data, primaryPartyUid)
-    );
-};
-
-export const useCandidateSupportingSubjects = (candidate) => {
-    return useElectionData((data) =>
-        findCandidateSupportingSubjects(data, candidate)
     );
 };
 
@@ -196,9 +193,7 @@ export const usePartiesData = () => {
 
 export const useCandidatesData = () => {
     return useElectionData((data) => {
-        const candidates = (data?.candidates || []).filter(
-            (c) => !!c.account
-        );
+        const candidates = (data?.candidates || []).filter((c) => !!c.account);
         const candidateAccounts = candidates.map((c) => c.account);
         return { candidates, candidateAccounts };
     });
@@ -301,22 +296,6 @@ export const findSubjectSupportedCandidates = (data, primaryPartyUid) => {
         (candidate.supportingParties ?? []).some(
             (party) => party.uid === primaryPartyUid
         )
-    );
-};
-
-export const findCandidateSupportingSubjects = (data, candidate) => {
-    if (
-        !data?.subjects ||
-        !Array.isArray(data.subjects) ||
-        !candidate?.supportingParties
-    ) {
-        return [];
-    }
-    const supportingUids = candidate.supportingParties.map(
-        (party) => party.uid
-    );
-    return data.subjects.filter((subject) =>
-        supportingUids.includes(subject.primaryParty?.uid)
     );
 };
 

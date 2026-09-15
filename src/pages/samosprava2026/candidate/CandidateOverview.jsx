@@ -1,5 +1,4 @@
 import { Link, useOutletContext } from 'react-router';
-import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 
 import { labels, t } from '../../../helpers/dictionary';
@@ -12,13 +11,13 @@ import { routes } from '../../../helpers/routes';
 
 import { aggregatedKeys, municipalTypes } from '../../../hooks/AccountsData';
 import {
-    findCandidateSupportingSubjects,
     findSubjectByAccount,
     getSubjectShortname,
 } from '../../../hooks/CmsQueries';
 
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
 import FinalReport from '../../../components/general/FinalReport';
+import SupportingPartiesBadges from '../../../components/municipal/SupportingPartiesBadges';
 
 function CandidateOverview() {
     const { cmsData, cmsCandidate, accountData } = useOutletContext();
@@ -46,23 +45,6 @@ function CandidateOverview() {
             </a>
         );
     });
-
-    const supportingParties = findCandidateSupportingSubjects(
-        cmsData,
-        cmsCandidate
-    )
-        .map((subject) => getSubjectShortname(subject))
-        .map((shortname) => (
-            <Badge
-                as={Link}
-                key={shortname}
-                bg="secondary"
-                className="me-1 text-decoration-none"
-                to={routes.party(shortname)}
-            >
-                {shortname}
-            </Badge>
-        ));
 
     return (
         <div className="candidate-overview">
@@ -165,10 +147,14 @@ function CandidateOverview() {
                             <td>{partyAccounts}</td>
                         </tr>
                     )}
-                    {supportingParties.length > 0 && (
+                    {cmsCandidate?.supportingParties?.length > 0 && (
                         <tr>
                             <td>{t(labels.candidate.supportingParties)}</td>
-                            <td>{supportingParties}</td>
+                            <td>
+                                <SupportingPartiesBadges
+                                    candidate={cmsCandidate}
+                                />
+                            </td>
                         </tr>
                     )}
                     <FinalReport candidate={accountData} tableRow />
