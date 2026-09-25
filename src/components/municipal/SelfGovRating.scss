@@ -1,0 +1,17 @@
+@import './../../scss/variables';
+
+.selfgov-rating {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+
+  .selfgov-grade {
+    color: #fff;
+    display: inline-block;
+    font-size: 1.25rem;
+    font-weight: $fw-bold;
+    min-width: 3rem;
+    padding: 0.35rem 0.5rem;
+    text-align: center;
+  }
+}

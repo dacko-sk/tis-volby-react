@@ -49,6 +49,7 @@ export const segments = {
     MUNICIPALITIES: 'MUNICIPALITIES',
     ONLINE: 'ONLINE',
     REGIONS: 'REGIONS',
+    REGION_RACES: 'REGION_RACES',
     REPORTS: 'REPORTS',
     TRANSACTIONS: 'TRANSACTIONS',
 };
@@ -81,6 +82,7 @@ export const localSegments = {
         [segments.MUNICIPALITIES]: 'samospravy',
         [segments.ONLINE]: 'online',
         [segments.REGIONS]: 'kraje',
+        [segments.REGION_RACES]: 'kraje-suboje',
         [segments.REPORTS]: 'zaverecne-spravy',
         [segments.TRANSACTIONS]: 'ucet',
     },
@@ -111,6 +113,7 @@ export const localSegments = {
         [segments.MUNICIPALITIES]: 'municipalities',
         [segments.ONLINE]: 'online',
         [segments.REGIONS]: 'regions',
+        [segments.REGION_RACES]: 'regions-races',
         [segments.REPORTS]: 'reports',
         [segments.TRANSACTIONS]: 'account',
     },
@@ -373,6 +376,14 @@ export const routes = {
         return (
             languageRoot(lang) +
             urlSegment(segments.REGIONS, lang) +
+            separators.url +
+            (region === true ? ':region' : encodeURIComponent(region || ''))
+        );
+    }),
+    regionRaces: makeRoute((region, lang) => {
+        return (
+            languageRoot(lang) +
+            urlSegment(segments.REGION_RACES, lang) +
             separators.url +
             (region === true ? ':region' : encodeURIComponent(region || ''))
         );

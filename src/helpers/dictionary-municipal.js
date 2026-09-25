@@ -184,6 +184,54 @@ export const labels = {
     party: {
         supportedCandidates: ['Podporení kandidáti', 'Supported Candidates'],
     },
+    regionRaces: {
+        title: ['Súboje', 'Races'],
+        heroTitle: ['Hlavné súboje v kraji', 'Main races in the region'],
+        regionalRace: ['Voľby predsedu kraja', 'Regional governor election'],
+        cityRace: ['Krajské mesto', 'Regional capital'],
+        otherRaces: [
+            'Súboje v ďalších samosprávach',
+            'Races in other municipalities',
+        ],
+        municipalityDetail: ['Detail samosprávy', 'Municipality detail'],
+        incumbent: {
+            regional: ['Úradujúci župan', 'Incumbent governor'],
+            city: ['Úradujúci primátor', 'Incumbent mayor'],
+            local: ['Úradujúci starosta / primátor', 'Incumbent mayor'],
+        },
+        challengers: ['Vyzývatelia', 'Challengers'],
+        candidates: ['Kandidáti', 'Candidates'],
+        noChallengers: [
+            'Úradujúci kandidát nemá v týchto voľbách vyzývateľov.',
+            'The incumbent has no challengers in these elections.',
+        ],
+        spending: [
+            'Aktuálna veľkosť výdavkov v kampani',
+            'Current campaign spending',
+        ],
+        onPartyAccounts: ['na straníckych účtoch', 'on party accounts'],
+        campaignRating: ['Hodnotenie kampane', 'Campaign rating'],
+        comingSoon: ['Pripravujeme', 'Coming soon'],
+        selfGovRating: [
+            'Hodnotenie transparentnosti samosprávy',
+            'Municipality transparency rating',
+        ],
+        ranking: ['%d. miesto z %d', 'rank %d of %d'],
+        notRated: ['Nehodnotené', 'Not rated'],
+        supportingParties: ['Podpora strán', 'Party support'],
+        ownAccount: [
+            'Transparentný účet kandidáta',
+            "Candidate's transparent account",
+        ],
+        partyAccounts: ['Stranícke účty *', 'Party accounts *'],
+        noAccount: ['bez transparentného účtu', 'no transparent account'],
+        disclaimer: [
+            '* Pri kandidátoch, ktorých kampaň je financovaná zo straníckych účtov, zobrazujeme sumu výdavkov na straníckych účtoch, z ktorých sú financovaní aj ďalší kandidáti podporené týmito stranami.  Nie je možné jednoznačne určiť, aká časť tejto sumy prislúcha konkrétnemu kandidátovi. Pre podrobnú analýzu transakcií na straníckom účte, kliknite na názov strany.',
+            '* For candidates whose campaign is financed from party accounts, we show the total spending of those party accounts, which also finance other candidates supported by these parties. It is not possible to determine which part of this amount belongs to a specific candidate. For a detailed analysis of party account transactions, click the party name.',
+        ],
+        previous: ['Predchádzajúca samospráva', 'Previous municipality'],
+        next: ['Nasledujúca samospráva', 'Next municipality'],
+    },
     search: {
         results: ['Výsledky vyhľadávania výrazu', 'Search results for'],
         municipalities: ['Samosprávy', 'Municipalities'],

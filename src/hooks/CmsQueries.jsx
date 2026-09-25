@@ -227,6 +227,40 @@ export const useRegionData = (region) => {
     });
 };
 
+export const useRegionRacesData = (region) => {
+    return useElectionData((data) => {
+        const regionInfo =
+            (data?.regions ?? []).find((r) => r.code === region) ?? null;
+        const regional = [];
+        const city = [];
+        const byMunicipality = {};
+        (data?.candidates ?? []).forEach((cmsCandidate) => {
+            if (
+                cmsCandidate.region !== region ||
+                !cmsCandidate.municipality ||
+                !cmsCandidate.person?.name
+            ) {
+                return;
+            }
+            if (cmsCandidate.isRegionalFunction) {
+                regional.push(cmsCandidate);
+            } else if (cmsCandidate.municipality === regionInfo?.city) {
+                city.push(cmsCandidate);
+            } else {
+                if (!byMunicipality[cmsCandidate.municipality]) {
+                    byMunicipality[cmsCandidate.municipality] = [];
+                }
+                byMunicipality[cmsCandidate.municipality].push(cmsCandidate);
+            }
+        });
+        const municipalities = Object.keys(byMunicipality)
+            .sort((a, b) => a.localeCompare(b, 'sk'))
+            .map((name) => ({ name, candidates: byMunicipality[name] }));
+
+        return { regionInfo, regional, city, municipalities };
+    });
+};
+
 // helpers
 
 export const getSubjectShortname = (subject) =>
