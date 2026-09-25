@@ -28,7 +28,7 @@ function RegionRaces() {
         }
     }, [region, navigate]);
 
-    setTitle(`${regions[region]} – ${t(labels.regionRaces.title)}`);
+    setTitle(regions[region]);
 
     let content = <Loading />;
     if (!isLoading && csvData?.data && data) {
@@ -100,9 +100,7 @@ function RegionRaces() {
 
     return (
         <section className="region-races-page">
-            <Title secondary={t(labels.regionRaces.title)}>
-                {regions[region]}
-            </Title>
+            <Title>{regions[region]}</Title>
             {content}
         </section>
     );

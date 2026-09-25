@@ -185,7 +185,6 @@ export const labels = {
         supportedCandidates: ['Podporení kandidáti', 'Supported Candidates'],
     },
     regionRaces: {
-        title: ['Súboje', 'Races'],
         heroTitle: ['Hlavné súboje v kraji', 'Main races in the region'],
         regionalRace: ['Voľby predsedu kraja', 'Regional governor election'],
         cityRace: ['Krajské mesto', 'Regional capital'],
@@ -226,7 +225,7 @@ export const labels = {
         partyAccounts: ['Stranícke účty *', 'Party accounts *'],
         noAccount: ['bez transparentného účtu', 'no transparent account'],
         disclaimer: [
-            '* Pri kandidátoch, ktorých kampaň je financovaná zo straníckych účtov, zobrazujeme sumu výdavkov na straníckych účtoch, z ktorých sú financovaní aj ďalší kandidáti podporené týmito stranami.  Nie je možné jednoznačne určiť, aká časť tejto sumy prislúcha konkrétnemu kandidátovi. Pre podrobnú analýzu transakcií na straníckom účte, kliknite na názov strany.',
+            '* Pri kandidátoch, ktorých kampaň je financovaná zo straníckych účtov, zobrazujeme sumu výdavkov na straníckych účtoch, z ktorých sú financovaní aj ďalší kandidáti podporení týmito stranami.  Nie je možné jednoznačne určiť, aká časť tejto sumy prislúcha konkrétnemu kandidátovi. Pre podrobnú analýzu transakcií na straníckom účte, kliknite na názov strany.',
             '* For candidates whose campaign is financed from party accounts, we show the total spending of those party accounts, which also finance other candidates supported by these parties. It is not possible to determine which part of this amount belongs to a specific candidate. For a detailed analysis of party account transactions, click the party name.',
         ],
         previous: ['Predchádzajúca samospráva', 'Previous municipality'],
