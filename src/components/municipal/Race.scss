@@ -327,6 +327,15 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
+    &.dragging {
+      cursor: grabbing;
+      user-select: none;
+
+      .carousel-pill {
+        cursor: grabbing;
+      }
+    }
   }
 
   .carousel-pill {
@@ -375,6 +384,20 @@
 
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    @media (pointer: fine) {
+      cursor: grab;
+    }
+
+    &.dragging {
+      cursor: grabbing;
+      scroll-snap-type: none;
+      user-select: none;
+
+      a {
+        cursor: grabbing;
+      }
     }
   }
 
