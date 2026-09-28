@@ -41,9 +41,8 @@ function WeeklySpending() {
             lines={lines}
             referenceLine={{
                 y: spending2022,
-                label: `${t(
-                    labels.charts.weeklySpendingPreviousElections
-                )}: ${currencyFormat(spending2022)}`,
+                label: t(labels.charts.weeklySpendingPreviousElections),
+                value: currencyFormat(spending2022),
                 color: colors.colorDarkBlue,
             }}
             title={t(labels.charts.weeklySpendingTitle)}

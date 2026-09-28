@@ -9,6 +9,7 @@ import {
     YAxis,
 } from 'recharts';
 
+import { isMobile } from '../../helpers/browser';
 import { horizontalYaxisWidth, LinesTooltip } from '../../helpers/charts';
 import { t } from '../../helpers/dictionary';
 import {
@@ -24,6 +25,27 @@ import { tickFontSize } from './VerticalTick';
 import LastUpdateTag from '../general/LastUpdateTag';
 
 import './Charts.scss';
+
+const referenceLineLabelRightPadding = 5;
+
+// recharts' built-in label positioning only applies to plain string/number
+// values, so a mixed-weight label needs its own positioning from viewBox
+function ReferenceLineLabel({ amount, fill, prefix, viewBox }) {
+    const { x, width, y } = viewBox;
+    return (
+        <text
+            dy={16}
+            fill={fill}
+            fontSize={tickFontSize + (isMobile ? 1 : 2)}
+            textAnchor="end"
+            x={x + width - referenceLineLabelRightPadding}
+            y={y}
+        >
+            <tspan>{prefix}: </tspan>
+            <tspan fontWeight="bold">{amount}</tspan>
+        </text>
+    );
+}
 
 function TisLineChart({
     className = '',
@@ -103,10 +125,17 @@ function TisLineChart({
                                     stroke={referenceLine.color ?? '#000'}
                                     strokeDasharray="6 4"
                                     label={{
-                                        value: referenceLine.label,
-                                        position: 'insideBottomRight',
-                                        fill: referenceLine.color ?? '#000',
-                                        fontSize: tickFontSize,
+                                        content: (props) => (
+                                            <ReferenceLineLabel
+                                                amount={referenceLine.value}
+                                                fill={
+                                                    referenceLine.color ??
+                                                    '#000'
+                                                }
+                                                prefix={referenceLine.label}
+                                                viewBox={props.viewBox}
+                                            />
+                                        ),
                                     }}
                                 />
                             )}
