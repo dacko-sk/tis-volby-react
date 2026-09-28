@@ -147,7 +147,7 @@ function CandidateOverview() {
                             <td>{partyAccounts}</td>
                         </tr>
                     )}
-                    {cmsCandidate?.supportingParties?.length > 0 && (
+                    {cmsCandidate && (
                         <tr>
                             <td>{t(labels.candidate.supportingParties)}</td>
                             <td>

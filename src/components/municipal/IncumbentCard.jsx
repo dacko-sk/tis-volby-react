@@ -81,14 +81,10 @@ function IncumbentCard({ cmsCandidate, spending, label }) {
                 <dd>
                     <SelfGovRating selfGov={cmsCandidate.selfGov} />
                 </dd>
-                {cmsCandidate.supportingParties?.length > 0 && (
-                    <>
-                        <dt>{t(labels.regionRaces.supportingParties)}</dt>
-                        <dd>
-                            <SupportingPartiesBadges candidate={cmsCandidate} />
-                        </dd>
-                    </>
-                )}
+                <dt>{t(labels.regionRaces.supportingParties)}</dt>
+                <dd>
+                    <SupportingPartiesBadges candidate={cmsCandidate} />
+                </dd>
             </dl>
         </div>
     );

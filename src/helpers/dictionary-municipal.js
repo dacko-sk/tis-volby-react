@@ -116,6 +116,7 @@ export const labels = {
         partyAccount: ['Stranícky účet', 'Party account'],
         partyAccounts: ['Stranícke účty', 'Party accounts'],
         supportingParties: ['Podpora strán', 'Party support'],
+        independentCandidate: ['nezávislý kandidát', 'independent candidate'],
     },
     charts: {
         title: ['Grafy', 'Charts'],

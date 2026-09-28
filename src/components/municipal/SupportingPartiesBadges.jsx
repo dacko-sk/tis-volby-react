@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import Badge from 'react-bootstrap/Badge';
 
+import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
 import {
@@ -11,19 +12,29 @@ import {
 
 function SupportingPartiesBadges({ candidate }) {
     const { data: cmsData } = useElectionData();
+    const outlineBadge = (key, label) => (
+        <Badge
+            key={key}
+            bg={null}
+            className="me-1 border border-secondary text-secondary bg-transparent"
+        >
+            {label}
+        </Badge>
+    );
 
-    return (candidate?.supportingParties ?? []).map((party) => {
+    const parties = candidate?.supportingParties ?? [];
+    // if no parties, show independent badge
+    if (!parties.length) {
+        return outlineBadge(
+            'independent',
+            t(labels.candidate.independentCandidate)
+        );
+    }
+
+    return parties.map((party) => {
         const subject = findSubjectByPartyUid(cmsData, party.uid);
         if (!subject) {
-            return (
-                <Badge
-                    key={party.uid}
-                    bg={null}
-                    className="me-1 border border-secondary text-secondary bg-transparent"
-                >
-                    {party.abbreviation || party.name}
-                </Badge>
-            );
+            return outlineBadge(party.uid, party.abbreviation || party.name);
         }
         const shortname = getSubjectShortname(subject);
         return (
