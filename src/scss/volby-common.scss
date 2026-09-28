@@ -435,6 +435,29 @@ footer h2 {
   }
 }
 
+// between lg and xxl only the search icon is shown; clicking it opens the input as an overlay
+@media (min-width: map.get($grid-breakpoints, 'lg')) and (max-width: #{map.get($grid-breakpoints, 'xxl') - 0.02}) {
+  .search-field {
+    position: relative;
+    &.open #search {
+      display: block !important;
+      position: absolute;
+      top: 0;
+      right: 100%;
+      z-index: 1050;
+      width: 16em;
+      max-width: unset;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+    }
+    &.open #search-icon {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
 @media (min-width: map.get($grid-breakpoints, 'xl')) {
   header {
     min-height: 320px;
