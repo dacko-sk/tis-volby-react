@@ -52,7 +52,7 @@ function CandidateOverview() {
         <div className="candidate-overview">
             {cmsCandidate?.status === candidateStatus.WITHDRAWN && (
                 <AlertWithIcon className="mb-4" variant="primary">
-                    {t(labels.candidate.withdrawn)}
+                    {t(labels.regionRaces.withdrawnDisclaimer)}
                 </AlertWithIcon>
             )}
             <Table striped bordered responsive hover>

@@ -13,39 +13,44 @@ function SupportingPartiesBadges({ candidate }) {
         <Badge
             key={key}
             bg={null}
-            className="me-1 border border-secondary text-secondary bg-transparent"
+            className="border border-secondary text-secondary bg-transparent"
         >
             {label}
         </Badge>
     );
 
     const parties = candidate?.supportingParties ?? [];
-    // if no parties, show independent badge
-    if (!parties.length) {
-        return outlineBadge(
-            'independent',
-            t(labels.candidate.independentCandidate)
-        );
-    }
 
-    return parties.map((party) => {
-        const subject = findSubjectByPartyUid(cmsData, party.uid);
-        if (!subject) {
-            return outlineBadge(party.uid, party.abbreviation || party.name);
-        }
-        const shortname = getSubjectShortname(subject);
-        return (
-            <Badge
-                as={Link}
-                key={shortname}
-                bg="secondary"
-                className="me-1 text-decoration-none"
-                to={routes.party(shortname)}
-            >
-                {shortname}
-            </Badge>
-        );
-    });
+    // if no parties, show independent badge
+    const badges = parties.length
+        ? parties.map((party) => {
+              const subject = findSubjectByPartyUid(cmsData, party.uid);
+              if (!subject) {
+                  return outlineBadge(
+                      party.uid,
+                      party.abbreviation || party.name
+                  );
+              }
+              const shortname = getSubjectShortname(subject);
+              return (
+                  <Badge
+                      as={Link}
+                      key={shortname}
+                      bg="secondary"
+                      className="border border-secondary"
+                      to={routes.party(shortname)}
+                  >
+                      {shortname}
+                  </Badge>
+              );
+          })
+        : outlineBadge('independent', t(labels.candidate.independentCandidate));
+
+    return (
+        <span className="d-inline-flex flex-wrap align-items-center gap-1 align-top">
+            {badges}
+        </span>
+    );
 }
 
 export default SupportingPartiesBadges;

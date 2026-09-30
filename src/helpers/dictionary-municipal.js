@@ -100,7 +100,6 @@ export const labels = {
         ],
     },
     candidate: {
-        withdrawn: ['Kandidát odstúpil', 'The candidate has withdrawn'],
         disclaimerCandidate: [
             'Kandidát(ka), ktorý(á) na financovanie kampane využíva stranícky účet, viacero účtov alebo účet nemá a vizualizáciu príjmov a výdavkov preto nie je možné zobraziť.',
             'A candidate who uses a party account, multiple accounts, or does not have an account for campaign financing, and therefore their income and spending visualization cannot be displayed.',
@@ -206,8 +205,8 @@ export const labels = {
         notRunning: ['nekandiduje', 'not running'],
         withdrawn: ['Kandidát(ka) odstúpil(a)', 'The candidate has withdrawn'],
         withdrawnDisclaimer: [
-            '× Kandidát(ka) z volieb odstúpil(a). Výdavky na kampaň do odstúpenia v prehľade ponechávame.',
-            '× The candidate has withdrawn from the election. Campaign spending up to the withdrawal remains in the overview.',
+            'Kandidát(ka) z volieb odstúpil(a). Výdavky na kampaň do odstúpenia v prehľade ponechávame.',
+            'The candidate has withdrawn from the election. Campaign spending up to the withdrawal remains in the overview.',
         ],
         challengers: ['Vyzývatelia', 'Challengers'],
         candidates: ['Kandidáti', 'Candidates'],

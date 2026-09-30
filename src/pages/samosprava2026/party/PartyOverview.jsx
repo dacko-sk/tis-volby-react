@@ -28,7 +28,7 @@ function PartyOverview() {
             as={Link}
             key={candidate.uid}
             bg="secondary"
-            className="me-1 text-decoration-none"
+            className="border border-secondary"
             to={routes.candidateMunicipal(
                 candidate.person?.name,
                 candidate.municipality,
@@ -85,7 +85,11 @@ function PartyOverview() {
                     {supportedCandidates.length > 0 && (
                         <tr>
                             <td>{t(labels.party.supportedCandidates)}</td>
-                            <td>{supportedCandidates}</td>
+                            <td>
+                                <span className="d-inline-flex flex-wrap align-items-center gap-1 align-top">
+                                    {supportedCandidates}
+                                </span>
+                            </td>
                         </tr>
                     )}
                 </tbody>

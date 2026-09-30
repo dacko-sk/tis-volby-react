@@ -98,7 +98,7 @@ function Race({
                 <em
                     className={`disclaimer d-block ${hasPartyAccounts ? 'mt-1' : 'mt-3'}`}
                 >
-                    {t(labels.regionRaces.withdrawnDisclaimer)}
+                    × {t(labels.regionRaces.withdrawnDisclaimer)}
                 </em>
             )}
         </article>
