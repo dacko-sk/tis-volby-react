@@ -1,14 +1,11 @@
 import { Link } from 'react-router';
 import Badge from 'react-bootstrap/Badge';
 
+import { findSubjectByPartyUid, getSubjectShortname } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
-import {
-    findSubjectByPartyUid,
-    getSubjectShortname,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 function SupportingPartiesBadges({ candidate }) {
     const { data: cmsData } = useElectionData();

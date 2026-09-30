@@ -1,12 +1,9 @@
 import { useLocation, useOutletContext } from 'react-router';
 
+import { cmsSubsitesMap, findSubjectByPathname } from '../../../helpers/cms';
 import { setTitle } from '../../../helpers/browser';
 import { labels, t } from '../../../helpers/dictionary';
 import { wpCat } from '../../../helpers/wp';
-import {
-    findSubjectByPathname,
-    cmsSubsitesMap,
-} from '../../../hooks/CmsQueries';
 
 import AlertWithIcon from '../../../components/general/AlertWithIcon';
 import CombinedNews from '../../../components/news/CombinedNews';

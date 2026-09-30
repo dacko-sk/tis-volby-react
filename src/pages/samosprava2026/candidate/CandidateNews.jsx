@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router';
 
+import { cmsSubsitesMap } from '../../../helpers/cms';
 import { labels, t } from '../../../helpers/dictionary';
-import { cmsSubsitesMap } from '../../../hooks/CmsQueries';
 
 import CombinedNews from '../../../components/news/CombinedNews';
 import { newsCategories } from '../News';

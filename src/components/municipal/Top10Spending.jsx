@@ -1,3 +1,4 @@
+import { findCandidate } from '../../helpers/cms';
 import {
     chartKeys,
     columnVariants,
@@ -7,10 +8,7 @@ import { labels, t } from '../../helpers/dictionary';
 import { sortBySpending } from '../../helpers/helpers';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import {
-    findCandidate,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import TisBarChart from '../charts/TisBarChart';
 

@@ -2,15 +2,13 @@ import { useEffect } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import Nav from 'react-bootstrap/Nav';
 
+import { findCandidateByPathname } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
 import { routes, segments } from '../../helpers/routes';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import {
-    findCandidateByPathname,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import Loading from '../../components/general/Loading';
 import Title from '../../components/structure/Title';

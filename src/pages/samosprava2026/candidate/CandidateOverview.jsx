@@ -1,7 +1,11 @@
 import { Link, useOutletContext } from 'react-router';
 import Table from 'react-bootstrap/Table';
 
-import { candidateStatus } from '../../../helpers/cms';
+import {
+    candidateStatus,
+    findSubjectByAccount,
+    getSubjectShortname,
+} from '../../../helpers/cms';
 import { labels, t } from '../../../helpers/dictionary';
 import {
     currencyFormat,
@@ -11,10 +15,6 @@ import {
 import { routes } from '../../../helpers/routes';
 
 import { aggregatedKeys, municipalTypes } from '../../../hooks/AccountsData';
-import {
-    findSubjectByAccount,
-    getSubjectShortname,
-} from '../../../hooks/CmsQueries';
 
 import AlertWithIcon from '../../../components/general/AlertWithIcon';
 import AccountTransactions from '../../../components/accounts/AccountTransactions';

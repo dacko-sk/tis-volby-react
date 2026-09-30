@@ -1,12 +1,12 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import { cmsChartPlacements, cmsSubsitesMap } from '../../helpers/cms';
 import { dates, elections } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
 import { nl2r, setTitle } from '../../helpers/helpers';
 
 import { aggregatedKeys } from '../../hooks/AccountsData';
-import { cmsChartPlacements, cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import TotalTransfers from '../../components/accounts/TotalTransfers';
 import CmsCharts from '../../components/charts/CmsCharts';

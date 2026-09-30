@@ -4,12 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 
+import { cmsSubsitesMap } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { getCurrentLanguage } from '../../helpers/languages';
 import { processCmsArticles } from '../../helpers/news';
 import { routes } from '../../helpers/routes';
-
-import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import AlertWithIcon from '../general/AlertWithIcon';
 import Loading from '../general/Loading';

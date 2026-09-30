@@ -1,7 +1,7 @@
+import { cmsSubsitesMap } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
 import { categories } from '../../helpers/wp';
-import { cmsSubsitesMap } from '../../hooks/CmsQueries';
 
 import Title from '../../components/structure/Title';
 import CombinedNews from '../../components/news/CombinedNews';

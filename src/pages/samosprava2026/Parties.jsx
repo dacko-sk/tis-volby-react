@@ -6,6 +6,7 @@ import Title from '../../components/structure/Title';
 import Loading from '../../components/general/Loading';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
 
+import { getSubjectShortname } from '../../helpers/cms';
 import {
     chartKeys,
     columnVariants,
@@ -15,7 +16,7 @@ import { labels, t } from '../../helpers/dictionary';
 import { setTitle, sortBySpending } from '../../helpers/helpers';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import { getSubjectShortname, usePartiesData } from '../../hooks/CmsQueries';
+import { usePartiesData } from '../../hooks/CmsQueries';
 
 function Parties() {
     const { csvData } = useData();

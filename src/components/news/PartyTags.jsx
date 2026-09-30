@@ -1,10 +1,9 @@
-import { wpTagsMap } from '../../helpers/parties';
 import {
     findCandidateByPersonUid,
     findSubjectByPartyUid,
     getSubjectShortname,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+} from '../../helpers/cms';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import PartyTag from '../wp/PartyTag';
 import { getLastWord } from '../../helpers/helpers';

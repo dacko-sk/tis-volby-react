@@ -1,14 +1,14 @@
 import { useLocation } from 'react-router';
-import { wpTagsMap } from '../../helpers/parties';
-import { getActiveSubsite } from '../../helpers/languages';
-
-import useAdsData from '../../hooks/AdsData';
 import {
     findCandidateByTag,
     findSubjectByTag,
     getSubjectShortname,
-    useElectionData,
-} from '../../hooks/CmsQueries';
+} from '../../helpers/cms';
+import { wpTagsMap } from '../../helpers/parties';
+import { getActiveSubsite } from '../../helpers/languages';
+
+import useAdsData from '../../hooks/AdsData';
+import { useElectionData } from '../../hooks/CmsQueries';
 
 import PartyTag from './PartyTag';
 import { getLastWord } from '../../helpers/helpers';

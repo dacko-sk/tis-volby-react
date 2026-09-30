@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 
-import { candidateStatus, partyStackColor } from '../../helpers/cms';
+import { candidateStatus, getSubjectShortname } from '../../helpers/cms';
+import { colorDarkBlue, colorLightBlue } from '../../helpers/constants';
 import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
-import { getSubjectShortname } from '../../hooks/CmsQueries';
+// dark blue for the biggest party supporter, light blue for any other
+const partyStackColor = (index) => (index ? colorLightBlue : colorDarkBlue);
 
 const pct = (value, max) => `${max ? (100 * value) / max : 0}%`;
 

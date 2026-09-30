@@ -2,15 +2,15 @@ import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
 import { Link, useLocation, useOutletContext } from 'react-router';
 
+import {
+    findSubjectByPathname,
+    findSubjectSupportedCandidates,
+} from '../../../helpers/cms';
 import { labels, t } from '../../../helpers/dictionary';
 import { currencyFormat } from '../../../helpers/helpers';
 import { routes } from '../../../helpers/routes';
 
 import { aggregatedKeys } from '../../../hooks/AccountsData';
-import {
-    findSubjectByPathname,
-    findSubjectSupportedCandidates,
-} from '../../../hooks/CmsQueries';
 
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
 

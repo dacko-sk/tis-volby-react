@@ -4,16 +4,13 @@ import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import { cmsSubsitesMap, getSubjectShortname } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
 import { municipalTypes } from '../../hooks/AccountsData';
-import {
-    useSearchData,
-    getSubjectShortname,
-    cmsSubsitesMap,
-} from '../../hooks/CmsQueries';
+import { useSearchData } from '../../hooks/CmsQueries';
 
 import { newsCategories } from './News';
 import Loading from '../../components/general/Loading';
