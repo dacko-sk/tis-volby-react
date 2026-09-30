@@ -10,7 +10,9 @@ import SupportingPartiesBadges from './SupportingPartiesBadges';
 
 import defaultImg from '../../../public/img/user_grey.png';
 
-function IncumbentCard({ cmsCandidate, spending, label }) {
+// notRunning: incumbent is not running in these elections, only the
+// self-government rating is shown and the name is not linked
+function IncumbentCard({ cmsCandidate, spending, label, notRunning = false }) {
     const name = cmsCandidate.person.name;
 
     let spendingValue = (
@@ -38,6 +40,40 @@ function IncumbentCard({ cmsCandidate, spending, label }) {
         );
     }
 
+    const person = (
+        <>
+            <img
+                src={cmsCandidate.photo || defaultImg}
+                alt={name}
+                loading="lazy"
+            />
+            <span className="incumbent-name">{name}</span>
+        </>
+    );
+    const selfGovRating = (
+        <>
+            <dt>{t(labels.regionRaces.selfGovRating)}</dt>
+            <dd>
+                <SelfGovRating
+                    selfGov={cmsCandidate.selfGov}
+                    regional={cmsCandidate.isRegionalFunction}
+                />
+            </dd>
+        </>
+    );
+
+    if (notRunning) {
+        return (
+            <div className="incumbent-card incumbent-not-running">
+                <div className="incumbent-label">
+                    {label} – {t(labels.regionRaces.notRunning)}
+                </div>
+                <div className="incumbent-person">{person}</div>
+                <dl className="incumbent-features">{selfGovRating}</dl>
+            </div>
+        );
+    }
+
     return (
         <div className="incumbent-card">
             <div className="incumbent-label">{label}</div>
@@ -49,12 +85,7 @@ function IncumbentCard({ cmsCandidate, spending, label }) {
                     null
                 )}
             >
-                <img
-                    src={cmsCandidate.photo || defaultImg}
-                    alt={name}
-                    loading="lazy"
-                />
-                <span className="incumbent-name">{name}</span>
+                {person}
             </Link>
             <dl className="incumbent-features">
                 <dt>{t(labels.regionRaces.spending)}</dt>
@@ -77,10 +108,7 @@ function IncumbentCard({ cmsCandidate, spending, label }) {
                 <dd className="text-muted">
                     {t(labels.regionRaces.comingSoon)}
                 </dd>
-                <dt>{t(labels.regionRaces.selfGovRating)}</dt>
-                <dd>
-                    <SelfGovRating selfGov={cmsCandidate.selfGov} />
-                </dd>
+                {selfGovRating}
                 <dt>{t(labels.regionRaces.supportingParties)}</dt>
                 <dd>
                     <SupportingPartiesBadges candidate={cmsCandidate} />

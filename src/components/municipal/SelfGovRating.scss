@@ -6,6 +6,8 @@
   gap: 0.75rem;
 
   .selfgov-grade {
+    background-color: var(--grade-color);
+    border: 2px solid var(--grade-color);
     color: #fff;
     display: inline-block;
     font-size: 1.25rem;
@@ -13,5 +15,16 @@
     min-width: 3rem;
     padding: 0.35rem 0.5rem;
     text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 0.1s ease,
+      color 0.1s ease;
+  }
+
+  // linked to the ranking chart: outline variant on hover
+  a.selfgov-grade:hover,
+  a.selfgov-grade:focus-visible {
+    background-color: transparent;
+    color: var(--grade-color);
   }
 }

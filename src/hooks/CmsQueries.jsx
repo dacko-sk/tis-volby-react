@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { isRunning } from '../helpers/cms';
 import { contains } from '../helpers/helpers';
 import { getActiveSubsite } from '../helpers/languages';
 import { routes } from '../helpers/routes';
@@ -28,7 +29,24 @@ export const getCmsSubsite = () => {
     return cmsSubsitesMap[activeSubsite] || activeSubsite;
 };
 
-export const useElectionData = (selectFn) => {
+// election data without candidates who are not running (status 0),
+// cached per response so consumers get stable references
+const runningDataCache = new WeakMap();
+const onlyRunning = (data) => {
+    if (!data?.candidates) return data;
+    if (!runningDataCache.has(data)) {
+        runningDataCache.set(data, {
+            ...data,
+            candidates: data.candidates.filter(isRunning),
+        });
+    }
+    return runningDataCache.get(data);
+};
+
+export const useElectionData = (
+    selectFn,
+    { excludeNotRunning = true } = {}
+) => {
     const subsite = getCmsSubsite();
 
     return useQuery({
@@ -43,7 +61,10 @@ export const useElectionData = (selectFn) => {
             }
             return response.json();
         },
-        select: selectFn,
+        select: (data) => {
+            const filtered = excludeNotRunning ? onlyRunning(data) : data;
+            return selectFn ? selectFn(filtered) : filtered;
+        },
         refetchOnMount: false,
     });
 };
@@ -199,38 +220,53 @@ export const useCandidatesData = () => {
     });
 };
 
+// includes incumbents who are not running, to be shown in their race
 export const useRegionRacesData = (region) => {
-    return useElectionData((data) => {
-        const regionInfo =
-            (data?.regions ?? []).find((r) => r.code === region) ?? null;
-        const regional = [];
-        const city = [];
-        const byMunicipality = {};
-        (data?.candidates ?? []).forEach((cmsCandidate) => {
-            if (
-                cmsCandidate.region !== region ||
-                !cmsCandidate.municipality ||
-                !cmsCandidate.person?.name
-            ) {
-                return;
-            }
-            if (cmsCandidate.isRegionalFunction) {
-                regional.push(cmsCandidate);
-            } else if (cmsCandidate.municipality === regionInfo?.city) {
-                city.push(cmsCandidate);
-            } else {
-                if (!byMunicipality[cmsCandidate.municipality]) {
-                    byMunicipality[cmsCandidate.municipality] = [];
+    return useElectionData(
+        (data) => {
+            const regionInfo =
+                (data?.regions ?? []).find((r) => r.code === region) ?? null;
+            const regional = [];
+            const city = [];
+            const byMunicipality = {};
+            (data?.candidates ?? []).forEach((cmsCandidate) => {
+                if (
+                    cmsCandidate.region !== region ||
+                    !cmsCandidate.municipality ||
+                    !cmsCandidate.person?.name ||
+                    (!isRunning(cmsCandidate) && !cmsCandidate.current)
+                ) {
+                    return;
                 }
-                byMunicipality[cmsCandidate.municipality].push(cmsCandidate);
-            }
-        });
-        const municipalities = Object.keys(byMunicipality)
-            .sort((a, b) => a.localeCompare(b, 'sk'))
-            .map((name) => ({ name, candidates: byMunicipality[name] }));
+                if (cmsCandidate.isRegionalFunction) {
+                    regional.push(cmsCandidate);
+                } else if (cmsCandidate.municipality === regionInfo?.city) {
+                    city.push(cmsCandidate);
+                } else {
+                    if (!byMunicipality[cmsCandidate.municipality]) {
+                        byMunicipality[cmsCandidate.municipality] = [];
+                    }
+                    byMunicipality[cmsCandidate.municipality].push(
+                        cmsCandidate
+                    );
+                }
+            });
+            // races with nobody actually running are left out
+            const hasRunning = (candidates) => candidates.some(isRunning);
+            const municipalities = Object.keys(byMunicipality)
+                .sort((a, b) => a.localeCompare(b, 'sk'))
+                .map((name) => ({ name, candidates: byMunicipality[name] }))
+                .filter((m) => hasRunning(m.candidates));
 
-        return { regionInfo, regional, city, municipalities };
-    });
+            return {
+                regionInfo,
+                regional: hasRunning(regional) ? regional : [],
+                city: hasRunning(city) ? city : [],
+                municipalities,
+            };
+        },
+        { excludeNotRunning: false }
+    );
 };
 
 // helpers

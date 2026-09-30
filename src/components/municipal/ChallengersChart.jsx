@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 
-import { partyStackColor } from '../../helpers/races';
+import { candidateStatus, partyStackColor } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
@@ -136,9 +136,13 @@ function ChallengersChart({ rows, max }) {
             </div>
             {rows.map(({ cmsCandidate, spending }) => {
                 const name = cmsCandidate.person.name;
+                const withdrawn =
+                    cmsCandidate.status === candidateStatus.WITHDRAWN;
                 return (
                     <div className="challenger" key={cmsCandidate.uid}>
-                        <div className="challenger-name">
+                        <div
+                            className={`challenger-name${withdrawn ? ' challenger-withdrawn' : ''}`}
+                        >
                             <Link
                                 to={routes.candidateMunicipal(
                                     name,
@@ -148,7 +152,17 @@ function ChallengersChart({ rows, max }) {
                             >
                                 {name}
                             </Link>
-                            {spending.hasParties && ' *'}
+                            {spending.hasParties && (
+                                <span className="name-mark">*</span>
+                            )}
+                            {withdrawn && (
+                                <span
+                                    className="name-mark name-mark-withdrawn"
+                                    title={t(labels.regionRaces.withdrawn)}
+                                >
+                                    ×
+                                </span>
+                            )}
                         </div>
                         <div className="challenger-bar">
                             <ChallengerBar spending={spending} max={max} />

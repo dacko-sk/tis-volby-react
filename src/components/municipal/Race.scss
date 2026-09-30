@@ -113,6 +113,10 @@
     }
   }
 
+  &.incumbent-not-running .incumbent-person img {
+    filter: grayscale(1);
+  }
+
   .incumbent-features {
     margin: 0;
 
@@ -178,6 +182,23 @@
 
     a {
       color: $tis-dark-blue;
+    }
+
+    // withdrawn candidates stay in the chart, as they have already spent money
+    &.challenger-withdrawn,
+    &.challenger-withdrawn a {
+      color: #888;
+    }
+  }
+
+  // footnote marks after the name, explained in the disclaimers below
+  .name-mark {
+    margin-left: 0.25em;
+
+    // raised to the height of the asterisk
+    &.name-mark-withdrawn {
+      display: inline-block;
+      transform: translateY(-0.2em);
     }
   }
 

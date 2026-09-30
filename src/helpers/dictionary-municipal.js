@@ -100,6 +100,7 @@ export const labels = {
         ],
     },
     candidate: {
+        withdrawn: ['Kandidát odstúpil', 'The candidate has withdrawn'],
         disclaimerCandidate: [
             'Kandidát(ka), ktorý(á) na financovanie kampane využíva stranícky účet, viacero účtov alebo účet nemá a vizualizáciu príjmov a výdavkov preto nie je možné zobraziť.',
             'A candidate who uses a party account, multiple accounts, or does not have an account for campaign financing, and therefore their income and spending visualization cannot be displayed.',
@@ -187,7 +188,10 @@ export const labels = {
     },
     regionRaces: {
         heroTitle: ['Hlavné súboje v kraji', 'Main races in the region'],
-        regionalRace: ['Voľby predsedu kraja', 'Regional governor election'],
+        regionalRace: [
+            'Voľby predsedu samosprávneho kraja',
+            'Regional governor election',
+        ],
         cityRace: ['Krajské mesto', 'Regional capital'],
         otherRaces: [
             'Súboje v ďalších samosprávach',
@@ -199,6 +203,12 @@ export const labels = {
             city: ['Úradujúci primátor', 'Incumbent mayor'],
             local: ['Úradujúci starosta / primátor', 'Incumbent mayor'],
         },
+        notRunning: ['nekandiduje', 'not running'],
+        withdrawn: ['Kandidát(ka) odstúpil(a)', 'The candidate has withdrawn'],
+        withdrawnDisclaimer: [
+            '× Kandidát(ka) z volieb odstúpil(a). Výdavky na kampaň do odstúpenia v prehľade ponechávame.',
+            '× The candidate has withdrawn from the election. Campaign spending up to the withdrawal remains in the overview.',
+        ],
         challengers: ['Vyzývatelia', 'Challengers'],
         candidates: ['Kandidáti', 'Candidates'],
         noChallengers: [
@@ -217,6 +227,10 @@ export const labels = {
             'Municipality transparency rating',
         ],
         ranking: ['%d. miesto z %d', 'rank %d of %d'],
+        rankingLink: [
+            'Zobraziť rebríček transparentnosti samospráv',
+            'Show the self-government transparency ranking',
+        ],
         notRated: ['Nehodnotené', 'Not rated'],
         supportingParties: ['Podpora strán', 'Party support'],
         ownAccount: [
@@ -228,6 +242,11 @@ export const labels = {
         disclaimer: [
             '* Pri kandidátoch, ktorých kampaň je financovaná zo straníckych účtov, zobrazujeme sumu výdavkov na straníckych účtoch, z ktorých sú financovaní aj ďalší kandidáti podporení týmito stranami.  Nie je možné jednoznačne určiť, aká časť tejto sumy prislúcha konkrétnemu kandidátovi. Pre podrobnú analýzu transakcií na straníckom účte, kliknite na názov strany.',
             '* For candidates whose campaign is financed from party accounts, we show the total spending of those party accounts, which also finance other candidates supported by these parties. It is not possible to determine which part of this amount belongs to a specific candidate. For a detailed analysis of party account transactions, click the party name.',
+        ],
+        mapTitle: ['Súboje v krajoch', 'Races in the regions'],
+        mapDescription: [
+            'Kliknite na kraj v mape a porovnajte kampane kandidátov v župe, krajskom meste a ďalších samosprávach v kraji.',
+            'Click a region on the map to compare the campaigns of candidates in the region, the regional capital, and other local governments within the region.',
         ],
         previous: ['Predchádzajúca samospráva', 'Previous municipality'],
         next: ['Nasledujúca samospráva', 'Next municipality'],

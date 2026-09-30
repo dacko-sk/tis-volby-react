@@ -2,7 +2,11 @@ import { Link } from 'react-router';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { getCandidateSpending } from '../../helpers/races';
+import {
+    candidateStatus,
+    getCandidateSpending,
+    isRunning,
+} from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 
 import useData from '../../hooks/AccountsData';
@@ -30,13 +34,19 @@ function Race({
         spending: getCandidateSpending(cmsCandidate, csvData, cmsData),
     }));
     const incumbent = rows.find((row) => row.cmsCandidate.current) ?? null;
-    const challengers = rows
+    // incumbent may be shown even when not running in these elections
+    const incumbentRunning = !!incumbent && isRunning(incumbent.cmsCandidate);
+    const running = rows.filter((row) => isRunning(row.cmsCandidate));
+    const challengers = running
         .filter((row) => row !== incumbent)
         .sort((a, b) => b.spending.total - a.spending.total);
 
     // bars are scaled to the biggest spender of the whole race, incl. incumbent
-    const max = Math.max(0, ...rows.map((row) => row.spending.total));
-    const hasPartyAccounts = rows.some((row) => row.spending.hasParties);
+    const max = Math.max(0, ...running.map((row) => row.spending.total));
+    const hasPartyAccounts = running.some((row) => row.spending.hasParties);
+    const hasWithdrawn = challengers.some(
+        (row) => row.cmsCandidate.status === candidateStatus.WITHDRAWN
+    );
 
     return (
         <article className={`race${hero ? ' race-hero' : ''}`}>
@@ -60,12 +70,13 @@ function Race({
                             cmsCandidate={incumbent.cmsCandidate}
                             spending={incumbent.spending}
                             label={incumbentLabel}
+                            notRunning={!incumbentRunning}
                         />
                     </Col>
                 )}
                 <Col lg={incumbent ? 8 : 12}>
                     <h4 className="race-column-title">
-                        {incumbent
+                        {incumbentRunning
                             ? t(labels.regionRaces.challengers)
                             : t(labels.regionRaces.candidates)}
                     </h4>
@@ -81,6 +92,13 @@ function Race({
             {hasPartyAccounts && (
                 <em className="disclaimer d-block mt-3">
                     {t(labels.regionRaces.disclaimer)}
+                </em>
+            )}
+            {hasWithdrawn && (
+                <em
+                    className={`disclaimer d-block ${hasPartyAccounts ? 'mt-1' : 'mt-3'}`}
+                >
+                    {t(labels.regionRaces.withdrawnDisclaimer)}
                 </em>
             )}
         </article>

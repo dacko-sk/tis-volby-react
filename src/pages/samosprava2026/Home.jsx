@@ -42,7 +42,10 @@ function Home() {
                 </Col>
             </Row>
 
-            <Map />
+            <Map
+                title={t(labels.regionRaces.mapTitle)}
+                description={t(labels.regionRaces.mapDescription)}
+            />
 
             <WeeklySpending />
 

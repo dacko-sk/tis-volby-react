@@ -1,6 +1,7 @@
 import { Link, useOutletContext } from 'react-router';
 import Table from 'react-bootstrap/Table';
 
+import { candidateStatus } from '../../../helpers/cms';
 import { labels, t } from '../../../helpers/dictionary';
 import {
     currencyFormat,
@@ -15,6 +16,7 @@ import {
     getSubjectShortname,
 } from '../../../hooks/CmsQueries';
 
+import AlertWithIcon from '../../../components/general/AlertWithIcon';
 import AccountTransactions from '../../../components/accounts/AccountTransactions';
 import FinalReport from '../../../components/general/FinalReport';
 import SupportingPartiesBadges from '../../../components/municipal/SupportingPartiesBadges';
@@ -48,6 +50,11 @@ function CandidateOverview() {
 
     return (
         <div className="candidate-overview">
+            {cmsCandidate?.status === candidateStatus.WITHDRAWN && (
+                <AlertWithIcon className="mb-4" variant="primary">
+                    {t(labels.candidate.withdrawn)}
+                </AlertWithIcon>
+            )}
             <Table striped bordered responsive hover>
                 <tbody>
                     <tr>

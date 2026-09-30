@@ -4,6 +4,19 @@ import { shortenUrl } from './helpers';
 import { aggregatedKeys } from '../hooks/AccountsData';
 import { findSubjectByAccount, getSubjectShortname } from '../hooks/CmsQueries';
 
+// candidate status in the CMS elections endpoint
+export const candidateStatus = {
+    NOT_RUNNING: 0,
+    RUNNING: 1,
+    WITHDRAWN: 2,
+    ADVANCED: 3,
+    ELECTED: 4,
+};
+
+// candidates without status are considered running
+export const isRunning = (cmsCandidate) =>
+    cmsCandidate?.status !== candidateStatus.NOT_RUNNING;
+
 // dark blue for the biggest party supporter, light blue for any other
 export const partyStackColor = (index) =>
     index ? colorLightBlue : colorDarkBlue;

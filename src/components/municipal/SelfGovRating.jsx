@@ -58,8 +58,10 @@ export const selfGovGrade = (rating) => {
     return { grade: grades[index], color: gradeColors[index] };
 };
 
+const rankingsUrl = 'https://samosprava.transparency.sk/rankings/';
+
 // transparency rating of a self-government: grade, score and chart position
-function SelfGovRating({ selfGov }) {
+function SelfGovRating({ selfGov, regional = false }) {
     const grade = selfGovGrade(selfGov?.rating);
     if (!grade) {
         return (
@@ -68,12 +70,16 @@ function SelfGovRating({ selfGov }) {
     }
     return (
         <div className="selfgov-rating">
-            <span
+            <a
                 className="selfgov-grade"
-                style={{ backgroundColor: grade.color }}
+                href={rankingsUrl + (regional ? 'regions' : 'cities')}
+                rel="noreferrer"
+                style={{ '--grade-color': grade.color }}
+                target="_blank"
+                title={t(labels.regionRaces.rankingLink)}
             >
                 {grade.grade}
-            </span>
+            </a>
             <span>
                 <strong>{pctFormat(selfGov.rating)}</strong>
                 {selfGov.ranking && selfGov.total && (

@@ -45,7 +45,10 @@ function Candidates() {
 
             <Top10Spending />
 
-            <Map />
+            <Map
+                title={t(labels.regionRaces.mapTitle)}
+                description={t(labels.regionRaces.mapDescription)}
+            />
 
             <div className="text-center mt-4 mb-4">
                 <Button as={Link} to={routes.campaigns()} variant="secondary">
