@@ -38,7 +38,6 @@ import PartyOverview from './pages/party/PartyOverview';
 // Samosprava 2026 Pages
 import S26Home from './pages/samosprava2026/Home';
 import S26Municipality from './pages/samosprava2026/Municipality';
-import S26Region from './pages/samosprava2026/Region';
 import S26RegionRaces from './pages/samosprava2026/RegionRaces';
 import S26News from './pages/samosprava2026/News';
 import S26Party from './pages/samosprava2026/Party';
@@ -292,11 +291,7 @@ function App() {
                                     routes.municipality(true, '', lang),
                                     S26Municipality,
                                 ],
-                                [routes.region(true, lang), S26Region],
-                                [
-                                    routes.regionRaces(true, lang),
-                                    S26RegionRaces,
-                                ],
+                                [routes.region(true, lang), S26RegionRaces],
                                 [routes.search(true, lang), S26Search],
                                 [routes.campaignDonors(lang), S26Donors],
                             ];

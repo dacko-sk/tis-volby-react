@@ -199,34 +199,6 @@ export const useCandidatesData = () => {
     });
 };
 
-export const useRegionData = (region) => {
-    return useElectionData((data) => {
-        const candidates = {
-            [municipalTypes.regional]: [],
-            [municipalTypes.local]: [],
-        };
-        const partyCandidates = {
-            [municipalTypes.regional]: [],
-            [municipalTypes.local]: [],
-        };
-        if (data?.candidates) {
-            data.candidates.forEach((cmsCandidate) => {
-                if (region === cmsCandidate.region) {
-                    const regType = cmsCandidate.isRegionalFunction
-                        ? municipalTypes.regional
-                        : municipalTypes.local;
-                    if (cmsCandidate.account) {
-                        candidates[regType].push(cmsCandidate);
-                    } else {
-                        partyCandidates[regType].push(cmsCandidate);
-                    }
-                }
-            });
-        }
-        return { candidates, partyCandidates };
-    });
-};
-
 export const useRegionRacesData = (region) => {
     return useElectionData((data) => {
         const regionInfo =

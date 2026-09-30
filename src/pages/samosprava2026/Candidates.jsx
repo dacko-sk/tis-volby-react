@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import { routes } from '../../helpers/routes';
 
 import Map from '../../components/map/Map';
-import Regions from '../../components/municipal/Regions';
 import Top10Spending from '../../components/municipal/Top10Spending';
 import Title from '../../components/structure/Title';
 import TotalTransfers from '../../components/accounts/TotalTransfers';
@@ -47,8 +46,6 @@ function Candidates() {
             <Top10Spending />
 
             <Map />
-
-            <Regions />
 
             <div className="text-center mt-4 mb-4">
                 <Button as={Link} to={routes.campaigns()} variant="secondary">
