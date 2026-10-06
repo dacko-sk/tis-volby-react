@@ -3,12 +3,13 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import Nav from 'react-bootstrap/Nav';
 
 import { findCandidateByPathname } from '../../helpers/cms';
+import { useDemoMode } from '../../helpers/demoMode';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
 import { routes, segments } from '../../helpers/routes';
 
 import useData, { aggregatedKeys } from '../../hooks/AccountsData';
-import { useElectionData } from '../../hooks/CmsQueries';
+import { useElectionData, useCandidateAnalyses } from '../../hooks/CmsQueries';
 
 import Loading from '../../components/general/Loading';
 import Title from '../../components/structure/Title';
@@ -16,11 +17,14 @@ import Title from '../../components/structure/Title';
 function Candidate() {
     const { pathname } = useLocation();
     const navigate = useNavigate();
+    // TODO: 2026 analyses visible in demo mode only until all are published
+    const isDemo = useDemoMode();
 
     const { csvData } = useData();
     const { data: cmsData, isLoading } = useElectionData();
 
     const cmsCandidate = findCandidateByPathname(cmsData, pathname);
+    const { data: analyses } = useCandidateAnalyses(cmsCandidate?.uid);
     const accountData = cmsCandidate
         ? csvData?.data?.find((row) => {
               return (
@@ -40,6 +44,7 @@ function Candidate() {
         return <Loading />;
     }
 
+    const hasAnalysis = isDemo && (analyses ?? []).length > 0;
     const hasNews = !!cmsCandidate?.person?.wpTag;
     const hasAssets =
         !!cmsCandidate?.person?.assetDeclarationsId ||
@@ -67,6 +72,18 @@ function Candidate() {
                     >
                         {t(labels.parties.overview)}
                     </Nav.Link>
+                    {hasAnalysis && (
+                        <Nav.Link
+                            as={NavLink}
+                            to={routes.candidateMunicipal(
+                                cmsCandidate?.person?.name,
+                                cmsCandidate?.municipality,
+                                segments.ANALYSIS
+                            )}
+                        >
+                            {t(labels.analysis.navTitle)}
+                        </Nav.Link>
+                    )}
                     {hasNews && (
                         <Nav.Link
                             as={NavLink}

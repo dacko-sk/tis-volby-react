@@ -50,6 +50,8 @@ import S26Campaigns from './pages/samosprava2026/Campaigns';
 import S26Candidate from './pages/samosprava2026/Candidate';
 import S26CandidateOverview from './pages/samosprava2026/candidate/CandidateOverview';
 import S26CandidateNews from './pages/samosprava2026/candidate/CandidateNews';
+import S26CandidateAnalysis from './pages/samosprava2026/candidate/CandidateAnalysis';
+import S26Analyses from './pages/samosprava2026/Analyses';
 import S26CandidateAssets from './pages/samosprava2026/candidate/CandidateAssets';
 import S26Donors from './pages/samosprava2026/Donors';
 
@@ -269,6 +271,7 @@ function App() {
                                 ],
                                 [routes.article(true, lang), Article],
                                 [routes.news(lang), S26News],
+                                [routes.analyses(lang), S26Analyses],
                                 [routes.campaigns(lang), S26Campaigns],
                                 [
                                     routes.candidateMunicipal(
@@ -280,6 +283,10 @@ function App() {
                                     S26Candidate,
                                     [
                                         ['', S26CandidateOverview],
+                                        [
+                                            segments.ANALYSIS,
+                                            S26CandidateAnalysis,
+                                        ],
                                         [segments.NEWS, S26CandidateNews],
                                         [
                                             segments.ASSET_DECLARATIONS,

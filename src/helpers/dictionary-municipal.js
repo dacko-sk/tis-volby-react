@@ -15,7 +15,26 @@ export const labels = {
             'The "Municipal Elections 2026" section was also made possible thanks to 117 donors within the Rande s demokraciou campaign. Below we list the names of some of them, with their consent. We thank everyone for their support!',
         ],
     },
+    analyses: {
+        featured: [
+            'Hodnotenie transparentnosti kampaní',
+            'Assessment of campaigns transparency',
+        ],
+        intro: [
+            'Transparency International Slovensko hodnotí transparentnosť kampaní vybraných kandidátov na županov a primátorov krajských miest. Zameriava sa pri tom predovšetkým na dostupné údaje na transparentných účtoch, weboch a sociálnych sieťach kandidátov, výsledné hodnotenie tak neodráža ďalšie aspekty kampaní. Pri každom hodnotenom kandidátovi svieti na princípe semafora jedno z hodnotení:',
+            'Transparency International Slovakia assesses the transparency of campaigns of selected candidates for regional governors and mayors of regional cities. The assessment focuses mainly on data available on transparent accounts, websites and social networks of candidates, so it does not reflect other aspects of the campaigns. Each assessed candidate gets one of the traffic light ratings:',
+        ],
+        details: [
+            'Podrobnejšie výsledky nájdete v sekcii nižšie.',
+            'For more details see the section below.',
+        ],
+        noRegion: [
+            'V tomto kraji doposiaľ nie sú k dispozícii žiadne hodnotenia.',
+            'No assessments are available in this region yet.',
+        ],
+    },
     analysis: {
+        socialProfile: ['Sociálna sieť', 'Social profile'],
         indicators22: {
             [ati.account]: [
                 {

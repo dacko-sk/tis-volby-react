@@ -1,6 +1,11 @@
-import { contains, shortenUrl } from './helpers';
-import { getActiveSubsite } from './languages';
+import { contains, pctFormat, shortenUrl } from './helpers';
+import { getActiveSubsite, getCurrentLanguage, languages } from './languages';
 import { routes } from './routes';
+import {
+    transparencyClass,
+    transparencyClasses,
+    transparencyIndicators,
+} from './wp';
 
 import { aggregatedKeys } from '../hooks/AccountsData';
 
@@ -81,6 +86,134 @@ export const getCandidateSpending = (cmsCandidate, csvData, cmsData) => {
         total: own + partiesTotal,
     };
 };
+
+// criteria score values in the CMS evaluations (analyses) endpoint
+export const analysisScores = {
+    GOOD: 1,
+    AVERAGE: 2,
+    BAD: 3,
+    NA: 4,
+};
+
+const analysisScoreClasses = {
+    [analysisScores.GOOD]: transparencyClasses.good,
+    [analysisScores.AVERAGE]: transparencyClasses.average,
+    [analysisScores.BAD]: transparencyClasses.bad,
+};
+
+export const analysisScoreClass = (score) =>
+    analysisScoreClasses[score] ?? transparencyClasses.unknown;
+
+// index into labels.analysis.badges (0 = N/A, 1 = yes, 2 = partially, 3 = no)
+export const analysisScoreBadgeIndex = (score) =>
+    score === analysisScores.NA ? 0 : score;
+
+// total score class, null score means not evaluated (yet)
+export const analysisClass = (evaluation) =>
+    evaluation?.score === null || evaluation?.score === undefined
+        ? transparencyClasses.unknown
+        : transparencyClass(evaluation.score);
+
+export const isFeaturedAnalysis = (evaluation) => !!evaluation?.featured;
+
+const localized = (sk, en) =>
+    getCurrentLanguage() === languages.en && en ? en : sk;
+
+export const getCriterionTitle = (criterion) =>
+    localized(criterion?.title, criterion?.titleEn);
+
+export const getCriterionDescription = (criterion) =>
+    localized(criterion?.description, criterion?.descriptionEn);
+
+// all evaluations of a candidate (by uid), one per set, oldest set first
+export const findCandidateAnalyses = (analysesData, candidateUid) => {
+    if (!analysesData?.sets || !Array.isArray(analysesData.sets)) return [];
+    const result = [];
+    analysesData.sets.forEach((set) => {
+        const evaluation = (set.evaluations ?? []).find(
+            (e) => !!candidateUid && e.candidate === candidateUid
+        );
+        if (evaluation) {
+            result.push({ set, evaluation });
+        }
+    });
+    return result.sort((a, b) => a.set.date - b.set.date);
+};
+
+// criteria of the given sets (oldest first) grouped into
+// [{ group, criteria }], keeping the API order: the first occurrence
+// of a group sets the position of the whole group;
+// the latest set wins, criteria found only in older sets are appended
+export const groupAnalysisCriteria = (sets) => {
+    const groups = [];
+    const seen = new Set();
+    [...sets].reverse().forEach((set) => {
+        (set.criteria ?? []).forEach((criterion) => {
+            if (
+                seen.has(criterion.uid) ||
+                !transparencyIndicators[criterion.group]
+            ) {
+                return;
+            }
+            seen.add(criterion.uid);
+            let group = groups.find((g) => g.group === criterion.group);
+            if (!group) {
+                group = { group: criterion.group, criteria: [] };
+                groups.push(group);
+            }
+            group.criteria.push(criterion);
+        });
+    });
+    return groups;
+};
+
+export const analysisScoreFormat = (score) =>
+    score === null || score === undefined ? 'N/A' : pctFormat(score);
+
+// latest evaluation of every evaluated candidate,
+// joined with their election data and sorted by score
+// (subject evaluations are not used at the moment)
+export const getAnalysesList = (analysesData, cmsData) => {
+    if (!analysesData?.sets || !Array.isArray(analysesData.sets)) return [];
+    const latest = {};
+    [...analysesData.sets]
+        .sort((a, b) => a.date - b.date)
+        .forEach((set) => {
+            (set.evaluations ?? [])
+                .filter((evaluation) => evaluation.candidate)
+                .forEach((evaluation) => {
+                    latest[evaluation.candidate] = {
+                        key: evaluation.candidate,
+                        set,
+                        evaluation,
+                    };
+                });
+        });
+
+    return Object.values(latest)
+        .map((item) => ({
+            ...item,
+            cmsCandidate: (cmsData?.candidates ?? []).find(
+                (c) => c.uid === item.evaluation.candidate
+            ),
+        }))
+        .filter((item) => item.cmsCandidate)
+        .sort((a, b) => {
+            const scoreA = a.evaluation.score;
+            const scoreB = b.evaluation.score;
+            if (scoreA !== null && scoreB !== null) return scoreB - scoreA;
+            if (scoreA !== null) return -1;
+            if (scoreB !== null) return 1;
+            return 0;
+        });
+};
+
+export const getAnalysisRoute = (item, subpage) =>
+    routes.candidateMunicipal(
+        item.cmsCandidate.person?.name,
+        item.cmsCandidate.municipality,
+        subpage
+    );
 
 // helpers
 

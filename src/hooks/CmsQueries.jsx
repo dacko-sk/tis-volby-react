@@ -1,9 +1,12 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import {
+    findCandidateAnalyses,
     findCandidateByPathname,
     findSubjectByPathname,
     findSubjectSupportedCandidates,
+    getAnalysesList,
     getCmsSubsite,
     getMunicipalities,
     getMunicipalityNameByRegionCode,
@@ -79,6 +82,54 @@ export const useCmsCharts = (election, placement) => {
                 : charts,
         enabled: !!election,
     });
+};
+
+// campaign evaluations, called analyses in the frontend
+export const useAnalysesData = (selectFn) => {
+    const subsite = getCmsSubsite();
+
+    return useQuery({
+        queryKey: ['cms_evaluations', subsite],
+        queryFn: async () => {
+            if (!subsite) throw new Error('No subsite mapped for CMS');
+            const response = await fetch(
+                `${CMS_BASE_URL}/elections/evaluations/${subsite}`
+            );
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        },
+        select: selectFn,
+        refetchOnMount: false,
+    });
+};
+
+// all evaluations of a candidate (by uid), oldest first
+export const useCandidateAnalyses = (candidateUid) => {
+    return useAnalysesData((data) => findCandidateAnalyses(data, candidateUid));
+};
+
+// latest evaluations joined with election data, sorted by score
+export const useAnalysesList = () => {
+    const analysesQuery = useAnalysesData();
+    const electionQuery = useElectionData();
+
+    const data = useMemo(
+        () =>
+            analysesQuery.data && electionQuery.data
+                ? getAnalysesList(analysesQuery.data, electionQuery.data)
+                : [],
+        [analysesQuery.data, electionQuery.data]
+    );
+
+    return {
+        data,
+        sets: analysesQuery.data?.sets ?? [],
+        cmsData: electionQuery.data,
+        isLoading: analysesQuery.isLoading || electionQuery.isLoading,
+        error: analysesQuery.error || electionQuery.error,
+    };
 };
 
 export const useCandidateByPathname = (pathname) => {

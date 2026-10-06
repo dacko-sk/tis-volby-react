@@ -167,6 +167,10 @@ export const wpCat = {
 export const resources = {
     get methodology() {
         const subsite = getActiveSubsite();
+        if (subsite === 'samosprava2026') {
+            // TODO: placeholder until the 2026 methodology article is published
+            return routes.article('metodika-hodnotenia-kampani');
+        }
         if (subsite === 'prezident2024') {
             return routes.article('metodika-hodnotenia-kampani');
         }
