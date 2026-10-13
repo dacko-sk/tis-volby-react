@@ -48,7 +48,10 @@
     text-transform: uppercase;
   }
 
+  // notes explaining the * and × marks, more visible than regular disclaimers
   .disclaimer {
+    color: #555;
+    font-size: 0.9rem;
     text-align: left;
   }
 
