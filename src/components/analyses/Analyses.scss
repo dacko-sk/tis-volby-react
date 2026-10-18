@@ -1,0 +1,42 @@
+@use 'sass:map';
+@import './../../scss/variables';
+
+// featured analyses use narrower tiles (4-5 per row) than other featured articles,
+// so labels are scaled down to keep the photo visible
+@media (min-width: map.get($grid-breakpoints, 'md')) {
+  .articles.featured.analyses-featured {
+    a.article .thumb:after {
+      font-size: 1.25em;
+      line-height: 2rem;
+    }
+    .analysis-preview .cover {
+      font-size: 1em;
+      padding: 0;
+    }
+  }
+}
+
+@media (min-width: map.get($grid-breakpoints, 'xl')) {
+  .articles.featured.analyses-featured {
+    a.article .thumb:after {
+      font-size: 1.5em;
+      line-height: 2.25rem;
+    }
+    .analysis-preview .cover {
+      font-size: 1.1em;
+    }
+  }
+}
+
+// list items (2026 onwards) show the rating as a horizontal bar
+// at the bottom of the photo instead of the diagonal ribbon covering faces
+a.article.analysis-preview.analysis-list-item .thumb:after {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: none;
+  font-size: 1rem;
+  line-height: 2rem;
+}

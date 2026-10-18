@@ -168,8 +168,9 @@ export const resources = {
     get methodology() {
         const subsite = getActiveSubsite();
         if (subsite === 'samosprava2026') {
-            // TODO: placeholder until the 2026 methodology article is published
-            return routes.article('metodika-hodnotenia-kampani');
+            return routes.article(
+                'metodika-hodnotenia-transparentnosti-kampani-pre-samospravne-volby-2026'
+            );
         }
         if (subsite === 'prezident2024') {
             return routes.article('metodika-hodnotenia-kampani');
@@ -183,6 +184,11 @@ export const resources = {
     },
     get pressRelease() {
         const subsite = getActiveSubsite();
+        if (subsite === 'samosprava2026') {
+            return routes.article(
+                'len-kazda-tretia-kampan-v-krajskych-mestach-a-zupach-je-transparentna'
+            );
+        }
         if (subsite === 'prezident2024') {
             return routes.article(
                 'najmenej-transparentnu-kampan-vedie-peter-pellegrini'

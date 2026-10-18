@@ -10,6 +10,8 @@ import { useAnalysesList } from '../../hooks/CmsQueries';
 
 import AnalysisFeatured from './AnalysisFeatured';
 
+import './Analyses.scss';
+
 // featured analyses grid, renders nothing until there is something to feature
 function AnalysesFeatured({ title, showAll = false }) {
     const { data } = useAnalysesList();
@@ -24,7 +26,14 @@ function AnalysesFeatured({ title, showAll = false }) {
             <h2 className="mb-4">
                 {title ?? t(labels.analyses.top, [featured.length])}
             </h2>
-            <Row className="articles featured gy-4">
+            <Row
+                className="articles featured analyses-featured gy-4"
+                xs={1}
+                sm={2}
+                md={3}
+                lg={4}
+                xxl={5}
+            >
                 {featured.map((item) => (
                     <AnalysisFeatured key={item.key} item={item} />
                 ))}

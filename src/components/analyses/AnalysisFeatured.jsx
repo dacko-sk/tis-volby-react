@@ -18,7 +18,7 @@ function AnalysisFeatured({ item }) {
     const image = cmsCandidate.photo || defaultImg;
 
     return (
-        <Col md={4}>
+        <Col>
             <Link
                 className={`article analysis-preview score-${analysisClass(item.evaluation)}`}
                 to={getAnalysisRoute(item, segments.ANALYSIS)}

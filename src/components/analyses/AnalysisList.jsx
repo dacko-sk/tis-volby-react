@@ -15,6 +15,7 @@ import { segments } from '../../helpers/routes';
 import defaultImg from '../../../public/img/user_grey.png';
 
 import '../wp/News.scss';
+import './Analyses.scss';
 
 function AnalysisList({ item }) {
     const { cmsCandidate, evaluation, set } = item;
@@ -29,11 +30,11 @@ function AnalysisList({ item }) {
     return (
         <Col md={12}>
             <Link
-                className={`article hover-bg analysis-preview score-${cls}`}
+                className={`article hover-bg analysis-preview analysis-list-item score-${cls}`}
                 to={getAnalysisRoute(item, segments.ANALYSIS)}
             >
-                <Row className="align-items-center">
-                    <Col sm={4} md={3} lg={2}>
+                <Row className="align-items-start">
+                    <Col sm={4} lg={3}>
                         <div
                             className="thumb mb-2 mb-md-0"
                             data-label={t(
