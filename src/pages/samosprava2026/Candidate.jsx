@@ -3,7 +3,6 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router';
 import Nav from 'react-bootstrap/Nav';
 
 import { findCandidateByPathname } from '../../helpers/cms';
-import { useDemoMode } from '../../helpers/demoMode';
 import { labels, t } from '../../helpers/dictionary';
 import { setTitle } from '../../helpers/helpers';
 import { routes, segments } from '../../helpers/routes';
@@ -17,8 +16,6 @@ import Title from '../../components/structure/Title';
 function Candidate() {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    // TODO: 2026 analyses visible in demo mode only until all are published
-    const isDemo = useDemoMode();
 
     const { csvData } = useData();
     const { data: cmsData, isLoading } = useElectionData();
@@ -44,7 +41,7 @@ function Candidate() {
         return <Loading />;
     }
 
-    const hasAnalysis = isDemo && (analyses ?? []).length > 0;
+    const hasAnalysis = (analyses ?? []).length > 0;
     const hasNews = !!cmsCandidate?.person?.wpTag;
     const hasAssets =
         !!cmsCandidate?.person?.assetDeclarationsId ||

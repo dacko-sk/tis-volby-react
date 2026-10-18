@@ -6,10 +6,11 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
 import { elections } from '../../helpers/constants';
-import { useDemoMode } from '../../helpers/demoMode';
 import { labels, t } from '../../helpers/dictionary';
 import { getActiveSubsite, getCurrentLanguage, languages } from '../../helpers/languages';
 import { localizePath, routes } from '../../helpers/routes';
+
+import { useHasAnalyses } from '../../hooks/CmsQueries';
 
 import SiteSelector from './SiteSelector';
 import DonateButton from '../general/DonateButton';
@@ -20,8 +21,9 @@ import logo from '../../../public/img/tis-logo-blue.png';
 function Header() {
     const { pathname } = useLocation();
     const subsite = getActiveSubsite(pathname);
-    // TODO: 2026 analyses visible in demo mode only until all are published
-    const isDemo = useDemoMode();
+    const hasAnalyses = useHasAnalyses({
+        enabled: subsite === 'samosprava2026',
+    });
 
     const renderNavigationLinks = () => {
         if (subsite === 'samosprava2022') {
@@ -54,7 +56,7 @@ function Header() {
                     <Nav.Link as={NavLink} to={routes.news()}>
                         {t(labels.news.navTitle)}
                     </Nav.Link>
-                    {isDemo && (
+                    {hasAnalyses && (
                         <Nav.Link as={NavLink} to={routes.analyses()}>
                             {t(labels.analyses.navTitle)}
                         </Nav.Link>

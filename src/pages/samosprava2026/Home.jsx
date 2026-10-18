@@ -3,7 +3,6 @@ import Row from 'react-bootstrap/Row';
 
 import { cmsChartPlacements, cmsSubsitesMap } from '../../helpers/cms';
 import { dates, elections } from '../../helpers/constants';
-import { useDemoMode } from '../../helpers/demoMode';
 import { labels, t } from '../../helpers/dictionary';
 import { nl2r, setTitle } from '../../helpers/helpers';
 
@@ -20,9 +19,6 @@ import SiteNavigator from '../../components/structure/SiteNavigator';
 import Title from '../../components/structure/Title';
 
 function Home() {
-    // TODO: 2026 analyses visible in demo mode only until all are published
-    const isDemo = useDemoMode();
-
     setTitle(t(labels.home.navTitle));
 
     return (
@@ -47,9 +43,7 @@ function Home() {
                 </Col>
             </Row>
 
-            {isDemo && (
-                <AnalysesFeatured title={t(labels.analyses.featured)} showAll />
-            )}
+            <AnalysesFeatured title={t(labels.analyses.featured)} showAll />
 
             <Map
                 title={t(labels.regionRaces.mapTitle)}

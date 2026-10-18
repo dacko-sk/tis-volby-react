@@ -85,7 +85,7 @@ export const useCmsCharts = (election, placement) => {
 };
 
 // campaign evaluations, called analyses in the frontend
-export const useAnalysesData = (selectFn) => {
+export const useAnalysesData = (selectFn, { enabled = true } = {}) => {
     const subsite = getCmsSubsite();
 
     return useQuery({
@@ -102,7 +102,16 @@ export const useAnalysesData = (selectFn) => {
         },
         select: selectFn,
         refetchOnMount: false,
+        enabled,
     });
+};
+
+// true once the endpoint holds at least one evaluation set
+export const useHasAnalyses = ({ enabled = true } = {}) => {
+    const { data } = useAnalysesData((data) => (data?.sets ?? []).length > 0, {
+        enabled,
+    });
+    return !!data;
 };
 
 // all evaluations of a candidate (by uid), oldest first
