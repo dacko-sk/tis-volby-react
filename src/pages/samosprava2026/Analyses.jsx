@@ -63,7 +63,7 @@ const introText = {
                     Petržalka a Ružinov s vyše 50-tisíc obyvateľmi
                 </strong>
                 . Do hodnotenia sme zaradili kandidátov s výdavkami na kampaň
-                najmenej 3 000 eur a aspoň štyrmi relevantnými platobnými
+                najmenej 3&nbsp;000 eur a aspoň štyrmi relevantnými platobnými
                 transakciami (stav k 13. októbru 2026). Pri menších kampaniach s
                 nedostatkom dát by mohlo prísť pri hodnotení k skresleniu.
             </p>
