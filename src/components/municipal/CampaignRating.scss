@@ -1,0 +1,47 @@
+@import './../../scss/variables';
+
+.campaign-rating {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+
+  // same shape as the self-government grade, colored by the score class
+  .campaign-score {
+    background-color: var(--score-color);
+    border: 2px solid var(--score-color);
+    color: #fff;
+    display: inline-block;
+    font-size: 1.25rem;
+    font-weight: $fw-bold;
+    padding: 0.35rem 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+    white-space: nowrap;
+
+    &.score-good {
+      --score-color: #{$tis-score-green};
+    }
+
+    &.score-average {
+      --score-color: #{$tis-score-orange};
+    }
+
+    &.score-bad {
+      --score-color: #{$tis-score-red};
+    }
+
+    &.score-unknown {
+      --score-color: #{$tis-score-unknown};
+    }
+
+    // outline variant on hover, same as the self-government grade
+    &:hover,
+    &:focus-visible {
+      background-color: transparent;
+      color: var(--score-color);
+    }
+  }
+}

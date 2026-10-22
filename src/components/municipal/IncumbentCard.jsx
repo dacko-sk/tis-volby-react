@@ -5,6 +5,7 @@ import { currencyFormat } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
 
 import { PartyAccountLink } from './ChallengersChart';
+import CampaignRating from './CampaignRating';
 import SelfGovRating from './SelfGovRating';
 import SupportingPartiesBadges from './SupportingPartiesBadges';
 
@@ -105,8 +106,8 @@ function IncumbentCard({ cmsCandidate, spending, label, notRunning = false }) {
                     )}
                 </dd>
                 <dt>{t(labels.regionRaces.campaignRating)}</dt>
-                <dd className="text-muted">
-                    {t(labels.regionRaces.comingSoon)}
+                <dd>
+                    <CampaignRating cmsCandidate={cmsCandidate} />
                 </dd>
                 {selfGovRating}
                 <dt>{t(labels.regionRaces.supportingParties)}</dt>

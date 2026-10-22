@@ -232,6 +232,10 @@ export const labels = {
         onPartyAccounts: ['na straníckych účtoch', 'on party accounts'],
         campaignRating: ['Hodnotenie kampane', 'Campaign rating'],
         comingSoon: ['Pripravujeme', 'Coming soon'],
+        evaluationLink: [
+            'Zobraziť hodnotenie transparentnosti kampane',
+            'Show the campaign transparency assessment',
+        ],
         selfGovRating: [
             'Hodnotenie transparentnosti samosprávy',
             'Municipality transparency rating',
