@@ -140,6 +140,7 @@ function ChallengersChart({ rows, max }) {
                 const name = cmsCandidate.person.name;
                 const withdrawn =
                     cmsCandidate.status === candidateStatus.WITHDRAWN;
+                const elected = cmsCandidate.status === candidateStatus.ELECTED;
                 return (
                     <div className="challenger" key={cmsCandidate.uid}>
                         <div
@@ -163,6 +164,14 @@ function ChallengersChart({ rows, max }) {
                                     title={t(labels.regionRaces.withdrawn)}
                                 >
                                     ×
+                                </span>
+                            )}
+                            {elected && (
+                                <span
+                                    className="name-mark name-mark-elected"
+                                    title={t(labels.regionRaces.elected)}
+                                >
+                                    ^
                                 </span>
                             )}
                         </div>

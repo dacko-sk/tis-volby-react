@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 
+import { candidateStatus } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { currencyFormat } from '../../helpers/helpers';
 import { routes } from '../../helpers/routes';
@@ -48,7 +49,17 @@ function IncumbentCard({ cmsCandidate, spending, label, notRunning = false }) {
                 alt={name}
                 loading="lazy"
             />
-            <span className="incumbent-name">{name}</span>
+            <span className="incumbent-name">
+                {name}
+                {cmsCandidate.status === candidateStatus.ELECTED && (
+                    <span
+                        className="name-mark name-mark-elected"
+                        title={t(labels.regionRaces.elected)}
+                    >
+                        ^
+                    </span>
+                )}
+            </span>
         </>
     );
     const selfGovRating = (

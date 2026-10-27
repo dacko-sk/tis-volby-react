@@ -48,7 +48,7 @@
     text-transform: uppercase;
   }
 
-  // notes explaining the * and × marks, more visible than regular disclaimers
+  // notes explaining the *, × and ^ marks, more visible than regular disclaimers
   .disclaimer {
     color: #555;
     font-size: 0.9rem;
@@ -142,6 +142,23 @@
   }
 }
 
+// footnote marks after the name (challengers chart and incumbent card),
+// explained in the disclaimers below the race
+.name-mark {
+  // inline-block keeps the link underline of the wrapping incumbent link off the mark
+  display: inline-block;
+  margin-left: 0.25em;
+
+  // raised to the height of the asterisk
+  &.name-mark-withdrawn {
+    transform: translateY(-0.2em);
+  }
+
+  &.name-mark-elected {
+    color: $tis-orange;
+  }
+}
+
 .challengers-chart {
   .challengers-legend {
     display: flex;
@@ -191,17 +208,6 @@
     &.challenger-withdrawn,
     &.challenger-withdrawn a {
       color: #888;
-    }
-  }
-
-  // footnote marks after the name, explained in the disclaimers below
-  .name-mark {
-    margin-left: 0.25em;
-
-    // raised to the height of the asterisk
-    &.name-mark-withdrawn {
-      display: inline-block;
-      transform: translateY(-0.2em);
     }
   }
 

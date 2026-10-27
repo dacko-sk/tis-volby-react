@@ -47,6 +47,9 @@ function Race({
     const hasWithdrawn = challengers.some(
         (row) => row.cmsCandidate.status === candidateStatus.WITHDRAWN
     );
+    const hasElected = running.some(
+        (row) => row.cmsCandidate.status === candidateStatus.ELECTED
+    );
 
     return (
         <article className={`race${hero ? ' race-hero' : ''}`}>
@@ -99,6 +102,13 @@ function Race({
                     className={`disclaimer d-block ${hasPartyAccounts ? 'mt-1' : 'mt-3'}`}
                 >
                     × {t(labels.regionRaces.withdrawnDisclaimer)}
+                </em>
+            )}
+            {hasElected && (
+                <em
+                    className={`disclaimer d-block ${hasPartyAccounts || hasWithdrawn ? 'mt-1' : 'mt-3'}`}
+                >
+                    ^ {t(labels.regionRaces.electedDisclaimer)}
                 </em>
             )}
         </article>

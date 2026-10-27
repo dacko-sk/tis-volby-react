@@ -219,6 +219,11 @@ export const labels = {
             'Kandidát(ka) z volieb odstúpil(a). Výdavky na kampaň do odstúpenia v prehľade ponechávame.',
             'The candidate has withdrawn from the election. Campaign spending up to the withdrawal remains in the overview.',
         ],
+        elected: ['Zvolený(á) kandidát(ka)', 'Elected candidate'],
+        electedDisclaimer: [
+            'Kandidát(ka) bol(a) vo voľbách zvolený(á).',
+            'The candidate has been elected.',
+        ],
         challengers: ['Vyzývatelia', 'Challengers'],
         candidates: ['Kandidáti', 'Candidates'],
         noChallengers: [
