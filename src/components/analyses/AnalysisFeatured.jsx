@@ -4,8 +4,10 @@ import Col from 'react-bootstrap/Col';
 import {
     analysisClass,
     analysisScoreFormat,
+    candidateStatus,
     getAnalysisRoute,
 } from '../../helpers/cms';
+import { labels, t } from '../../helpers/dictionary';
 import { segments } from '../../helpers/routes';
 
 import defaultImg from '../../../public/img/user_grey.png';
@@ -36,7 +38,18 @@ function AnalysisFeatured({ item }) {
                                 {cmsCandidate.municipality}
                             </span>
                         )}
-                        <span className="text-white fw-bold">{name}</span>
+                        <span className="text-white fw-bold">
+                            {name}
+                            {cmsCandidate.status ===
+                                candidateStatus.ELECTED && (
+                                <span
+                                    className="elected-mark"
+                                    title={t(labels.regionRaces.elected)}
+                                >
+                                    ^
+                                </span>
+                            )}
+                        </span>
                     </div>
                 </div>
             </Link>

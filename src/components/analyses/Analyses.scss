@@ -1,6 +1,16 @@
 @use 'sass:map';
 @import './../../scss/variables';
 
+// marks elected candidates after the name, same as in the races component;
+// resets the full-width band styles of .cover span
+.analysis-preview .cover .elected-mark {
+  background: none;
+  color: $tis-orange;
+  margin-left: 0.25em;
+  padding: 0;
+  width: auto;
+}
+
 // featured analyses use narrower tiles (4-5 per row) than other featured articles,
 // so labels are scaled down to keep the photo visible
 @media (min-width: map.get($grid-breakpoints, 'md')) {

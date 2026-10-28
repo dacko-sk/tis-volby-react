@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 
-import { isFeaturedAnalysis } from '../../helpers/cms';
+import { candidateStatus, isFeaturedAnalysis } from '../../helpers/cms';
 import { labels, t } from '../../helpers/dictionary';
 import { routes } from '../../helpers/routes';
 
@@ -20,6 +20,9 @@ function AnalysesFeatured({ title, showAll = false }) {
     if (!featured.length) {
         return null;
     }
+    const hasElected = featured.some(
+        (item) => item.cmsCandidate.status === candidateStatus.ELECTED
+    );
 
     return (
         <div className="my-4">
@@ -38,6 +41,11 @@ function AnalysesFeatured({ title, showAll = false }) {
                     <AnalysisFeatured key={item.key} item={item} />
                 ))}
             </Row>
+            {hasElected && (
+                <em className="disclaimer text-start mt-3">
+                    ^ {t(labels.regionRaces.electedDisclaimer)}
+                </em>
+            )}
             {showAll && (
                 <div className="buttons mt-4 text-center">
                     <Button
